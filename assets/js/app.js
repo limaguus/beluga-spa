@@ -80,4 +80,5 @@ registerRoute("conquistas", conquistasScreen);
 /* =========================================================
    INICIALIZAÇÃO DO SISTEMA
    ========================================================= */
+
 startRouter();

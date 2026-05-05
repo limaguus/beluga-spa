@@ -1,30 +1,69 @@
-import { login } from "../state/auth.js";
-
 export function cadastroScreen() {
   return `
-    <div class="card" style="max-width: 420px;">
-      <h1>Cadastro</h1>
+    <div class="auth-page">
+      <header class="topbar-auth">
+        <div class="brand-wrap">
+          <img src="./assets/images/logoF.png" class="brand-logo" alt="Logo Beluga" />
+          <div class="brand">BELUGA</div>
+        </div>
 
-      <input class="input" placeholder="Nome" />
-      <br /><br />
+        <button id="btn-voltar" class="back-button" type="button">
+          Voltar
+        </button>
+      </header>
 
-      <input class="input" placeholder="Email" />
-      <br /><br />
+      <main class="auth-content">
+        <section class="cadastro-grid">
+          <div class="cadastro-left">
+            <img class="cadastro-beluga" src="./assets/images/BELUGA.png" alt="Beluga IA" />
 
-      <input class="input" type="password" placeholder="Senha" />
-      <br /><br />
+            <div class="cadastro-text">
+              <h2>Você sabia o que inspira o nome BELUGA?</h2>
+              <p>
+                A baleia beluga é conhecida por sua empatia e inteligência. Ela se comunica, ajuda seu grupo e é símbolo de apoio mútuo.
+                Assim como ela, a Beluga está aqui para te guiar, apoiar e fazer com que você não se sinta sozinho na sua jornada acadêmica.
+              </p>
+            </div>
+          </div>
 
-      <button class="button" id="finish-cadastro">Criar conta</button>
+          <div class="cadastro-right">
+            <form id="cadastro-form" class="cadastro-card">
+              <h1 class="cadastro-title">CADASTRO</h1>
+
+              <input class="auth-input" type="text" id="cadastro-nome" placeholder="Nome" />
+              <input class="auth-input" type="text" id="cadastro-cpf" placeholder="CPF" />
+              <input class="auth-input" type="email" id="cadastro-email" placeholder="Email" />
+              <input class="auth-input" type="email" id="cadastro-email2" placeholder="Confirmação de Email" />
+              <input class="auth-input" type="password" id="cadastro-senha" placeholder="Senha" />
+              <input class="auth-input" type="password" id="cadastro-senha2" placeholder="Confirmação de Senha" />
+
+              <button class="auth-button" id="btn-finalizar-cadastro" type="submit">
+                Comece agora
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
     </div>
   `;
 }
 
 export function cadastroInit() {
-  const btn = document.getElementById("finish-cadastro");
-  if (!btn) return;
+  const voltar = document.getElementById("btn-voltar");
+  if (voltar) {
+    voltar.addEventListener("click", () => {
+      window.location.hash = "#/login"; // ou "#/landing"
+    });
+  }
 
-  btn.addEventListener("click", () => {
-    login(); // simula login
-    window.location.hash = "#/dashboard";
+  const form = document.getElementById("cadastro-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // coloca validações e depois cria conta de verdade.
+    // Por enquanto só redireciona:
+    window.location.hash = "#/login";
   });
 }
