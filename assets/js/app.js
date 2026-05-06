@@ -28,15 +28,15 @@ import { dashboardScreen, dashboardInit } from "./screens/dashboard.js";
    4) OUTRAS TELAS DO APP
    (por enquanto apenas render simples)
    ========================= */
-import { matrizScreen } from "./screens/matriz.js";
-import { quizScreen } from "./screens/quiz.js";
-import { planoEstudoScreen } from "./screens/planoEstudo.js";
-import { perfilScreen } from "./screens/perfil.js";
-import { feedScreen } from "./screens/feed.js";
-import { forumScreen } from "./screens/forum.js";
-import { notificacoesScreen } from "./screens/notificacoes.js";
-import { aulasScreen } from "./screens/aulas.js";
-import { conquistasScreen } from "./screens/conquistas.js";
+import { matrizScreen, matrizInit } from "./screens/matriz.js";
+import { quizScreen, quizInit } from "./screens/quiz.js";
+import { planoEstudoScreen, planoEstudoInit } from "./screens/planoEstudo.js";
+import { perfilScreen, perfilInit } from "./screens/perfil.js";
+import { feedScreen, feedInit } from "./screens/feed.js";
+import { forumScreen, forumInit } from "./screens/forum.js";
+import { notificacoesScreen, notificacoesInit } from "./screens/notificacoes.js";
+import { aulasScreen, aulasInit } from "./screens/aulas.js";
+import { conquistasScreen, conquistasInit } from "./screens/conquistas.js";
 
 /* =========================================================
    REGISTRO DAS ROTAS
@@ -67,15 +67,15 @@ registerRoute("dashboard", {
 /* ---------- Rotas Simples do App ---------- */
 /* Essas ainda não precisam de init porque
    não possuem lógica interativa específica */
-registerRoute("matriz", matrizScreen);
-registerRoute("quiz", quizScreen);
-registerRoute("plano", planoEstudoScreen);
-registerRoute("perfil", perfilScreen);
-registerRoute("feed", feedScreen);
-registerRoute("forum", forumScreen);
-registerRoute("notificacoes", notificacoesScreen);
-registerRoute("aulas", aulasScreen);
-registerRoute("conquistas", conquistasScreen);
+registerRoute("matriz", { render: matrizScreen, init: matrizInit });
+registerRoute("quiz", { render: quizScreen, init: quizInit });
+registerRoute("plano", { render: planoEstudoScreen, init: planoEstudoInit });
+registerRoute("perfil", { render: perfilScreen, init: perfilInit });
+registerRoute("feed", { render: feedScreen, init: feedInit });
+registerRoute("forum", { render: forumScreen, init: forumInit });
+registerRoute("notificacoes", { render: notificacoesScreen, init: notificacoesInit });
+registerRoute("aulas", { render: aulasScreen, init: aulasInit });
+registerRoute("conquistas", { render: conquistasScreen, init: conquistasInit });
 
 /* =========================================================
    INICIALIZAÇÃO DO SISTEMA

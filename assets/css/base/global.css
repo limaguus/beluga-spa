@@ -1,0 +1,26 @@
+/* =========================
+   3) TIPOGRAFIA GLOBAL
+   (usada no app e no público)
+   ========================= */
+h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* =========================
+   7) UTILITÁRIOS
+   ========================= */
+.hidden {
+  display: none;
+}

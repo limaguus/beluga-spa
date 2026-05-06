@@ -27,7 +27,8 @@ export function startRouter() {
     /* -----------------------------
        1) Descobrir rota atual
        ----------------------------- */
-    const routeName = window.location.hash.replace("#/", "") || "landing";
+    const rawHash = window.location.hash.replace("#/", "") || "landing";
+    const routeName = rawHash.split("?")[0];
     document.body.classList.toggle("public-mode", routeName === "landing");
 
     /* Outlet onde a tela é desenhada */

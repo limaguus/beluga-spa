@@ -1,0 +1,381 @@
+/* =========================================================
+   9) PLANO DE ESTUDOS
+   ========================================================= */
+
+/* — Layout raiz — */
+.plano {
+  padding: 32px 36px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+/* — Cabeçalho — */
+.plano-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.plano-title {
+  font-size: 30px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #fff 20%, #a8d8f0 55%, rgba(59, 158, 221, 0.75));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.plano-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.plano-refazer-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.plano-refazer-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.plano-refazer-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* — Corpo: sidebar + tabela — */
+.plano-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* — Sidebar — */
+.plano-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plano-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  background: rgba(43, 113, 156, 0.07);
+  border: 1px solid rgba(59, 158, 221, 0.16);
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.plano-avatar-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #2b719c, #3b9edd);
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+.plano-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #040530;
+}
+
+.plano-profile-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.plano-profile-role {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* — Legenda de cores — */
+.plano-legend {
+  padding: 16px;
+  background: rgba(43, 113, 156, 0.05);
+  border: 1px solid rgba(59, 158, 221, 0.12);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plano-legend-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 2px;
+}
+
+.plano-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+/* — Dot de cor — */
+.plano-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* — Grupos de disciplinas por nível — */
+.plano-group {
+  padding: 14px;
+  background: rgba(43, 113, 156, 0.05);
+  border: 1px solid rgba(59, 158, 221, 0.1);
+  border-radius: 14px;
+}
+
+.plano-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.plano-pills-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.plano-pill {
+  display: block;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 6px;
+  background: transparent;
+  line-height: 1.4;
+}
+
+/* — Wrap da tabela — */
+.plano-table-wrap {
+  background: linear-gradient(
+    160deg,
+    #0e2242 0%,
+    #0b1c38 50%,
+    #091528 100%
+  );
+  border: 1px solid rgba(59, 158, 221, 0.32);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(59, 158, 221, 0.07),
+    0 12px 48px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(43, 113, 156, 0.14);
+}
+
+.plano-table-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 158, 221, 0.55) 35%,
+    rgba(123, 200, 240, 0.8) 50%,
+    rgba(59, 158, 221, 0.55) 65%,
+    transparent 100%
+  );
+  border-radius: 18px 18px 0 0;
+  pointer-events: none;
+}
+
+/* — Tabela — */
+.plano-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.plano-table thead tr {
+  background: rgba(43, 113, 156, 0.38);
+  border-bottom: 1px solid rgba(59, 158, 221, 0.28);
+}
+
+.plano-table th {
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+}
+
+.plano-th-hours {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.3);
+}
+
+.plano-th-day  { width: 110px; }
+.plano-th-cor  { width: 130px; }
+
+.plano-row {
+  border-bottom: 1px solid rgba(59, 158, 221, 0.08);
+  transition: background 0.15s;
+}
+
+.plano-row:last-child { border-bottom: none; }
+
+.plano-row:hover {
+  background: rgba(59, 158, 221, 0.1);
+}
+
+.plano-row td {
+  padding: 14px 18px;
+  vertical-align: middle;
+}
+
+.plano-td-day {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.plano-td-subject { font-size: 13px; }
+
+.plano-subject {
+  color: #3b9edd;
+  font-weight: 500;
+}
+
+.plano-cell-rest    .plano-subject,
+.plano-subject.plano-cell-rest {
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+}
+
+.plano-subject.plano-cell-optional {
+  color: rgba(255,255,255,0.35);
+  font-style: italic;
+}
+
+.plano-td-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plano-opt-tag,
+.plano-rest-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.plano-opt-tag {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.plano-rest-tag {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* — Nota de rodapé — */
+.plano-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 18px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  line-height: 1.5;
+}
+
+/* — Responsivo — */
+@media (max-width: 768px) {
+  .plano {
+    padding: 20px 16px 80px;
+  }
+
+  .plano-body {
+    grid-template-columns: 1fr;
+  }
+
+  .plano-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .plano-profile-card {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .plano-table th,
+  .plano-table td {
+    padding: 10px 12px;
+  }
+}
+

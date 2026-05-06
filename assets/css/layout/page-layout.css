@@ -1,0 +1,29 @@
+/* =========================
+   4) LAYOUT DO APP (LOGADO)
+   ========================= */
+
+/* Wrapper do app (não é usado na landing, mas pode ser útil depois) */
+.app {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100vh;
+}
+
+/* Layout geral do site (topbar + conteúdo) */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área onde as telas são renderizadas (#app) */
+.content {
+  flex: 1;
+  padding: 24px;
+}
+
+/* Container padrão usado no app e no público */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+}

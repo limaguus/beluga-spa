@@ -1,0 +1,365 @@
+/* =========================
+   12) PERFIL DO ALUNO
+   ========================= */
+
+/* Page wrapper */
+.pf-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Page header */
+.pf-page-header {
+  margin-bottom: var(--space-6);
+}
+
+.pf-page-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.pf-page-desc {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Main layout: sidebar + content */
+.pf-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* ---- Sidebar ---- */
+.pf-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Avatar card */
+.pf-avatar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.pf-avatar-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+  border: 3px solid var(--primary);
+  flex-shrink: 0;
+}
+
+.pf-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pf-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pf-avatar-wrap:hover .pf-avatar-overlay {
+  opacity: 1;
+}
+
+.pf-sidebar-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pf-sidebar-course {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.pf-sidebar-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pf-sidebar-institution {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Mini stats row */
+.pf-sidebar-stats {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.pf-sidebar-stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.pf-sidebar-stat-label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ---- Main area ---- */
+.pf-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Tabs bar */
+.pf-tabs-bar {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pf-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.pf-tab:hover {
+  color: var(--text);
+}
+
+.pf-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+/* Panel */
+.pf-panel {
+  min-height: 300px;
+}
+
+.pf-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+/* 2-column form grid */
+.pf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4) var(--space-5);
+}
+
+.pf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pf-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pf-value {
+  font-size: 14px;
+  color: var(--text);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  min-height: 38px;
+}
+
+/* Stats grid — desempenho tab */
+.pf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.pf-stat-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.pf-stat-value {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.pf-stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* Progress bar */
+.pf-progress-section {
+  margin-top: var(--space-4);
+}
+
+.pf-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.pf-progress-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pf-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* Actions row */
+.pf-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Toast notification */
+.pf-toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: #16a34a;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-2);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  transform: translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 9999;
+}
+
+.pf-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  .pf-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-sidebar {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .pf-avatar-card {
+    flex: 1;
+  }
+
+  .pf-sidebar-stats {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pf-sidebar {
+    flex-direction: column;
+  }
+
+  .pf-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pf-tabs-bar {
+    overflow-x: auto;
+  }
+
+  .pf-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+}
+

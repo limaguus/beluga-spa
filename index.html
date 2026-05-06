@@ -1,4 +1,5 @@
 <!-- diz para o navegador que o arquivo é HTML5 -->
+<!-- diz para o navegador que o arquivo é HTML5 -->
 <!doctype html>
 <html lang="pt-BR">
   <!-- infroma a lingua dos leitores da tela -->
@@ -6,7 +7,7 @@
     <meta charset="UTF-8" />
     <!-- usado para caracteres "ação" não virar "AãÃzão" -->
     <title>Beluga</title>
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- conecta o css ao HTML -->
   </head>
@@ -15,7 +16,10 @@
     <div class="layout">
       <header class="topbar" id="topbar">
         <div class="container topbar-inner">
-          <div class="brand">BELUGA</div>
+          <div class="topbar-brand">
+            <img src="assets/images/logof.png" alt="Logo Beluga" class="topbar-logo" />
+            <span class="topbar-title">BELUGA</span>
+          </div>
 
           <nav class="topnav" aria-label="Navegação principal">
             <a href="#/dashboard" data-route="dashboard">Dashboard</a>
@@ -30,9 +34,7 @@
             <a href="#/perfil" data-route="perfil">Perfil</a>
           </nav>
 
-          <button class="button button-ghost" id="btn-logout" type="button">
-            Sair
-          </button>
+          <button class="topbar-logout" id="btn-logout" type="button">Sair</button>
         </div>
       </header>
 
@@ -42,6 +44,108 @@
     </div>
 
     <script type="module" src="assets/js/app.js"></script>
+
+    <!-- ── Beluginha IA – assistente global ── -->
+    <button
+      type="button"
+      class="blg-fab"
+      id="blg-fab"
+      title="Belugin-IA"
+      aria-label="Abrir assistente Belugin-IA"
+    >
+      <img src="assets/images/BELUGA.png" alt="Beluginha" class="blg-fab-img" />
+      <span class="blg-badge" id="blg-badge" aria-hidden="true"></span>
+    </button>
+
+    <div
+      class="blg-chat"
+      id="blg-chat"
+      hidden
+      aria-hidden="true"
+      role="dialog"
+      aria-label="Beluginha IA"
+    >
+      <div class="blg-chat-window">
+        <div class="blg-head">
+          <div class="blg-head-left">
+            <img
+              src="assets/images/BELUGA.png"
+              class="blg-head-avatar"
+              alt="Beluginha"
+            />
+            <div class="blg-head-info">
+              <span class="blg-head-name">Belugin - IA</span>
+              <span class="blg-head-sub">Assistente acadêmico</span>
+            </div>
+          </div>
+          <div class="blg-head-right">
+            <span class="blg-online-dot" aria-hidden="true"></span>
+            <span class="blg-online-label">Online</span>
+            <button
+              type="button"
+              class="blg-close-btn"
+              id="blg-close"
+              aria-label="Fechar chat"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="15"
+                height="15"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="blg-messages" id="blg-messages">
+          <div class="blg-msg blg-msg--bot">
+            <span class="blg-bubble"
+              >Percebi que você está com dificuldade em Cálculo I. Quer uma
+              revisão rápida?</span
+            >
+          </div>
+        </div>
+
+        <div class="blg-compose">
+          <input
+            class="blg-input"
+            id="blg-input"
+            placeholder="Escreva algo…"
+            autocomplete="off"
+            aria-label="Mensagem para Beluginha IA"
+          />
+          <button
+            type="button"
+            class="blg-send"
+            id="blg-send"
+            aria-label="Enviar mensagem"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="15"
+              height="15"
+            >
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/screens/beluginha.js"></script>
   </body>
 </html>
 <!-- fecha tudo -->

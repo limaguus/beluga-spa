@@ -1,0 +1,354 @@
+/* ==============================================
+   LANDING (PÚBLICO)
+   ============================================== */
+
+/* ── Public-mode layout resets ── */
+body.public-mode .content {
+  padding: 0;
+}
+
+body.public-mode #app.container {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* ── Root wrapper ── */
+.public {
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Public header ── */
+.public-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 48px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--text);
+}
+
+/* ── Public nav ── */
+.public-nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.public-nav a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.public-nav a:hover {
+  color: #fff;
+}
+
+/* ── Header CTA ── */
+.pub-cta-header {
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b9edd;
+  background: rgba(59, 158, 221, 0.1);
+  border: 1px solid rgba(59, 158, 221, 0.35);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pub-cta-header:hover {
+  background: rgba(59, 158, 221, 0.2);
+  border-color: rgba(59, 158, 221, 0.6);
+  color: #7bc8f0;
+}
+
+/* ── Main content area ── */
+.public-main {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 48px 60px;
+  box-sizing: border-box;
+}
+
+/* ── HERO ── */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 48px 0 32px;
+  min-height: 420px;
+}
+
+.hero-left {
+  flex: 1;
+  max-width: 520px;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #3b9edd;
+  margin: 0 0 18px;
+}
+
+.hero h1 {
+  font-size: 50px;
+  line-height: 1.15;
+  font-weight: 800;
+  margin: 0 0 18px;
+  color: #fff;
+}
+
+.hero-highlight {
+  display: block;
+  color: #3b9edd;
+  letter-spacing: 10px;
+  font-weight: 900;
+  font-size: 46px;
+  margin-top: 4px;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 36px;
+  line-height: 1.5;
+}
+
+/* ── Hero CTA button ── */
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.hero-cta {
+  padding: 14px 36px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #1e5f8a, #3b9edd);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.4px;
+  box-shadow: 0 4px 22px rgba(59, 158, 221, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(59, 158, 221, 0.5);
+}
+
+/* ── Hero right (Beluga image) ── */
+.hero-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Floating animation (translateY only — pure composite) ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-22px); }
+}
+
+.hero-image-wrap {
+  animation: float 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-image {
+  width: 420px;
+  max-width: 100%;
+  height: auto;
+  transform: scaleX(-1);
+  filter: drop-shadow(0 20px 48px rgba(59, 158, 221, 0.22));
+  display: block;
+}
+
+/* ── Landing strip (cards inferiores) ── */
+.landing-strip {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.strip-label {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.32);
+  margin: 0 0 22px;
+  letter-spacing: 0.2px;
+}
+
+/* ── Horizontal scroll track ── */
+.strip-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}
+
+.strip-track::-webkit-scrollbar { height: 3px; }
+.strip-track::-webkit-scrollbar-track { background: transparent; }
+.strip-track::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+/* ── Base card ── */
+.strip-card {
+  flex-shrink: 0;
+  width: 200px;
+  background: rgba(8, 14, 34, 0.85);
+  border: 1px solid rgba(59, 158, 221, 0.13);
+  border-radius: 14px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.strip-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 158, 221, 0.35);
+  box-shadow: 0 8px 24px rgba(59, 158, 221, 0.1);
+}
+
+/* ── Person card variant ── */
+.strip-card--person {
+  width: 230px;
+}
+
+/* ── Feature icon container ── */
+.strip-feature-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Card text ── */
+.strip-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.strip-card-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.48);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Person card elements ── */
+.strip-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(59, 158, 221, 0.28);
+}
+
+.strip-person-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.strip-person-role {
+  display: block;
+  font-size: 10px;
+  color: #3b9edd;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin: 2px 0 4px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .public-header { padding: 16px 24px; }
+  .public-main   { padding: 0 24px 48px; }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+    gap: 24px;
+    padding: 32px 0 24px;
+  }
+
+  .hero-right { align-self: center; }
+
+  .hero-image { width: 280px; }
+
+  .hero h1 { font-size: 36px; }
+
+  .hero-highlight { font-size: 32px; letter-spacing: 6px; }
+}
+
+@media (max-width: 600px) {
+  .public-header { padding: 14px 16px; }
+  .public-main   { padding: 0 16px 40px; }
+  .pub-cta-header { display: none; }
+  .public-nav { gap: 20px; }
+}

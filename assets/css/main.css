@@ -1,0 +1,45 @@
+/* =========================================================
+   BELUGA – main.css
+   Ponto de entrada único do CSS.
+   Importa todos os módulos na ordem correta de cascata:
+     1. Tokens / variáveis
+     2. Reset + base
+     3. Tipografia + utilitários globais
+     4. Layout (estrutura de página + topbar)
+     5. Componentes reutilizáveis
+     6. Páginas (públicas e do app)
+   ========================================================= */
+
+/* ── 1. BASE ─────────────────────────────────────────── */
+@import url("./base/variables.css");
+@import url("./base/reset.css");
+@import url("./base/global.css");
+
+/* ── 2. LAYOUT ───────────────────────────────────────── */
+@import url("./layout/page-layout.css");
+@import url("./layout/topbar.css");
+
+/* ── 3. COMPONENTES ──────────────────────────────────── */
+@import url("./components/cards.css");
+@import url("./components/buttons.css");
+@import url("./components/forms.css");
+@import url("./components/modals.css");
+@import url("./components/beluginha-ia.css");
+
+/* ── 4. PÁGINAS PÚBLICAS ─────────────────────────────── */
+@import url("./pages/landing.css");
+@import url("./pages/login.css");
+@import url("./pages/cadastro.css");
+
+/* ── 5. PÁGINAS DO APP ───────────────────────────────── */
+@import url("./pages/dashboard.css");
+@import url("./pages/matriz.css");
+@import url("./pages/quiz.css");
+@import url("./pages/plano.css");
+@import url("./pages/aulas.css");
+@import url("./pages/biblioteca.css");
+@import url("./pages/feed.css");
+@import url("./pages/forum.css");
+@import url("./pages/notificacoes.css");
+@import url("./pages/conquistas.css");
+@import url("./pages/perfil.css");

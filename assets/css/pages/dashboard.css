@@ -1,0 +1,142 @@
+
+/* DASHBOARD */
+.dashboard {
+  padding: 32px 40px;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7c6ef8;
+  margin-bottom: 4px;
+}
+
+.dashboard-subtitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.subject-card {
+  background: #080e22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 18px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subject-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 158, 221, 0.5);
+  box-shadow: 0 6px 20px rgba(59, 158, 221, 0.13);
+}
+
+.subject-card h3 {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.subject-card.highlight {
+  border-color: #f97316;
+}
+
+.subject-card.highlight h3 {
+  color: #f97316;
+}
+
+/* Progress ring */
+.progress-ring-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.progress-ring {
+  width: 64px;
+  height: 64px;
+}
+
+.ring-bg {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Chart */
+.chart-area {
+  max-width: 780px;
+  margin: 0 auto 32px;
+}
+
+/* Dashboard actions */
+.dashboard-actions {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+}
+
+.action-card {
+  background: #080e22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px 10px 16px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 158, 221, 0.45);
+  box-shadow: 0 6px 18px rgba(59, 158, 221, 0.12);
+}
+
+.action-card svg {
+  width: 28px;
+  height: 28px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.action-card span {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+

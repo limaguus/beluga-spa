@@ -1,0 +1,37 @@
+/* =========================
+   1) TOKENS (Design System)
+   ========================= */
+:root {
+  /* Cores base */
+  --bg: #030205;
+  --surface: #040530;
+  --surface-2: #050811;
+  --text: #ffffff;
+  --muted: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.08);
+
+  /* Cores de marca */
+  --primary: #2b719c;
+  --primary-hover: #102253;
+
+  /* Layout */
+  --container: 1500px;
+
+  /* Espaçamentos */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Bordas */
+  --radius-1: 8px;
+  --radius-2: 12px;
+
+  /* Tipografia (tokens prontos para evoluir depois) */
+  --h1: 28px;
+  --h2: 18px;
+  --p: 14px;
+}
