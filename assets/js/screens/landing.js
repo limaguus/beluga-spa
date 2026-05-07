@@ -12,7 +12,6 @@ export function landingScreen() {
           <a href="javascript:void(0)" data-scroll="preco">Preço</a>
           <a href="javascript:void(0)" data-scroll="contato">Contato</a>
         </nav>
-        <button class="pub-cta-header" id="cta-header" type="button">Comece agora</button>
       </header>
 
       <main class="public-main">
@@ -24,7 +23,7 @@ export function landingScreen() {
             <h1>Organize seus estudos<br>de forma<br><span class="hero-highlight">INTELIGENTE</span></h1>
             <p class="hero-sub">Planejamento de forma fácil e eficaz.</p>
             <div class="hero-actions">
-              <button class="hero-cta" id="cta-login" type="button">Login / Cadastro</button>
+              <button class="hero-cta" id="cta-login" type="button"> COMECE AGORA</button>
             </div>
           </div>
           <div class="hero-right">

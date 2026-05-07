@@ -1,121 +1,42 @@
+/* =========================================================
+   CADASTRO (AUTH)
+   ========================================================= */
 
-/* Layout do cadastro */
-.auth-content {
-  padding: 0 24px 24px;
+/* Travar a cadeia de ancestors em 100vh apenas para o cadastro */
+body.public-mode:has(.auth-page),
+body.public-mode:has(.auth-page) .layout,
+body.public-mode:has(.auth-page) .content {
+  height: 100vh;
+  overflow: hidden;
 }
 
-.cadastro-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 32px;
-  align-items: center;
-}
-
-.cadastro-left {
+/* ── Root: tela completa sem scroll ── */
+.auth-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
-.cadastro-beluga {
-  width: min(340px, 90%);
-  height: auto;
-  display: block;
-}
-
-.cadastro-text h2 {
-  margin: 0 0 8px;
-  color: var(--primary);
-  font-size: 18px;
-}
-
-.cadastro-text p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.75);
-  max-width: 520px;
-  line-height: 1.4;
-}
-
-.cadastro-right {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.cadastro-card {
-  width: min(420px, 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 18px;
-  display: grid;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-}
-
-.cadastro-title {
-  margin: 0 0 6px;
-  text-align: center;
-  color: var(--primary);
-  letter-spacing: 2px;
-  font-size: 18px;
-}
-
-.auth-input {
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.9);
-  padding: 0 12px;
-  outline: none;
-}
-
-.auth-input:focus {
-  border-color: rgba(0, 153, 255, 0.45);
-}
-
-.auth-button {
-  height: 44px;
-  border-radius: 10px;
-  border: 0;
-  cursor: pointer;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 153, 255, 0.7),
-    rgba(0, 153, 255, 0.35)
-  );
-  color: white;
-  font-weight: 700;
-}
-
-/* Responsivo */
-@media (max-width: 900px) {
-  .cadastro-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cadastro-right {
-    justify-content: flex-start;
-  }
-}
-
-/* Topbar simples (sem Funcionalidades/Preço/Contato) */
+/* ── Topbar ── */
 .topbar-auth {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 10px 24px;
+  flex-shrink: 0;
 }
 
 .brand-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-logo {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   display: block;
 }
@@ -123,142 +44,218 @@
 .brand {
   font-weight: 800;
   letter-spacing: 4px;
+  font-size: 15px;
   color: var(--text);
 }
 
-/* Botão voltar no canto direito */
 .back-button {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: rgba(255, 255, 255, 0.9);
-  padding: 8px 14px;
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 6px 14px;
+  border-radius: 8px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .back-button:hover {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(59, 158, 221, 0.5);
+  color: #fff;
 }
 
-/* Layout do cadastro */
+/* ── Área principal: ocupa o restante e centraliza o grid ── */
 .auth-content {
-  padding: 0 24px 24px;
+  flex: 1;
+  min-height: 0;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* ── Grid: duas colunas ── */
 .cadastro-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 32px;
   align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* ── Coluna esquerda ── */
 .cadastro-left {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
+/* ── Beluga flutuando ── */
+/* @keyframes float vem de login.css, carregado antes pelo main.css */
 .cadastro-beluga {
-  width: min(340px, 90%);
+  max-width: 290px;
+  max-height: 250px;
+  width: 100%;
   height: auto;
+  object-fit: contain;
   display: block;
+  animation: float 5.5s ease-in-out infinite;
+  will-change: transform;
+  filter: drop-shadow(0 18px 42px rgba(59, 158, 221, 0.24));
+}
+
+/* ── Bloco "Você sabia?" ── */
+.cadastro-text {
+  padding: 14px 18px;
+  background: rgba(59, 158, 221, 0.04);
+  border: 1px solid rgba(59, 158, 221, 0.13);
+  border-radius: 12px;
 }
 
 .cadastro-text h2 {
-  margin: 0 0 8px;
-  color: var(--primary);
-  font-size: 18px;
+  margin: 0 0 7px;
+  color: #3b9edd;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .cadastro-text p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.75);
-  max-width: 520px;
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.6;
+  font-size: 13px;
 }
 
+/* ── Coluna direita ── */
 .cadastro-right {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
+/* ── Card premium ── */
 .cadastro-card {
-  width: min(420px, 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 18px;
+  width: min(400px, 100%);
+  border: 1px solid rgba(59, 158, 221, 0.2);
+  border-radius: 16px;
+  padding: 22px 20px;
   display: grid;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
+  gap: 9px;
+  background: rgba(8, 14, 34, 0.8);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 0 1px rgba(59, 158, 221, 0.06),
+    0 20px 40px rgba(0, 0, 0, 0.45),
+    0 0 60px rgba(59, 158, 221, 0.05);
 }
 
 .cadastro-title {
-  margin: 0 0 6px;
+  margin: 0 0 2px;
   text-align: center;
-  color: var(--primary);
-  letter-spacing: 2px;
-  font-size: 18px;
+  color: #3b9edd;
+  letter-spacing: 4px;
+  font-size: 17px;
+  font-weight: 900;
 }
 
+/* ── Inputs refinados ── */
 .auth-input {
-  height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.9);
+  height: 40px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.92);
   padding: 0 12px;
   outline: none;
+  font-size: 13px;
+  font-family: inherit;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.26);
+  font-size: 12px;
 }
 
 .auth-input:focus {
-  border-color: rgba(0, 153, 255, 0.45);
+  border-color: rgba(59, 158, 221, 0.5);
+  background: rgba(59, 158, 221, 0.04);
+  box-shadow: 0 0 0 3px rgba(59, 158, 221, 0.09);
 }
 
+/* ── Botão principal ── */
 .auth-button {
-  height: 44px;
-  border-radius: 10px;
+  height: 40px;
+  border-radius: 9px;
   border: 0;
   cursor: pointer;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 153, 255, 0.7),
-    rgba(0, 153, 255, 0.35)
-  );
-  color: white;
+  background: linear-gradient(135deg, #1e5f8a, #3b9edd);
+  color: #fff;
   font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+  box-shadow: 0 4px 18px rgba(59, 158, 221, 0.28);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 3px;
 }
 
-/* Responsivo */
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(59, 158, 221, 0.44);
+}
+
+/* ── Mar de conhecimento: posição absoluta no fundo ── */
+/* Fora do fluxo para não afetar a altura do grid */
+.auth-page .quote-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-page .quote-wave .quote-svg {
+  width: 100%;
+  height: 130px;
+  display: block;
+  overflow: visible;
+}
+
+/* ── Responsivo ── */
 @media (max-width: 900px) {
+  body.public-mode:has(.auth-page),
+  body.public-mode:has(.auth-page) .layout,
+  body.public-mode:has(.auth-page) .content,
+  .auth-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .auth-content {
+    padding: 0 20px 160px; /* espaço para a onda absoluta */
+    justify-content: flex-start;
+  }
+
   .cadastro-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding-top: 12px;
   }
 
   .cadastro-right {
     justify-content: flex-start;
   }
-}
-/* 1) Centraliza o bloco e limita a largura total */
-.cadastro-grid {
-  max-width: 1280px; /* diminui isso pra “fechar” mais */
-  margin: 0 auto; /* centraliza o grid */
-  gap: 24px; /* era 32px */
-  grid-template-columns: 1fr 1fr; /* mais equilibrado */
-  align-items: center;
-}
-
-/* 2) Faz o card não colar na direita */
-.cadastro-right {
-  justify-content: center; /* era flex-end */
-}
-
-/* 3) (opcional) puxa um pouco a coluna esquerda pra direita */
-.cadastro-left {
-  padding-left: 0px; /* pode deixar 0 se não quiser */
-}
-
-/* 4) (opcional) deixa o texto não “espalhar” tanto */
-.cadastro-text p {
-  max-width: 520px; /* era 520px */
 }

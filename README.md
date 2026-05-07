@@ -1,126 +1,288 @@
-# 🐳 BELUGA – SPA
+<div align="center">
 
-Aplicação web educacional desenvolvida como Single Page Application (SPA), focada em organização acadêmica, acompanhamento de desempenho e experiência do usuário.
+<img src="assets/images/BELUGA.png" alt="BELUGA Logo" width="120" />
+
+# BELUGA
+
+**Plataforma acadêmica inteligente para organização de estudos, acompanhamento de desempenho e engajamento universitário.**
+
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue?style=flat-square)](https://github.com/jimmyguus/beluga)
+[![Tech](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JavaScript-yellow?style=flat-square)](#-tecnologias-utilizadas)
+[![Arquitetura](https://img.shields.io/badge/arquitetura-SPA-blueviolet?style=flat-square)](#-arquitetura)
+[![Licença](https://img.shields.io/badge/licença-MIT-green?style=flat-square)](LICENSE)
+
+</div>
 
 ---
 
-## 📌 Sobre o projeto
+## 📌 Sobre o Projeto
 
-O **Beluga SPA** é uma aplicação front-end que simula um sistema educacional completo, com navegação dinâmica entre telas sem recarregar a página.
+O **BELUGA** é uma plataforma educacional desenvolvida como **Single Page Application (SPA)**, projetada para ser o ambiente central da vida acadêmica do estudante universitário.
 
-O projeto foi desenvolvido com foco em aprendizado prático de:
+O sistema integra em uma única experiência: organização de estudos, quizzes interativos, feed acadêmico, fórum de dúvidas, gamificação e um assistente inteligente — o **Belugin-IA** — preparado para receber integração com modelos de linguagem em versões futuras.
 
-* Estruturação de aplicações web
-* Manipulação de DOM
-* Organização de código por telas (screens)
-* Navegação via rotas (router)
-* Experiência de usuário (UX/UI)
+> O front-end está **completamente funcional**, com arquitetura organizada e preparada para integração com backend, autenticação real e IA.
+
+---
+
+## 🎯 Visão do Projeto
+
+O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organizar sua rotina acadêmica, sem depender de múltiplos aplicativos fragmentados.
+
+| Objetivo                 | Descrição                                                      |
+| ------------------------ | -------------------------------------------------------------- |
+| 📚 Organização acadêmica | Planos de estudo, matriz curricular e progresso por disciplina |
+| 🧠 Reforço de conteúdo   | Quizzes, biblioteca e aulas integradas                         |
+| 🤝 Comunidade            | Feed acadêmico e fórum de discussão                            |
+| 🏆 Engajamento           | Sistema de gamificação com XP, níveis e conquistas             |
+| 🤖 IA acadêmica          | Assistente Beluginha preparado para recomendações inteligentes |
+| 📈 Produtividade         | Notificações, lembretes e acompanhamento de metas              |
 
 ---
 
 ## 🚀 Funcionalidades
 
-### 🔐 Login
+### 🔐 Autenticação
 
-* Tela de autenticação
-* Validação básica
-* Navegação para dashboard
-
-### 📝 Cadastro
-
-* Formulário completo
-* Interface limpa e focada no usuário
-* Navegação entre telas
+- Tela de **Landing** com apresentação da plataforma
+- **Login** com validação e controle de sessão via `localStorage`
+- **Cadastro** com formulário completo e feedback visual
+- Proteção de rotas: páginas privadas bloqueadas sem autenticação
 
 ### 📊 Dashboard
 
-* Visão geral das disciplinas
-* Progresso por matéria
-* Gráfico de desempenho
-* Acesso rápido às funcionalidades
+- Visão geral das disciplinas e progresso por matéria
+- Gráfico de desempenho com **Chart.js**
+- Acesso rápido a todas as funcionalidades da plataforma
+- Cards com resumo de atividades recentes
 
-### 🌊 UI personalizada
+### 🗓️ Plano de Estudos
 
-* Frase em formato de onda (SVG)
-* Elementos visuais (Beluga + algas)
-* Layout moderno e responsivo
+- Criação e gerenciamento de planos de estudo personalizados
+- Organização por disciplinas e prazos
+- Acompanhamento de metas semanais
+
+### 🗂️ Matriz Curricular
+
+- Visualização estruturada da grade de disciplinas
+- Indicadores de status por matéria (cursando, concluída, pendente)
+
+### 🎯 Quiz
+
+- Questões interativas por tema
+- Feedback imediato por resposta
+- Histórico de desempenho
+
+### 🎓 Aulas
+
+- Acesso ao acervo de conteúdos por disciplina
+- Organização por módulos e videoaulas
+
+### 📚 Biblioteca
+
+- Repositório de materiais de estudo
+- Filtros por categoria e disciplina
+
+### 📰 Feed Acadêmico
+
+- Timeline com publicações da comunidade estudantil
+- Interação com posts, comentários e reações
+
+### 💬 Fórum
+
+- Espaço para dúvidas e discussões acadêmicas
+- Organização por tópicos e disciplinas
+
+### 🏆 Conquistas & Gamificação
+
+- Sistema de **XP e níveis** (ex.: "Estudante Ninja")
+- Badges desbloqueáveis por desempenho
+- Missões diárias e semanais
+- Ranking e progresso visual
+
+### 🔔 Notificações
+
+- Central de alertas e lembretes acadêmicos
+- Notificações inteligentes baseadas no progresso
+
+### 👤 Perfil Acadêmico
+
+- Dados do estudante, histórico e estatísticas
+- Personalização da conta
+
+### 🤖 Belugin-IA
+
+- Assistente acadêmico flutuante disponível em todas as telas privadas
+- Interface de chat com respostas contextuais
+- Atualmente com respostas simuladas (mock)
+- **Arquitetura pronta para integração com OpenAI/API externa**
 
 ---
 
-## 🧠 Conceitos aplicados
+## 🛠️ Tecnologias Utilizadas
 
-* SPA (Single Page Application)
-* Manipulação de DOM
-* Separação entre render e init
-* Organização por módulos
-* Estrutura de rotas (hash routing)
-
----
-
-## 🛠️ Tecnologias utilizadas
-
-* HTML5
-* CSS3
-* JavaScript (Vanilla)
-* Chart.js (gráficos)
+| Tecnologia          | Uso                                                              |
+| ------------------- | ---------------------------------------------------------------- |
+| **HTML5**           | Estrutura semântica da aplicação                                 |
+| **CSS3**            | Estilização modular por telas, animações e responsividade        |
+| **JavaScript ES6+** | Lógica da SPA, manipulação de DOM, roteamento e estado           |
+| **Chart.js**        | Gráficos de desempenho no Dashboard                              |
+| **LocalStorage**    | Persistência de sessão e dados do usuário                        |
+| **Hash Routing**    | Navegação entre telas sem recarregar a página                    |
+| _API / OpenAI_      | _(planejado)_ Integração futura com Beluginha IA                 |
+| _Backend / Node.js_ | _(planejado)_ Autenticação real e persistência em banco de dados |
 
 ---
 
-## 📁 Estrutura do projeto
+## 📁 Estrutura do Projeto
 
-```bash
-assets/
+```
+beluga/
 │
-├── css/
-│   └── styles.css
+├── index.html                  # Entry point da SPA
 │
-├── js/
-│   ├── app.js
-│   ├── router.js
-│   └── screens/
-│       ├── login.js
-│       ├── cadastro.js
-│       └── dashboard.js
-│
-└── images/
-
-index.html
+└── assets/
+    ├── css/
+    │   ├── base/               # Reset, variáveis e tipografia global
+    │   └── pages/              # Estilos isolados por tela
+    │       ├── landing.css
+    │       ├── login.css
+    │       ├── cadastro.css
+    │       ├── dashboard.css
+    │       ├── plano.css
+    │       ├── quiz.css
+    │       ├── aulas.css
+    │       ├── biblioteca.css
+    │       ├── feed.css
+    │       ├── forum.css
+    │       ├── conquistas.css
+    │       ├── notificacoes.css
+    │       ├── perfil.css
+    │       └── matriz.css
+    │
+    ├── js/
+    │   ├── app.js              # Inicialização e registro de rotas
+    │   ├── router.js           # Roteador hash com proteção de rotas
+    │   ├── state/
+    │   │   └── auth.js         # Controle de sessão e autenticação
+    │   ├── components/
+    │   │   └── modal.js        # Componente modal reutilizável
+    │   └── screens/            # Módulos de cada tela (render + init)
+    │       ├── landing.js
+    │       ├── login.js
+    │       ├── cadastro.js
+    │       ├── dashboard.js
+    │       ├── planoEstudo.js
+    │       ├── quiz.js
+    │       ├── aulas.js
+    │       ├── biblioteca.js
+    │       ├── feed.js
+    │       ├── forum.js
+    │       ├── conquistas.js
+    │       ├── notificacoes.js
+    │       ├── perfil.js
+    │       ├── matriz.js
+    │       └── beluginha.js    # Assistente IA flutuante
+    │
+    └── images/                 # Assets visuais do projeto
 ```
 
 ---
 
-## ⚙️ Como executar
+## 🏗️ Arquitetura
 
-1. Clone o repositório
+O BELUGA implementa uma **SPA com roteamento próprio** sem uso de frameworks externos:
+
+- **`router.js`** — gerencia rotas via hash (`#/dashboard`), injeta/remove topbar e Beluginha conforme o contexto (público ou privado), e bloqueia rotas sem autenticação
+- **Padrão render/init** — cada tela exporta `render()` (retorna HTML) e `init()` (registra eventos), separando estrutura de comportamento
+- **State management simples** — autenticação centralizada em `state/auth.js` via `localStorage`
+- **CSS modular por página** — cada tela tem seu próprio arquivo CSS, evitando conflitos e facilitando manutenção
+
+---
+
+## 🎨 Design e Experiência
+
+- **Dark mode nativo** — paleta escura com acentos em azul, pensada para longas sessões de estudo
+- **Identidade visual própria** — logo, mascote Beluginha e elementos visuais exclusivos
+- **UX acadêmica** — fluxos pensados para o estudante universitário, com navegação intuitiva
+- **Gamificação visual** — barras de XP, badges, níveis e missões que tornam o estudo mais engajante
+- **Topbar inteligente** — exibida apenas em páginas privadas, com navegação ativa e logout
+- **Elementos animados** — ondas SVG, transições suaves e feedback visual nas interações
+
+---
+
+## 🤖 Belugin-IA
+
+O **Belugin-IA** é o assistente acadêmico inteligente do BELUGA, disponível como um botão flutuante (FAB) em todas as telas privadas da plataforma.
+
+**Estado atual:** interface funcional com respostas contextuais simuladas (mock), projetada para simular uma experiência real de assistente IA.
+
+**Exemplos de respostas atuais:**
+
+> _"Vi que você tem uma entrega chegando. Quer transformar isso em uma sessão no seu plano de estudos?"_
+> _"Seu desempenho em quizzes melhorou esta semana. Continue nesse ritmo!"_
+
+**Integração futura planejada:**
+
+- Conexão com **OpenAI API** (GPT-4 / assistants)
+- Recomendações personalizadas com base no histórico acadêmico
+- Geração automática de quizzes e resumos
+- Análise de desempenho e sugestões proativas
+
+---
+
+## 🔮 Futuras Implementações
+
+| Funcionalidade           | Descrição                                                  |
+| ------------------------ | ---------------------------------------------------------- |
+| 🔒 Autenticação real     | Login com JWT, OAuth (Google) e recuperação de senha       |
+| 🗄️ Backend               | API REST (Node.js / Express) com banco de dados relacional |
+| 🤖 Integração OpenAI     | Belugin-IA com LLM real e contexto personalizado           |
+| 📊 Analytics acadêmico   | Relatórios de desempenho, tendências e previsões           |
+| 🎮 Quizzes dinâmicos     | Geração automática de questões com IA                      |
+| 🏅 Ranking em tempo real | Competição saudável entre estudantes                       |
+| 📱 App mobile            | Versão React Native ou PWA                                 |
+| 👨‍🏫 Sistema de monitoria  | Conexão entre alunos e monitores                           |
+| 🔔 Notificações push     | Alertas em tempo real via WebSocket                        |
+| 🌐 Migração para React   | Componentização e escalabilidade com React + TypeScript    |
+
+---
+
+## 📱 Responsividade
+
+O BELUGA foi desenvolvido com foco em **desktop**, com elementos visuais adaptados para diferentes tamanhos de tela. A responsividade completa para dispositivos móveis está prevista nas próximas iterações do projeto.
+
+---
+
+## ⚙️ Como Executar
+
+**Pré-requisito:** [VS Code](https://code.visualstudio.com/) com a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) instalada.
 
 ```bash
-git clone https://github.com/seu-usuario/beluga-spa.git
+# 1. Clone o repositório
+git clone https://github.com/jimmyguus/beluga.git
+
+# 2. Acesse a pasta do projeto
+cd beluga
+
+# 3. Abra no VS Code
+code .
 ```
 
-2. Abra o projeto
+Em seguida, clique com o botão direito no `index.html` e selecione **"Open with Live Server"**.
 
-Você pode rodar com Live Server ou simplesmente abrir o `index.html`.
-
----
-
-## 🎯 Objetivo do projeto
-
-Este projeto foi desenvolvido para:
-
-* Aprender desenvolvimento front-end na prática
-* Criar uma aplicação com múltiplas telas sem frameworks
-* Entender como funciona um SPA "na mão"
-* Simular um produto real educacional
+> O projeto utiliza ES Modules (`import/export`), portanto **não funciona abrindo o `index.html` diretamente** no navegador — é necessário um servidor local.
 
 ---
 
-## 📈 Próximos passos
+## 📈 Status do Projeto
 
-* Integração com back-end
-* Sistema real de autenticação
-* Persistência de dados
-* Responsividade completa
-* Migração futura para React
+```
+🟢 Front-end funcional — todas as telas implementadas e navegáveis
+🟡 Backend / API — planejado para próximas versões
+🟡 Beluginha IA real — integração OpenAI planejada
+🔵 Em desenvolvimento ativo
+```
 
 ---
 
@@ -128,8 +290,10 @@ Este projeto foi desenvolvido para:
 
 Desenvolvido por **Gustavo Lima**
 
+[![GitHub](https://img.shields.io/badge/GitHub-jimmyguus-181717?style=flat-square&logo=github)](https://github.com/jimmyguus)
+
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT.
+Este projeto está sob a licença **MIT**.

@@ -1,9 +1,5 @@
 /* =========================================================
    LOGIN (AUTH)
-   Objetivo:
-   - reaproveitar header da landing
-   - layout 2 colunas (texto/form à esquerda + beluga à direita)
-   - frase em onda no rodapé
    ========================================================= */
 
 /* Header: logo + beluga colado no canto */
@@ -20,13 +16,14 @@
   object-fit: contain;
   display: block;
 }
+
 .auth-hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: start;
   gap: 40px;
   min-height: calc(100vh - 220px);
-  margin-top: 40px; /*controla quanto sobe*/
+  margin-top: 40px;
 }
 
 /* Título */
@@ -78,7 +75,7 @@
   margin-top: 2px;
 }
 
-/* Beluga à direita */
+/* ── Beluga flutuando à direita ── */
 .auth-right {
   display: flex;
   justify-content: center;
@@ -87,71 +84,54 @@
   margin-top: -90px;
 }
 
+/* Animação de flutuação */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
 .auth-beluga {
   width: min(320px, 90%);
   height: auto;
   display: block;
+  animation: float 5.5s ease-in-out infinite;
+  will-change: transform;
+  filter: drop-shadow(0 16px 40px rgba(59, 158, 221, 0.18));
 }
 
-/* Frase em onda */
+/* ── Frase em onda + mar de conhecimento ── */
 .quote-wave {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 0 16px;
   overflow: visible;
-  margin-top: -180px;
+  margin-top: -160px;
   position: relative;
 }
 
 .quote-svg {
-  width: min(1200px, 98vw); /*largura da onda*/
+  width: min(1200px, 98vw);
   height: auto;
   display: block;
   overflow: visible;
 }
 
+/* Texto da frase sobre a onda */
 .quote-text {
-  fill: rgba(255, 255, 255, 0.8);
+  fill: rgba(255, 255, 255, 0.78);
   font-size: 13px;
-  letter-spacing: 3px;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  font-family: Manrope, sans-serif;
 }
-/* ALGAS ONDA*/
-.wave-algae {
-  position: absolute;
-  bottom: 40px;
-  width: 130px;
-  height: auto;
-}
-.algae-left {
-  left: 200px;
-  transform: scaleX(-1);
-}
-.algae-right {
-  right: 200px;
-  transform: translateY(10px);
-}
-/* Responsivo: empilha e evita beluga passar por cima */
-@media (max-width: 900px) {
-  .auth-hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding-bottom: 18px;
-  }
 
-  .auth-card {
-    width: 100%;
-  }
-
-  .auth-right {
-    order: -1;
-  }
-
-  .auth-title {
-    font-size: 40px;
-  }
-}
-/* Topbar simples (sem Funcionalidades/Preço/Contato) */
+/* Topbar simples */
 .topbar-auth {
   display: flex;
   justify-content: space-between;
@@ -178,7 +158,7 @@
   color: var(--text);
 }
 
-/* Botão voltar no canto direito */
+/* Botão voltar */
 .back-button {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -190,4 +170,25 @@
 
 .back-button:hover {
   border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .auth-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-bottom: 18px;
+  }
+
+  .auth-card {
+    width: 100%;
+  }
+
+  .auth-right {
+    order: -1;
+  }
+
+  .auth-title {
+    font-size: 40px;
+  }
 }

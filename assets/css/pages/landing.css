@@ -14,12 +14,25 @@ body.public-mode #app.container {
   width: 100%;
 }
 
-/* ── Root wrapper ── */
+/* Travar cadeia em 100vh apenas quando a rota for landing (sem .auth) */
+body.public-mode:has(.public:not(.auth)),
+body.public-mode:has(.public:not(.auth)) .layout,
+body.public-mode:has(.public:not(.auth)) .content {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Root wrapper (base — compartilhado com login/cadastro) ── */
 .public {
   padding: 0;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Landing apenas: travar em 100vh */
+.public:not(.auth) {
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ── Public header ── */
@@ -28,11 +41,12 @@ body.public-mode #app.container {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 18px 48px;
+  padding: 12px 48px;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 /* ── Brand ── */
@@ -88,7 +102,9 @@ body.public-mode #app.container {
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -102,11 +118,19 @@ body.public-mode #app.container {
 /* ── Main content area ── */
 .public-main {
   flex: 1;
+  min-height: 0;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 48px 60px;
+  padding: 0 48px 16px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Overflow hidden somente na landing */
+.public:not(.auth) .public-main {
+  overflow: hidden;
 }
 
 /* ── HERO ── */
@@ -114,9 +138,10 @@ body.public-mode #app.container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
-  padding: 48px 0 32px;
-  min-height: 420px;
+  gap: 32px;
+  padding: 14px 0 0;
+  flex: 1;
+  min-height: 0;
 }
 
 .hero-left {
@@ -130,14 +155,14 @@ body.public-mode #app.container {
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: #3b9edd;
-  margin: 0 0 18px;
+  margin: 0 0 10px;
 }
 
 .hero h1 {
-  font-size: 50px;
+  font-size: 42px;
   line-height: 1.15;
   font-weight: 800;
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   color: #fff;
 }
 
@@ -146,14 +171,14 @@ body.public-mode #app.container {
   color: #3b9edd;
   letter-spacing: 10px;
   font-weight: 900;
-  font-size: 46px;
+  font-size: 36px;
   margin-top: 4px;
 }
 
 .hero-sub {
-  font-size: 17px;
+  font-size: 15px;
   color: rgba(255, 255, 255, 0.45);
-  margin: 0 0 36px;
+  margin: 0 0 20px;
   line-height: 1.5;
 }
 
@@ -165,8 +190,8 @@ body.public-mode #app.container {
 }
 
 .hero-cta {
-  padding: 14px 36px;
-  font-size: 15px;
+  padding: 12px 32px;
+  font-size: 14px;
   font-weight: 700;
   color: #fff;
   background: linear-gradient(135deg, #1e5f8a, #3b9edd);
@@ -176,7 +201,9 @@ body.public-mode #app.container {
   font-family: inherit;
   letter-spacing: 0.4px;
   box-shadow: 0 4px 22px rgba(59, 158, 221, 0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .hero-cta:hover {
@@ -192,10 +219,15 @@ body.public-mode #app.container {
   justify-content: center;
 }
 
-/* ── Floating animation (translateY only — pure composite) ── */
+/* ── Floating animation ── */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-22px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
 }
 
 .hero-image-wrap {
@@ -204,7 +236,7 @@ body.public-mode #app.container {
 }
 
 .hero-image {
-  width: 420px;
+  width: 300px;
   max-width: 100%;
   height: auto;
   transform: scaleX(-1);
@@ -214,32 +246,37 @@ body.public-mode #app.container {
 
 /* ── Landing strip (cards inferiores) ── */
 .landing-strip {
-  margin-top: 48px;
-  padding-top: 20px;
+  flex-shrink: 0;
+  margin-top: 16px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .strip-label {
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.32);
-  margin: 0 0 22px;
+  margin: 0 0 12px;
   letter-spacing: 0.2px;
 }
 
 /* ── Horizontal scroll track ── */
 .strip-track {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   overflow-x: auto;
-  padding-bottom: 14px;
+  padding-bottom: 10px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
 }
 
-.strip-track::-webkit-scrollbar { height: 3px; }
-.strip-track::-webkit-scrollbar-track { background: transparent; }
+.strip-track::-webkit-scrollbar {
+  height: 3px;
+}
+.strip-track::-webkit-scrollbar-track {
+  background: transparent;
+}
 .strip-track::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 99px;
@@ -248,15 +285,18 @@ body.public-mode #app.container {
 /* ── Base card ── */
 .strip-card {
   flex-shrink: 0;
-  width: 200px;
+  width: 180px;
   background: rgba(8, 14, 34, 0.85);
   border: 1px solid rgba(59, 158, 221, 0.13);
   border-radius: 14px;
-  padding: 18px 16px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  gap: 6px;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .strip-card:hover {
@@ -267,13 +307,13 @@ body.public-mode #app.container {
 
 /* ── Person card variant ── */
 .strip-card--person {
-  width: 230px;
+  width: 210px;
 }
 
 /* ── Feature icon container ── */
 .strip-feature-img {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -283,7 +323,7 @@ body.public-mode #app.container {
 
 /* ── Card text ── */
 .strip-card-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: #fff;
   margin: 0;
@@ -291,16 +331,16 @@ body.public-mode #app.container {
 }
 
 .strip-card-text {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.48);
-  line-height: 1.55;
+  line-height: 1.5;
   margin: 0;
 }
 
 /* ── Person card elements ── */
 .strip-avatar {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -309,7 +349,7 @@ body.public-mode #app.container {
 
 .strip-person-name {
   display: block;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
@@ -321,34 +361,54 @@ body.public-mode #app.container {
   color: #3b9edd;
   font-weight: 600;
   letter-spacing: 0.3px;
-  margin: 2px 0 4px;
+  margin: 1px 0 2px;
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .public-header { padding: 16px 24px; }
-  .public-main   { padding: 0 24px 48px; }
+  .public-header {
+    padding: 10px 24px;
+  }
+  .public-main {
+    padding: 0 24px 16px;
+  }
 
   .hero {
     flex-direction: column;
     align-items: flex-start;
-    min-height: 0;
-    gap: 24px;
-    padding: 32px 0 24px;
+    gap: 16px;
+    padding: 12px 0 0;
   }
 
-  .hero-right { align-self: center; }
+  .hero-right {
+    align-self: center;
+  }
 
-  .hero-image { width: 280px; }
+  .hero-image {
+    width: 220px;
+  }
 
-  .hero h1 { font-size: 36px; }
+  .hero h1 {
+    font-size: 30px;
+  }
 
-  .hero-highlight { font-size: 32px; letter-spacing: 6px; }
+  .hero-highlight {
+    font-size: 26px;
+    letter-spacing: 6px;
+  }
 }
 
 @media (max-width: 600px) {
-  .public-header { padding: 14px 16px; }
-  .public-main   { padding: 0 16px 40px; }
-  .pub-cta-header { display: none; }
-  .public-nav { gap: 20px; }
+  .public-header {
+    padding: 10px 16px;
+  }
+  .public-main {
+    padding: 0 16px 12px;
+  }
+  .pub-cta-header {
+    display: none;
+  }
+  .public-nav {
+    gap: 20px;
+  }
 }
