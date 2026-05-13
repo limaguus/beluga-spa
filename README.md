@@ -260,7 +260,7 @@ O BELUGA foi desenvolvido com foco em **desktop**, com elementos visuais adaptad
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/jimmyguus/beluga.git
+git clone https://github.com/limaguus/beluga.git
 
 # 2. Acesse a pasta do projeto
 cd beluga
