@@ -18,13 +18,13 @@ const AULAS_DATA = {
     {
       id: "inovacao",
       nome: "Inovação e Tecnologia",
-      quizResult: { acertos: 8, total: 10 },
-      progresso: 50,
+      quizResult: { acertos: 5, total: 10 },
+      progresso: 30,
       topicos: [
         {
           id: "tec-emergentes",
           titulo: "Tecnologias Emergentes",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "yFweKdN74IM",
           duracao: "22 min",
           recomendado: true,
           concluido: false,
@@ -32,7 +32,7 @@ const AULAS_DATA = {
         {
           id: "startups",
           titulo: "Startups e Inovação",
-          youtubeId: "VDvr08sCPOc",
+          youtubeId: "Aj1iVA3GMk4",
           duracao: "18 min",
           recomendado: true,
           concluido: false,
@@ -40,7 +40,7 @@ const AULAS_DATA = {
         {
           id: "futuro-trabalho",
           titulo: "Futuro do Trabalho",
-          youtubeId: "dQw4w9WgXcQ",
+          youtubeId: "kyPHBb_toZU",
           duracao: "15 min",
           recomendado: false,
           concluido: true,
@@ -48,7 +48,7 @@ const AULAS_DATA = {
         {
           id: "lab-ia",
           titulo: "Laboratório de IA",
-          youtubeId: "JN3KPFbWDiQ",
+          youtubeId: "2_9f8h8_bWs",
           duracao: "30 min",
           recomendado: true,
           concluido: false,
@@ -56,7 +56,7 @@ const AULAS_DATA = {
         {
           id: "sociedade-rede",
           titulo: "Sociedade em Rede",
-          youtubeId: "6S7YX9XAJrQ",
+          youtubeId: "BuFRDZjnwPo",
           duracao: "20 min",
           recomendado: false,
           concluido: false,
@@ -64,7 +64,7 @@ const AULAS_DATA = {
         {
           id: "biotecnologia",
           titulo: "Biotecnologia",
-          youtubeId: "jNQXAC9IVRw",
+          youtubeId: "Qr5J8bC5N_w",
           duracao: "25 min",
           recomendado: true,
           concluido: false,
@@ -100,7 +100,7 @@ const AULAS_DATA = {
         {
           id: "principios-ux",
           titulo: "Princípios de UX",
-          youtubeId: "VDvr08sCPOc",
+          youtubeId: "U1kKWqlfxnk",
           duracao: "25 min",
           recomendado: true,
           concluido: false,
@@ -108,7 +108,7 @@ const AULAS_DATA = {
         {
           id: "design-systems",
           titulo: "Design Systems na Prática",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "U1kKWqlfxnk",
           duracao: "32 min",
           recomendado: true,
           concluido: false,
@@ -116,7 +116,7 @@ const AULAS_DATA = {
         {
           id: "prototipagem",
           titulo: "Prototipagem com Figma",
-          youtubeId: "JN3KPFbWDiQ",
+          youtubeId: "U1kKWqlfxnk",
           duracao: "28 min",
           recomendado: false,
           concluido: true,
@@ -124,7 +124,7 @@ const AULAS_DATA = {
         {
           id: "acessibilidade",
           titulo: "Acessibilidade Digital",
-          youtubeId: "jNQXAC9IVRw",
+          youtubeId: "U1kKWqlfxnk",
           duracao: "20 min",
           recomendado: true,
           concluido: false,
@@ -132,7 +132,7 @@ const AULAS_DATA = {
         {
           id: "tipografia",
           titulo: "Tipografia e Hierarquia Visual",
-          youtubeId: "6S7YX9XAJrQ",
+          youtubeId: "-SHUYS_Fyik",
           duracao: "16 min",
           recomendado: false,
           concluido: false,
@@ -162,7 +162,7 @@ const AULAS_DATA = {
         {
           id: "pesquisa",
           titulo: "Métodos de Pesquisa Científica",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "NLMf3OKFJxg",
           duracao: "35 min",
           recomendado: false,
           concluido: true,
@@ -170,7 +170,7 @@ const AULAS_DATA = {
         {
           id: "abnt",
           titulo: "Normas ABNT na Prática",
-          youtubeId: "VDvr08sCPOc",
+          youtubeId: "DGInPa8SV2s",
           duracao: "20 min",
           recomendado: true,
           concluido: true,
@@ -178,7 +178,7 @@ const AULAS_DATA = {
         {
           id: "redacao",
           titulo: "Redação Acadêmica",
-          youtubeId: "dQw4w9WgXcQ",
+          youtubeId: "NLMf3OKFJxg",
           duracao: "18 min",
           recomendado: true,
           concluido: false,
@@ -186,7 +186,7 @@ const AULAS_DATA = {
         {
           id: "revisao-lit",
           titulo: "Revisão de Literatura",
-          youtubeId: "JN3KPFbWDiQ",
+          youtubeId: "DGInPa8SV2s",
           duracao: "22 min",
           recomendado: false,
           concluido: false,
@@ -210,7 +210,7 @@ const AULAS_DATA = {
         {
           id: "processos",
           titulo: "Gerenciamento de Processos",
-          youtubeId: "jNQXAC9IVRw",
+          youtubeId: "W5v3S19ZXxs",
           duracao: "40 min",
           recomendado: true,
           concluido: false,
@@ -218,7 +218,7 @@ const AULAS_DATA = {
         {
           id: "memoria",
           titulo: "Gerenciamento de Memória",
-          youtubeId: "6S7YX9XAJrQ",
+          youtubeId: "zI8e3Gu7APg",
           duracao: "38 min",
           recomendado: true,
           concluido: false,
@@ -226,7 +226,7 @@ const AULAS_DATA = {
         {
           id: "filesystems",
           titulo: "Sistemas de Arquivos",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "W5v3S19ZXxs",
           duracao: "30 min",
           recomendado: false,
           concluido: false,
@@ -234,7 +234,7 @@ const AULAS_DATA = {
         {
           id: "linux",
           titulo: "Linux Básico para Devs",
-          youtubeId: "VDvr08sCPOc",
+          youtubeId: "zI8e3Gu7APg",
           duracao: "45 min",
           recomendado: true,
           concluido: false,
@@ -264,7 +264,7 @@ const AULAS_DATA = {
         {
           id: "complexidade",
           titulo: "Complexidade de Algoritmos",
-          youtubeId: "dQw4w9WgXcQ",
+          youtubeId: "z1XTcKKRbKM",
           duracao: "28 min",
           recomendado: true,
           concluido: true,
@@ -272,7 +272,7 @@ const AULAS_DATA = {
         {
           id: "est-dados",
           titulo: "Estruturas de Dados Essenciais",
-          youtubeId: "JN3KPFbWDiQ",
+          youtubeId: "uxJtE5xzu6w",
           duracao: "35 min",
           recomendado: true,
           concluido: false,
@@ -280,7 +280,7 @@ const AULAS_DATA = {
         {
           id: "ordenacao",
           titulo: "Algoritmos de Ordenação",
-          youtubeId: "jNQXAC9IVRw",
+          youtubeId: "z1XTcKKRbKM",
           duracao: "22 min",
           recomendado: false,
           concluido: true,
@@ -288,7 +288,7 @@ const AULAS_DATA = {
         {
           id: "recursao",
           titulo: "Recursão e Backtracking",
-          youtubeId: "6S7YX9XAJrQ",
+          youtubeId: "uxJtE5xzu6w",
           duracao: "30 min",
           recomendado: true,
           concluido: false,
@@ -312,7 +312,7 @@ const AULAS_DATA = {
         {
           id: "limites",
           titulo: "Conceito de Limite",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "8jaLYCGG7io",
           duracao: "25 min",
           recomendado: true,
           concluido: false,
@@ -320,7 +320,7 @@ const AULAS_DATA = {
         {
           id: "continuidade",
           titulo: "Continuidade de Funções",
-          youtubeId: "VDvr08sCPOc",
+          youtubeId: "BtsDNUzUUZU",
           duracao: "20 min",
           recomendado: true,
           concluido: false,
@@ -328,7 +328,7 @@ const AULAS_DATA = {
         {
           id: "derivada",
           titulo: "Derivada: Conceito e Regras",
-          youtubeId: "dQw4w9WgXcQ",
+          youtubeId: "8jaLYCGG7io",
           duracao: "32 min",
           recomendado: false,
           concluido: false,
@@ -336,7 +336,7 @@ const AULAS_DATA = {
         {
           id: "regra-cadeia",
           titulo: "Regra da Cadeia",
-          youtubeId: "JN3KPFbWDiQ",
+          youtubeId: "BtsDNUzUUZU",
           duracao: "18 min",
           recomendado: true,
           concluido: false,
@@ -360,7 +360,7 @@ const AULAS_DATA = {
         {
           id: "ingles-tech",
           titulo: "Inglês para Tecnologia",
-          youtubeId: "jNQXAC9IVRw",
+          youtubeId: "BtsDNUzUUZU",
           duracao: "20 min",
           recomendado: true,
           concluido: false,
@@ -368,7 +368,7 @@ const AULAS_DATA = {
         {
           id: "git-github",
           titulo: "Git e GitHub na Prática",
-          youtubeId: "6S7YX9XAJrQ",
+          youtubeId: "z1XTcKKRbKM",
           duracao: "35 min",
           recomendado: true,
           concluido: false,
@@ -376,7 +376,7 @@ const AULAS_DATA = {
         {
           id: "soft-skills",
           titulo: "Soft Skills para o Mercado",
-          youtubeId: "k1vJBpYL_xE",
+          youtubeId: "zI8e3Gu7APg",
           duracao: "22 min",
           recomendado: false,
           concluido: false,

@@ -29,7 +29,7 @@ const BIBLIOTECA_DATA = {
       id: "b1",
       titulo: "Entendendo de vez o conceito de variável e escopo em C",
       categoria: "algoritmos",
-      youtubeId: "dQw4w9WgXcQ",
+      youtubeId: "FmTO2EPatZQ",
       duracao: "18 min",
       descricao: "Fundamentos essenciais de escopo e variáveis na linguagem C.",
       recomendado: true,
@@ -38,7 +38,7 @@ const BIBLIOTECA_DATA = {
       id: "b2",
       titulo: "Como funciona a troca de contexto entre processos?",
       categoria: "sistemas-op",
-      youtubeId: "k1vJBpYL_xE",
+      youtubeId: "xNBMNKjpJzME",
       duracao: "22 min",
       descricao:
         "Entenda o mecanismo de context switch nos sistemas operacionais modernos.",
@@ -48,7 +48,7 @@ const BIBLIOTECA_DATA = {
       id: "b3",
       titulo: "Erros de design que atrapalham a experiência do usuário",
       categoria: "design",
-      youtubeId: "VDvr08sCPOc",
+      youtubeId: "TuGEKdirNTU",
       duracao: "15 min",
       descricao:
         "Os principais antipadrões de UX e como evitá-los no seu projeto.",
@@ -58,7 +58,7 @@ const BIBLIOTECA_DATA = {
       id: "b4",
       titulo: "Limite e Derivada: visualizando de forma intuitiva no gráfico",
       categoria: "calculo",
-      youtubeId: "JN3KPFbWDiQ",
+      youtubeId: "DIzwGegP8YE",
       duracao: "28 min",
       descricao:
         "Compreenda limites e derivadas com visualizações gráficas step-by-step.",
@@ -68,7 +68,7 @@ const BIBLIOTECA_DATA = {
       id: "b5",
       titulo: "Como montar sua Introdução do TCC sem travar",
       categoria: "tcc",
-      youtubeId: "6S7YX9XAJrQ",
+      youtubeId: "TfwM2eUlCBcr",
       duracao: "20 min",
       descricao:
         "Estratégias práticas para escrever a introdução do seu TCC de forma fluida.",
@@ -78,7 +78,7 @@ const BIBLIOTECA_DATA = {
       id: "b6",
       titulo: "3 tendências de tecnologia que você precisa entender hoje",
       categoria: "inovacao",
-      youtubeId: "jNQXAC9IVRw",
+      youtubeId: "iAf-H50vsGU",
       duracao: "12 min",
       descricao:
         "IA, Web3 e computação quântica — o que cada estudante de TI precisa saber.",
@@ -88,7 +88,7 @@ const BIBLIOTECA_DATA = {
       id: "b7",
       titulo: "Estruturas de dados: Pilhas, Filas e Listas Encadeadas",
       categoria: "algoritmos",
-      youtubeId: "dQw4w9WgXcQ",
+      youtubeId: "nWHveXK9g_8",
       duracao: "35 min",
       descricao:
         "Implementação prática das principais estruturas de dados em Python.",
@@ -107,7 +107,7 @@ const BIBLIOTECA_DATA = {
       id: "b9",
       titulo: "Design System do Zero com Figma",
       categoria: "design",
-      youtubeId: "VDvr08sCPOc",
+      youtubeId: "JzQE3NfW7fg",
       duracao: "45 min",
       descricao:
         "Criando componentes, tokens e documentação de um design system completo.",
@@ -117,7 +117,7 @@ const BIBLIOTECA_DATA = {
       id: "b10",
       titulo: "Regra da Cadeia passo a passo com exemplos",
       categoria: "calculo",
-      youtubeId: "JN3KPFbWDiQ",
+      youtubeId: "b5m864fIKvA",
       duracao: "18 min",
       descricao:
         "Demonstrações e exercícios resolvidos sobre a regra da cadeia.",
@@ -127,7 +127,7 @@ const BIBLIOTECA_DATA = {
       id: "b11",
       titulo: "Normas ABNT: como formatar seu TCC corretamente",
       categoria: "tcc",
-      youtubeId: "6S7YX9XAJrQ",
+      youtubeId: "6ySUeU4ZNSE",
       duracao: "25 min",
       descricao:
         "Guia completo das principais normas ABNT aplicadas ao trabalho acadêmico.",
@@ -137,7 +137,7 @@ const BIBLIOTECA_DATA = {
       id: "b12",
       titulo: "Técnicas de estudo comprovadas pela neurociência",
       categoria: "dicas",
-      youtubeId: "jNQXAC9IVRw",
+      youtubeId: "SkehmBd2LdQ",
       duracao: "16 min",
       descricao:
         "Spaced repetition, active recall e pomodoro — o que a ciência diz.",
@@ -147,7 +147,7 @@ const BIBLIOTECA_DATA = {
       id: "b13",
       titulo: "50 exercícios de Algoritmos com gabarito comentado",
       categoria: "exercicios",
-      youtubeId: "dQw4w9WgXcQ",
+      youtubeId: "M8b2-9FPAsw",
       duracao: "60 min",
       descricao:
         "Lista completa de exercícios para praticar algoritmos e lógica.",
@@ -157,7 +157,7 @@ const BIBLIOTECA_DATA = {
       id: "b14",
       titulo: "Como usar IA de forma ética nos seus estudos",
       categoria: "dicas",
-      youtubeId: "k1vJBpYL_xE",
+      youtubeId: "ztZVN1jI6rs",
       duracao: "14 min",
       descricao:
         "Boas práticas para usar IA como ferramenta de aprendizado, não cola.",
@@ -167,7 +167,7 @@ const BIBLIOTECA_DATA = {
       id: "b15",
       titulo: "Startups: como validar uma ideia de negócio do zero",
       categoria: "inovacao",
-      youtubeId: "VDvr08sCPOc",
+      youtubeId: "vHvpcs7aTDo",
       duracao: "32 min",
       descricao:
         "Metodologia Lean Startup aplicada ao empreendedorismo acadêmico.",
@@ -177,7 +177,7 @@ const BIBLIOTECA_DATA = {
       id: "b16",
       titulo: "Algoritmos de Ordenação visualizados em tempo real",
       categoria: "algoritmos",
-      youtubeId: "jNQXAC9IVRw",
+      youtubeId: "dME8oVEfUfA",
       duracao: "22 min",
       descricao:
         "Bubble, Merge e Quick Sort com animações para fixar o conceito.",
@@ -187,7 +187,7 @@ const BIBLIOTECA_DATA = {
       id: "b17",
       titulo: "Exercícios de Sistemas Operacionais com gabarito",
       categoria: "exercicios",
-      youtubeId: "6S7YX9XAJrQ",
+      youtubeId: "Tw2Ej2J9IUE",
       duracao: "50 min",
       descricao: "Resolução comentada de questões de concurso sobre SO.",
       recomendado: false,
