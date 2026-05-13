@@ -290,7 +290,7 @@ Em seguida, clique com o botão direito no `index.html` e selecione **"Open with
 
 Desenvolvido por **Gustavo Lima**
 
-[![GitHub](https://img.shields.io/badge/GitHub-limaguus-181717?style=flat-square&logo=github)](https://github.com/jimmyguus)
+[![GitHub](https://img.shields.io/badge/GitHub-limaguus-181717?style=flat-square&logo=github)](https://github.com/limaguus)
 
 ---
 
