@@ -361,7 +361,10 @@ export function quizScreen() {
         <div id="quiz-options" class="quiz-options"></div>
 
         <div class="quiz-nav">
-          <button id="btn-prev" class="quiz-prev-btn">&#8592; Pergunta Anterior</button>
+          <div class="quiz-nav-row">
+            <button id="btn-prev" class="quiz-prev-btn">&#8592; Anterior</button>
+            <button id="btn-next" class="quiz-next-btn">Próxima &#8594;</button>
+          </div>
           <button id="btn-finish" class="button quiz-finish-btn">
             Finalizar e Acessar Meu Plano de Estudos
           </button>
@@ -391,6 +394,7 @@ export function quizInit() {
   const questionEl = document.getElementById("quiz-question-text");
   const optionsEl = document.getElementById("quiz-options");
   const btnPrev = document.getElementById("btn-prev");
+  const btnNext = document.getElementById("btn-next");
   const btnFinish = document.getElementById("btn-finish");
   const progressEl = document.getElementById("quiz-progress-bar");
 
@@ -432,21 +436,16 @@ export function quizInit() {
     optionsEl.querySelectorAll(".quiz-option").forEach((btn) => {
       btn.addEventListener("click", () => {
         answers[current] = Number(btn.dataset.idx);
+        optionsEl.querySelectorAll(".quiz-option").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
         renderProgress();
-
-        /* Auto-avança para próxima pergunta após 350 ms */
-        if (current < questions.length - 1) {
-          setTimeout(() => {
-            current++;
-            render();
-          }, 350);
-        } else {
-          renderQuestion();
-        }
       });
     });
 
+    const isLast = current === questions.length - 1;
     btnPrev.style.visibility = current === 0 ? "hidden" : "visible";
+    btnNext.style.display = isLast ? "none" : "";
+    btnFinish.style.display = isLast ? "" : "none";
   }
 
   function render() {
@@ -457,6 +456,13 @@ export function quizInit() {
   btnPrev.addEventListener("click", () => {
     if (current > 0) {
       current--;
+      render();
+    }
+  });
+
+  btnNext.addEventListener("click", () => {
+    if (current < questions.length - 1) {
+      current++;
       render();
     }
   });

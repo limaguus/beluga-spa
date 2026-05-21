@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-O dashboard é a **tela central do app** — a primeira que o usuário vê após o login. Seu objetivo é dar uma visão geral do progresso acadêmico do semestre e servir como hub de navegação para todas as funcionalidades do BELUGA.
+O dashboard é a **tela central do app** — a primeira que o usuário vê após o login. Apresenta informações únicas e acionáveis: progresso real das matérias, missões ativas, posição no ranking e alerta de matéria crítica. Não duplica o menu de navegação da topbar.
 
 ### Organização visual
 
@@ -19,29 +19,29 @@ O dashboard é a **tela central do app** — a primeira que o usuário vê após
 │  TOPBAR (sticky)                                             │
 │  [Logo] BELUGA  Dashboard Matriz Quiz Plano ...   [Sair]     │
 ├──────────────────────────────────────────────────────────────┤
-│  DASHBOARD                                                   │
-│                                                              │
-│  "Bem-vindo de volta, Jimmy!"                                │
-│  "Suas matérias nesse semestre:"                             │
-│                                                              │
-│  SUBJECTS (6 cards em grid)                                  │
-│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐     │
-│  │ Alg. │ │Lim.  │ │ S.O. │ │Inov.*│ │Design│ │M.T.C.│     │
-│  │  ○   │ │  ○   │ │  ○   │ │  ○   │ │  ○   │ │  ○   │     │
-│  │ 55%  │ │ 50%  │ │ 60%  │ │ 30%  │ │ 45%  │ │ 90%  │     │
-│  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘ └──────┘     │
-│           * destaque laranja                                 │
-│                                                              │
-│  CHART-AREA (gráfico de barras Chart.js)                     │
-│  ┌────────────────────────────────────────┐                  │
-│  │  █   █   █   █   ▂   ███              │                  │
-│  │  L.D S.O Des Alg Ino MTC              │                  │
-│  └────────────────────────────────────────┘                  │
-│                                                              │
-│  ACTIONS (8 cards em grid)                                   │
-│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ...          │
-│  │Matriz│ │Quiz  │ │Plano │ │Feed  │ │Forum │               │
-│  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘               │
+│  HEADER PERSONALIZADO                                        │
+│  [foto] Nível 7 — Estudante Ninja                            │
+│         Bem-vindo, Jimmy        │ 53% │ #3 │ 3.240 XP        │
+│  ████████░░░░░░  3.240 / 4.000 XP                           │
+├────────────────────────────────┬─────────────────────────────┤
+│  COLUNA PRINCIPAL              │  SIDEBAR                    │
+│                                │                             │
+│  PROGRESSO DO SEMESTRE         │  MISSÕES ATIVAS             │
+│  Algoritmos     ████░░  55%    │  • Registros no Feed 2/3   │
+│  Limite         ███░░░  50%    │  • Maratona semanal  3.5h  │
+│  S. Operacionais████░░  60%    │  • Fórum             0/1   │
+│  Inovação       ██░░░░  30%    │                             │
+│  Design         ███░░░  45%    │  RANKING SEMANAL            │
+│  Metodologia    █████░  90%    │  🥇 Maria Cláudia  752pts  │
+│                                │  🥈 José Antônio   722pts  │
+│  ⚠ ATENÇÃO: Inovação 30%      │  🥉 Jimmy (você)   720pts  │
+│  [Ver aulas] [Fazer quiz]      │                             │
+├────────────────────────────────┴─────────────────────────────┤
+│  EXPLORE O BELUGA                                            │
+│  ┌──── Configure Matriz ────┐ ┌── Plano Semanal ──┐ ┌─────┐  │
+│  │ [▣] Adicione disciplinas │ │ [📅] Sua agenda  │ │ [👥] │  │
+│  │     do seu curso →       │ │     de estudos → │ │Feed→ │  │
+│  └──────────────────────────┘ └──────────────────┘ └─────┘  │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -49,667 +49,290 @@ O dashboard é a **tela central do app** — a primeira que o usuário vê após
 
 ## HTML
 
-### Primeira tela privada — o que muda estruturalmente
-
-A partir do dashboard, todas as telas têm:
-- **Topbar** injetada pelo router (acima do `#app`)
-- **Beluginha IA** injetada (flutuando no canto inferior direito)
-- **`body.public-mode`** removida do `<body>`
-
-```
-index.html
-├── div.layout
-│   ├── header#topbar          ← injetado pelo router.js
-│   └── main.content
-│       └── div#app.container  ← aqui o dashboard é renderizado
-│
-└── beluginha (fora do layout, injetada separadamente)
-```
-
 ### Hierarquia completa do HTML
 
 ```
 main.dashboard
-├── h1.dashboard-title     ← "Bem- vindo de volta, Jimmy!"
-├── h2.dashboard-subtitle  ← "Suas matérias nesse semestre:"
+├── header.db-header
+│   ├── div.db-header-left
+│   │   ├── div.db-user-row
+│   │   │   ├── div.db-avatar-wrap
+│   │   │   │   ├── img.db-avatar         ← foto do aluno
+│   │   │   │   └── span.db-avatar-badge  ← nível (badge numérico)
+│   │   │   └── div.db-user-info
+│   │   │       ├── p.db-eyebrow    ← "Nível 7 — Estudante Ninja"
+│   │   │       └── h1.db-welcome   ← "Bem-vindo, Jimmy"
+│   │   └── div.db-xp-wrap
+│   │       ├── div.db-xp-bar
+│   │       │   └── div.db-xp-fill  ← barra de XP animada
+│   │       └── span.db-xp-label    ← "3.240 / 4.000 XP"
+│   └── div.db-header-stats
+│       ├── div.db-stat          ← "53% / Progresso médio"
+│       ├── div.db-stat--divider ← "#3 / Ranking semanal"
+│       └── div.db-stat--divider ← "3.240 / XP total"
 │
-├── section.subjects
-│   ├── a.subject-card[href="#/aulas?materia=algoritmos"]
-│   │   ├── h3             ← "Algoritmos e<br>Programação"
-│   │   └── div.progress-ring-wrap
-│   │       ├── svg.progress-ring
-│   │       │   ├── circle.ring-bg    ← trilha cinza de fundo
-│   │       │   └── circle.ring-fill  ← arco colorido de progresso
-│   │       └── span.ring-label       ← "55%"
-│   ├── a.subject-card [calculo]
-│   ├── a.subject-card [sistemas-operacionais]
-│   ├── a.subject-card.highlight [inovacao]   ← borda e título laranja
-│   ├── a.subject-card [design-interfaces]
-│   └── a.subject-card [metodologia]
+├── div.db-layout (grid 2 colunas)
+    ├── div.db-main
+    │   ├── section.db-card  ← Progresso do semestre
+    │   │   ├── h2.db-card-title
+    │   │   └── div.db-subjects
+    │   │       └── a.db-subject-row × 6  ← cada matéria
+    │   │           ├── span.db-subject-name
+    │   │           ├── div.db-subject-track
+    │   │           │   └── div.db-subject-fill  ← barra animada
+    │   │           └── span.db-subject-pct
+    │   └── section.db-alert-card  ← matéria crítica
+    │       ├── div.db-alert-icon
+    │       └── div.db-alert-body
+    │           ├── p.db-alert-tag     ← "Atenção necessária"
+    │           ├── h3.db-alert-title  ← nome da matéria
+    │           ├── p.db-alert-desc
+    │           └── div.db-alert-actions
+    │               ├── a.db-btn-primary  ← "Ver aulas"
+    │               └── a.db-btn-ghost    ← "Fazer quiz"
+    └── aside.db-sidebar
+        ├── section.db-card  ← Missões ativas
+        │   ├── h2.db-card-title
+        │   ├── div.db-missions
+        │   │   └── div.db-mission × N
+        │   │       ├── div.db-mission-head
+        │   │       ├── div.db-mission-track
+        │   │       │   └── div.db-mission-fill  ← barra animada
+        │   │       └── span.db-mission-label
+        │   └── a.db-link-more  ← "Ver todas as missões →"
+        └── section.db-card  ← Ranking semanal
+            ├── h2.db-card-title
+            ├── div.db-ranking
+            │   └── div.db-rank-row × N  (.db-rank-row--me para o usuário)
+            └── a.db-link-more  ← "Ver ranking completo →"
 │
-├── section.chart-area
-│   └── canvas#dashboard-chart   ← Chart.js renderiza aqui
-│
-└── section.dashboard-actions
-    ├── a.action-card[href="#/matriz"]
-    │   ├── svg (ícone)
-    │   └── span ← "Cadastro de Matriz"
-    ├── a.action-card[href="#/quiz"]
-    ├── a.action-card[href="#/plano"]
-    ├── a.action-card[href="#/feed"]
-    ├── a.action-card[href="#/forum"]
-    ├── a.action-card[href="#/notificacoes"]
-    ├── a.action-card[href="#/aulas"]
-    └── a.action-card[href="#/conquistas"]
+└── section.db-section  ← "Explore o BELUGA"
+    ├── h2.db-section-title
+    └── div.db-quick-actions (grid 3 colunas)
+        └── a.db-qa-card × 3
+            ├── div.db-qa-icon      ← ícone SVG com fundo colorido
+            ├── div.db-qa-body
+            │   ├── h3.db-qa-title
+            │   └── p.db-qa-desc
+            └── svg.db-qa-arrow     ← seta → animada no hover
 ```
 
-### Classes importantes e o que representam
+---
 
-| Classe | Elemento | Função |
-|---|---|---|
-| `.dashboard` | `<main>` | Container principal com padding |
-| `.dashboard-title` | `<h1>` | Saudação personalizada ao usuário |
-| `.dashboard-subtitle` | `<h2>` | Subtítulo da seção de matérias |
-| `.subjects` | `<section>` | Grid de 6 colunas com os cards de matérias |
-| `.subject-card` | `<a>` | Card de matéria — é um link clicável |
-| `.subject-card.highlight` | `<a>` | Variante laranja para matéria em destaque |
-| `.progress-ring-wrap` | `<div>` | Container relativo para o SVG + label sobrepostos |
-| `.progress-ring` | `<svg>` | SVG com os dois círculos do anel de progresso |
-| `.ring-bg` | `<circle>` | Círculo de fundo (trilha cinza) |
-| `.ring-fill` | `<circle>` | Círculo colorido que representa o progresso |
-| `.ring-label` | `<span>` | Percentual centralizado sobre o anel (absolute) |
-| `.chart-area` | `<section>` | Container do gráfico Chart.js |
-| `#dashboard-chart` | `<canvas>` | Elemento alvo do Chart.js |
-| `.dashboard-actions` | `<section>` | Grid de 8 colunas com os cards de atalho |
-| `.action-card` | `<a>` | Card de ação — link para outra tela |
+## Dados Mock
 
-### Os dados mock — arrays `SUBJECTS` e `ACTIONS`
+### `DB_USER`
 
-Todo o conteúdo do dashboard é gerado a partir de dois arrays definidos no topo de `dashboard.js`:
-
-**`SUBJECTS` — 6 matérias do semestre:**
-
-| name | id | progress | color | highlight |
-|---|---|---|---|---|
-| Algoritmos e Programação | `algoritmos` | 55% | `#3b9edd` | — |
-| Limite e Derivada | `calculo` | 50% | `#3b9edd` | — |
-| Sistemas Operacionais | `sistemas-operacionais` | 60% | `#3b9edd` | — |
-| Inovação e Tecnologia | `inovacao` | 30% | `#f97316` | `true` |
-| Design de Interfaces | `design-interfaces` | 45% | `#3b9edd` | — |
-| M. Trabalho Científico | `metodologia` | 90% | `#a855f7` | — |
-
-**`ACTIONS` — 8 atalhos de navegação:**
-
-| label | rota |
-|---|---|
-| Cadastro de Matriz | `#/matriz` |
-| Quiz Diagnóstico | `#/quiz` |
-| Plano de Estudos | `#/plano` |
-| Beluga Feed | `#/feed` |
-| Fórum comunidade | `#/forum` |
-| Notificações | `#/notificacoes` |
-| Minhas aulas | `#/aulas` |
-| Conquistas | `#/conquistas` |
-
-### Como os cards são gerados — função `ringHTML()`
+Perfil do aluno exibido no header:
 
 ```javascript
-function ringHTML(subject) {
-  const gap = 100 - subject.progress;
-  const cls = subject.highlight ? " highlight" : "";
-  return `
-    <a class="subject-card${cls}" href="#/aulas?materia=${subject.id}">
-      <h3>${subject.name}</h3>
-      <div class="progress-ring-wrap">
-        <svg viewBox="0 0 36 36" class="progress-ring">
-          <circle class="ring-bg" cx="18" cy="18" r="15.9" .../>
-          <circle class="ring-fill" cx="18" cy="18" r="15.9"
-            stroke="${subject.color}"
-            stroke-dasharray="${subject.progress} ${gap}"
-            transform="rotate(-90 18 18)"/>
-        </svg>
-        <span class="ring-label">${subject.progress}%</span>
-      </div>
-    </a>`;
-}
+const DB_USER = {
+  name: "Jimmy",
+  avatar: "assets/images/fotorosto.jpeg",
+  level: 7,
+  levelTitle: "Estudante Ninja",
+  xp: 3240,
+  xpNext: 4000,
+};
 ```
 
-Esta função recebe um objeto de `SUBJECTS` e retorna o HTML de um card. É chamada via `SUBJECTS.map(ringHTML).join("")` — gera todos os 6 cards de uma vez.
+### `SUBJECTS` — 6 matérias do semestre
 
-### Navegação por query string nos cards de matéria
+| name                     | id                      | progress | color     | critical |
+| ------------------------ | ----------------------- | -------- | --------- | -------- |
+| Algoritmos e Programação | `algoritmos`            | 55%      | `#3b9edd` | —        |
+| Limite e Derivada        | `calculo`               | 50%      | `#3b9edd` | —        |
+| Sistemas Operacionais    | `sistemas-operacionais` | 60%      | `#3b9edd` | —        |
+| Inovação e Tecnologia    | `inovacao`              | 30%      | `#f97316` | `true`   |
+| Design de Interfaces     | `design-interfaces`     | 45%      | `#3b9edd` | —        |
+| Metodologia Científica   | `metodologia`           | 90%      | `#a855f7` | —        |
 
-```html
-<a class="subject-card" href="#/aulas?materia=algoritmos">
-```
+A matéria com `critical: true` é destacada no card de alerta laranja.
 
-Os cards de matéria não navegam para `#/aulas` simplesmente — eles passam o `id` da matéria como query string (`?materia=algoritmos`). Isso permite que a tela de Aulas saiba qual matéria foi selecionada ao ser carregada.
+### `ACTIVE_MISSIONS` — missões em andamento
 
-### `&shy;` em "Notificações"
+Subconjunto das missões de `conquistas.js` filtrando status `"active"`.
 
-```javascript
-label: "Notifi&shy;cações",
-```
+### `RANKING` — top 3 da semana
 
-O `&shy;` é a entidade HTML para **soft hyphen** (hífen condicional). O browser só insere o hífen e quebra a palavra se necessário para caber no espaço. É uma técnica de tipografia para evitar overflow em containers estreitos.
+Exibe os 3 primeiros colocados. A linha com `isMe: true` recebe destaque azul (`.db-rank-row--me`).
 
----
+### `QUICK_ACTIONS` — cards de descoberta
 
-## CSS
+Array de 3 objetos que geram os cards da seção "Explore o BELUGA":
 
-### Arquivos que estilizam esta tela
+| title                           | link       | color             |
+| ------------------------------- | ---------- | ----------------- |
+| Configure sua Matriz Curricular | `#/matriz` | `#10b981` (verde) |
+| Plano Semanal de Estudos        | `#/plano`  | `#a855f7` (roxo)  |
+| Comunidade Acadêmica            | `#/feed`   | `#f59e0b` (âmbar) |
 
-```
-main.css
- └── base/variables.css        ← --muted, --text, --primary, --container
- └── base/reset.css
- └── base/global.css
- └── layout/page-layout.css    ← .layout, .content, .container
- └── layout/topbar.css         ← .topbar, .topnav, .topbar-logout
- └── pages/dashboard.css       ← estilos exclusivos do dashboard
-```
-
-### Classes de layout
-
-#### `.dashboard` — container principal
-
-```css
-.dashboard {
-  padding: 32px 40px;
-}
-```
-
-Padding generoso (32px vertical, 40px horizontal) para dar espaço ao conteúdo. A largura máxima é herdada do `.container` (`max-width: 1500px`) definido em `page-layout.css`.
-
-#### `.subjects` — grid de matérias
-
-```css
-.subjects {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
-  margin-bottom: 32px;
-}
-```
-
-`repeat(6, 1fr)` cria exatamente 6 colunas de igual largura — uma por matéria. Se a tela for estreita, os cards não se adaptam automaticamente (sem responsividade definida neste grid).
-
-#### `.subject-card` — cada card de matéria
-
-```css
-.subject-card {
-  background: #080e22;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 18px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  text-decoration: none;
-  color: inherit;   /* herda a cor do pai — não fica azul como link padrão */
-}
-```
-
-O card é um `<a>` (link), mas `text-decoration: none` e `color: inherit` removem o visual padrão de link. Ele parece um card comum mas é clicável e navegável.
-
-#### `.subject-card.highlight` — matéria em atenção
-
-```css
-.subject-card.highlight {
-  border-color: #f97316;   /* borda laranja */
-}
-.subject-card.highlight h3 {
-  color: #f97316;          /* título laranja */
-}
-```
-
-Inovação e Tecnologia (30% de progresso) recebe esta classe. A borda e o título ficam laranja como alerta visual de que é a matéria mais atrasada.
-
-#### `.dashboard-actions` — grid de ações
-
-```css
-.dashboard-actions {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 12px;
-}
-```
-
-8 colunas iguais, uma por atalho. Assim como o grid de matérias, sem responsividade explícita.
-
-#### `.chart-area` — área do gráfico
-
-```css
-.chart-area {
-  max-width: 780px;
-  margin: 0 auto 32px;
-}
-```
-
-O gráfico é centralizado e tem largura máxima de 780px — não ocupa a largura total da tela para manter legibilidade.
-
----
-
-### Como funciona o anel de progresso (SVG)
-
-O anel circular é uma técnica pura de SVG sem biblioteca externa:
-
-```html
-<svg viewBox="0 0 36 36" class="progress-ring">
-  <!-- Trilha de fundo (círculo completo cinza) -->
-  <circle class="ring-bg" cx="18" cy="18" r="15.9"
-    fill="none" stroke-width="3"/>
-
-  <!-- Arco de progresso (parte colorida) -->
-  <circle class="ring-fill" cx="18" cy="18" r="15.9"
-    fill="none" stroke="#3b9edd" stroke-width="3"
-    stroke-dasharray="55 45"
-    transform="rotate(-90 18 18)"/>
-</svg>
-```
-
-**Como `stroke-dasharray` desenha o arco:**
-
-O círculo tem raio `15.9`. A circunferência total é `2 × π × 15.9 ≈ 99.9` — praticamente 100 unidades. Isso é intencional: permite usar diretamente o valor de progresso em porcentagem como comprimento do traço.
-
-- `stroke-dasharray="55 45"` → traço de 55 unidades (preenchido) + espaço de 45 (vazio)
-- Para 90%: `stroke-dasharray="90 10"`
-- Para 30%: `stroke-dasharray="30 70"`
-
-O cálculo em JavaScript: `const gap = 100 - subject.progress`.
-
-**Por que `transform="rotate(-90 18 18)"`:**
-
-Por padrão, o SVG começa o traço no ponto da direita (3 horas). O `rotate(-90 18 18)` gira o ponto de início para o topo (12 horas), que é o comportamento esperado para um indicador de progresso.
-
-**O label centralizado:**
-
-```css
-.ring-label {
-  position: absolute;
-  inset: 0;         /* equivale a top:0; right:0; bottom:0; left:0 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-```
-
-O `position: absolute` funciona porque `.progress-ring-wrap` tem `position: relative`. `inset: 0` estica o span para ocupar todo o container, e o `flex` centraliza o texto.
-
----
-
-### Classes de cores
-
-| Classe / Propriedade | Valor | Uso |
-|---|---|---|
-| `.dashboard-title` color | `#7c6ef8` | Roxo/lilás na saudação |
-| `.dashboard-subtitle` color | `var(--muted)` = `#cbd5e1` | Cinza claro no subtítulo |
-| `.subject-card` background | `#080e22` | Fundo escuro dos cards |
-| `.subject-card.highlight` border | `#f97316` | Borda laranja na matéria em alerta |
-| `.ring-bg` stroke | `rgba(255,255,255,0.08)` | Trilha cinza quase invisível |
-| `.ring-fill` stroke | `subject.color` (inline) | Cor do arco — azul, laranja ou roxo |
-| `.action-card svg` color | `var(--primary)` = `#2b719c` | Ícones azuis nos cards de ação |
-| `.topbar` background | `rgba(8,14,26,0.97)` | Fundo escuro semitransparente |
-| `.topnav a.active` color | `#7bc8f0` | Azul claro no link ativo da topbar |
-| `.topbar-logout:hover` color | `#ef4444` | Vermelho ao hovear o botão Sair |
-
----
-
-### Classes de animação
-
-#### Hover nos cards de matéria
-
-```css
-.subject-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(59,158,221,0.5);
-  box-shadow: 0 6px 20px rgba(59,158,221,0.13);
-}
-```
-
-#### Hover nos cards de ação
-
-```css
-.action-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(59,158,221,0.45);
-  box-shadow: 0 6px 18px rgba(59,158,221,0.12);
-}
-```
-
-Ambos sobem 3px com borda e sombra azuis. Transição de `0.2s ease`.
-
----
-
-### A Topbar — componente global das telas privadas
-
-A topbar não é renderizada por `dashboard.js`. É injetada pelo `router.js` antes de renderizar qualquer tela privada:
-
-```javascript
-// router.js
-function injectTopbar() {
-  if (document.getElementById("topbar")) return;  // não duplica
-  const layout = document.querySelector(".layout");
-  layout.insertAdjacentHTML("afterbegin", TOPBAR_HTML);
-  document.getElementById("btn-logout").onclick = () => {
-    logout();
-    window.location.hash = "#/landing";
-  };
-}
-```
-
-**Comportamento `sticky`:**
-
-```css
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 500;
-  height: 62px;
-  backdrop-filter: blur(14px);
-}
-```
-
-A topbar fica fixada no topo ao rolar a página (`position: sticky`). O `backdrop-filter: blur(14px)` aplica desfoque no conteúdo que passa por baixo dela. `z-index: 500` garante que fique acima de qualquer conteúdo.
-
-**Link ativo na topbar:**
-
-```javascript
-// router.js — após renderizar cada tela
-document.querySelectorAll("[data-route]").forEach((link) => {
-  link.classList.toggle("active", link.dataset.route === routeName);
-});
-```
-
-O router compara o `data-route` de cada link com a rota atual e adiciona a classe `active`. O CSS aplica fundo e cor azul ao link ativo.
+Cada objeto tem `color` (hex para borda esquerda e ícone) e `colorRgb` (RGB para `rgba()` no fundo do ícone).
 
 ---
 
 ## JavaScript
 
-### Arquivos que afetam esta tela
-
-| Arquivo | Responsabilidade |
-|---|---|
-| `assets/js/app.js` | Registra a rota `"dashboard"` |
-| `assets/js/router.js` | Injeta topbar e Beluginha, renderiza a tela |
-| `assets/js/screens/dashboard.js` | `SUBJECTS`, `ACTIONS`, `ringHTML()`, `dashboardScreen()`, `dashboardInit()` |
-| `assets/js/screens/beluginha.js` | Injetado pelo router — flutua sobre o dashboard |
-| CDN: `chart.js` | Carregado via `<script>` no `index.html` |
-
----
-
-### `dashboardScreen()` — função de renderização
+### Derivados calculados
 
 ```javascript
-export function dashboardScreen() {
-  const subjectCards = SUBJECTS.map(ringHTML).join("");
-  const actionCards = ACTIONS.map(
-    (a) => `<a class="action-card" href="${a.route}">${a.icon}<span>${a.label}</span></a>`
-  ).join("");
-
-  return `
-    <main class="dashboard">
-      <h1 class="dashboard-title">Bem- vindo de volta, Jimmy!</h1>
-      <h2 class="dashboard-subtitle">Suas matérias nesse semestre:</h2>
-      <section class="subjects">${subjectCards}</section>
-      <section class="chart-area"><canvas id="dashboard-chart"></canvas></section>
-      <section class="dashboard-actions">${actionCards}</section>
-    </main>`;
-}
+const XP_PCT = Math.round((DB_USER.xp / DB_USER.xpNext) * 100);
+const criticalSubject = SUBJECTS.find((s) => s.critical);
+const avgProgress = Math.round(
+  SUBJECTS.reduce((a, s) => a + s.progress, 0) / SUBJECTS.length,
+);
+const myRank = RANKING.find((r) => r.isMe);
 ```
 
-Usa `Array.map()` para iterar os arrays de dados e gerar HTML. O `join("")` concatena os resultados sem separador.
+### Funções de renderização
 
-### `dashboardInit()` — inicialização do Chart.js
+| Função                | Retorna                                                   |
+| --------------------- | --------------------------------------------------------- |
+| `quickActionCard(qa)` | `<a class="db-qa-card">` com ícone colorido, corpo e seta |
+| `subjectRow(s)`       | `<a class="db-subject-row">` com mini progress bar        |
+| `missionItem(m)`      | `<div class="db-mission">` com barra e label de progresso |
+| `rankRow(r)`          | `<div class="db-rank-row">` com medalha, nome e pontos    |
+| `dashboardScreen()`   | HTML completo da tela                                     |
+| `dashboardInit()`     | Anima todas as barras de progresso na entrada             |
+
+### Animação de entrada (`dashboardInit`)
 
 ```javascript
 export function dashboardInit() {
-  const ctx = document.getElementById("dashboard-chart");
-  if (!ctx) return;
-
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["L. Derivada", "S. Operacionais", "Design", "Algoritmos", "Inovação", "M.T.C."],
-      datasets: [{
-        label: "Progresso",
-        data: [50, 60, 45, 55, 30, 90],
-        backgroundColor: ["#3b9edd","#3b9edd","#3b9edd","#3b9edd","#f97316","#a855f7"],
-        borderRadius: 6,
-        borderSkipped: false,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: (c) => `${c.parsed.y}%` } },
-      },
-      scales: {
-        y: {
-          min: 0, max: 100,
-          grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { color: "rgba(255,255,255,0.45)", callback: (v) => v + "%" },
-        },
-        x: {
-          grid: { display: false },
-          ticks: { color: "rgba(255,255,255,0.45)" },
-        },
-      },
-    },
+  requestAnimationFrame(() => {
+    document.querySelectorAll("[data-width]").forEach((el) => {
+      const target = el.dataset.width + "%";
+      requestAnimationFrame(() => {
+        el.style.transition = "width 0.7s cubic-bezier(0.4, 0, 0.2, 1)";
+        el.style.width = target;
+      });
+    });
   });
 }
 ```
 
-**Decisões de configuração:**
-
-| Opção | Valor | Efeito |
-|---|---|---|
-| `type: "bar"` | — | Gráfico de barras verticais |
-| `legend: { display: false }` | — | Remove a legenda (não precisa, cores já explicam) |
-| `tooltip callback` | `c.parsed.y + "%"` | Tooltip mostra "55%" em vez de "55" |
-| `borderRadius: 6` | — | Barras com cantos arredondados |
-| `borderSkipped: false` | — | Arredonda todos os cantos (não só o topo) |
-| `y.min/max: 0/100` | — | Escala sempre de 0 a 100% |
-| `y.grid.color` | `rgba(255,255,255,0.05)` | Linhas de grade quase invisíveis |
-| `ticks.color` | `rgba(255,255,255,0.45)` | Rótulos dos eixos em branco apagado |
-
-**Cores das barras espelham o array SUBJECTS:**
-
-```javascript
-backgroundColor: ["#3b9edd","#3b9edd","#3b9edd","#3b9edd","#f97316","#a855f7"]
-//                L.Derivada  S.O.     Design    Algoritmos  Inovação  M.T.C.
-```
-
-Inovação fica laranja (baixo progresso = alerta) e M.T.C. fica roxo (alto progresso = destaque) — mesmas cores dos anéis de progresso.
-
-**Dependência externa:**
-
-O Chart.js é carregado via CDN no `index.html`:
-```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-```
-
-Isso significa que `Chart` é uma variável global disponível em todo o projeto. Se o CDN falhar (sem internet), o gráfico não renderiza mas o restante do dashboard funciona.
-
----
+Todas as barras (`db-subject-fill`, `db-mission-fill`, `db-xp-fill`) começam em `width: 0%` no HTML e animam para o valor real usando `data-width`. O duplo `requestAnimationFrame` garante que a transição CSS seja registrada antes do valor final ser aplicado.
 
 ### Eventos da tela
 
-| Elemento | Evento | Ação |
-|---|---|---|
-| `a.subject-card` | `click` (nativo) | Navega para `#/aulas?materia={id}` |
-| `a.action-card` | `click` (nativo) | Navega para a rota do atalho |
-| `button#btn-logout` (topbar) | `click` | Chama `logout()` → navega para `#/landing` |
-| `canvas#dashboard-chart` | `hover` | Chart.js exibe tooltip com o percentual |
-| `.subject-card`, `.action-card` | `hover` | Animação CSS de elevação |
+| Elemento                     | Evento           | Ação                                                  |
+| ---------------------------- | ---------------- | ----------------------------------------------------- |
+| `a.db-subject-row`           | `click` (nativo) | Navega para `#/aulas?materia={id}`                    |
+| `a.db-btn-primary`           | `click` (nativo) | Navega para `#/aulas?materia={id}` da matéria crítica |
+| `a.db-btn-ghost`             | `click` (nativo) | Navega para `#/quiz`                                  |
+| `a.db-qa-card`               | `click` (nativo) | Navega para a rota do card (matriz, plano ou feed)    |
+| `a.db-link-more`             | `click` (nativo) | Navega para `#/conquistas`                            |
+| `button#btn-logout` (topbar) | `click`          | Chama `logout()` → `#/landing`                        |
 
-Nenhum `addEventListener` é registrado manualmente para os cards — eles usam `href` nativo no `<a>`, que funciona sem JavaScript.
+---
+
+## CSS
+
+### Classes principais
+
+| Classe                       | Elemento    | Função                                                |
+| ---------------------------- | ----------- | ----------------------------------------------------- |
+| `.dashboard`                 | `<main>`    | Container com padding                                 |
+| `.db-header`                 | `<header>`  | Card de boas-vindas com XP e stats                    |
+| `.db-eyebrow`                | `<p>`       | Nível e título do aluno em azul uppercase             |
+| `.db-welcome`                | `<h1>`      | Saudação personalizada                                |
+| `.db-xp-bar` / `.db-xp-fill` | `<div>`     | Barra de XP com gradiente azul→roxo                   |
+| `.db-header-stats`           | `<div>`     | Flex row com 3 stats numéricos                        |
+| `.db-stat--divider`          | `<div>`     | Stat com borda esquerda separadora                    |
+| `.db-layout`                 | `<div>`     | Grid `1fr 320px` (coluna + sidebar)                   |
+| `.db-card`                   | `<section>` | Card base: surface + border + radius                  |
+| `.db-card-title`             | `<h2>`      | Label uppercase pequeno com ícone SVG                 |
+| `.db-subject-row`            | `<a>`       | Grid `210px 1fr 46px` por matéria                     |
+| `.db-subject-fill`           | `<div>`     | Barra colorida de progresso                           |
+| `.db-alert-card`             | `<section>` | Card laranja de atenção                               |
+| `.db-btn-primary`            | `<a>`       | Botão laranja sólido                                  |
+| `.db-btn-ghost`              | `<a>`       | Botão transparente com borda laranja                  |
+| `.db-mission`                | `<div>`     | Item de missão com barra de progresso                 |
+| `.db-mission-xp`             | `<span>`    | XP em âmbar "+80 XP"                                  |
+| `.db-rank-row`               | `<div>`     | Linha do ranking                                      |
+| `.db-rank-row--me`           | `<div>`     | Variante azul para o usuário logado                   |
+| `.db-link-more`              | `<a>`       | Link "ver mais" em azul                               |
+| `.db-user-row`               | `<div>`     | Flex row com avatar + informações do usuário          |
+| `.db-avatar-wrap`            | `<div>`     | Container relativo para avatar + badge de nível       |
+| `.db-avatar`                 | `<img>`     | Foto circular 52px com borda gradiente azul→roxo      |
+| `.db-avatar-badge`           | `<span>`    | Badge numérico no canto inferior-direito do avatar    |
+| `.db-user-info`              | `<div>`     | Contém `.db-eyebrow` e `.db-welcome`                  |
+| `.db-section`                | `<section>` | Wrapper da seção de ações rápidas com título          |
+| `.db-section-title`          | `<h2>`      | Label uppercase 11px da seção                         |
+| `.db-quick-actions`          | `<div>`     | Grid 3 colunas dos cards de descoberta                |
+| `.db-qa-card`                | `<a>`       | Card horizontal com borda esquerda 3px colorida       |
+| `.db-qa-icon`                | `<div>`     | Container 42px com ícone e fundo colorido translúcido |
+| `.db-qa-body`                | `<div>`     | Contém título e descrição                             |
+| `.db-qa-title`               | `<h3>`      | Título do card (14px, bold)                           |
+| `.db-qa-desc`                | `<p>`       | Descrição (12px, muted); oculta abaixo de 640px       |
+| `.db-qa-arrow`               | `<svg>`     | Seta → que desliza 3px para direita no hover          |
+
+### Breakpoints responsivos
+
+| Ponto      | Mudança                                                                          |
+| ---------- | -------------------------------------------------------------------------------- |
+| `≤ 1100px` | Layout vira 1 coluna; sidebar vira grid 2 colunas                                |
+| `≤ 900px`  | Quick actions vira 2 colunas                                                     |
+| `≤ 820px`  | Header vira coluna; sidebar vira 1 coluna                                        |
+| `≤ 640px`  | Padding reduzido; quick actions vira 1 coluna; `.db-qa-desc` oculta; avatar 44px |
 
 ---
 
 ## Fluxo da Página
 
-### Jornada do usuário
-
 ```
 Usuário faz login → hash = "#/dashboard"
        ↓
-Router: logado + rota privada → OK, renderiza
+Router: logado + rota privada → OK
        ↓
-removeTopbar() → mas só se já havia uma (não duplica)
-injectTopbar() → insere header#topbar no .layout
-injectBeluginha() → insere o assistente IA
+injectTopbar() + injectBeluginha()
        ↓
-dashboardScreen() → HTML injetado no #app
+dashboardScreen() → HTML inserido no #app (barras começam em 0%)
        ↓
 Link "dashboard" na topnav recebe classe "active"
        ↓
-dashboardInit() → Chart.js instanciado no canvas
+dashboardInit() → barras animam para os valores reais (0.7s ease)
        ↓
-Usuário vê: saudação + 6 cards de matéria + gráfico + 8 atalhos
+Usuário vê: header com XP + progresso das matérias + alerta + missões + ranking
 ```
-
-### Outros caminhos
-
-| Ação do usuário | O que acontece |
-|---|---|
-| Clica em card de matéria | Navega para `#/aulas?materia={id}` |
-| Clica em card de ação | Navega para a rota correspondente |
-| Clica "Sair" na topbar | `logout()` → localStorage limpo → `#/landing` |
-| Não logado acessa `#/dashboard` | Router redireciona para `#/landing` |
-| Hover no gráfico de barras | Tooltip do Chart.js mostra "Progresso: 55%" |
-
----
-
-## Componentes Importantes
-
-### Anéis de Progresso (SVG puro)
-
-Não usam biblioteca — são SVGs inline com `stroke-dasharray`. O truque do raio `15.9` faz a circunferência ser ~100, permitindo mapear porcentagem diretamente para comprimento de traço. É uma técnica elegante e performática.
-
-### Gráfico de Barras (Chart.js)
-
-Biblioteca externa carregada via CDN. Os dados do gráfico são hardcodados em `dashboardInit()` e **não são lidos do array `SUBJECTS`** — estão duplicados manualmente. Isso significa que se `SUBJECTS` for atualizado, o gráfico precisará ser atualizado separadamente.
-
-### Topbar (componente global)
-
-Injetada pelo router, não por `dashboard.js`. Presente em todas as telas privadas. Contém:
-- Brand (logo + "BELUGA")
-- Nav com 10 links (Dashboard até Perfil)
-- Botão "Sair" com hover vermelho
-
-### Beluginha IA
-
-Também injetada pelo router. Flutua no canto inferior direito sobre o dashboard. Seu comportamento está em `assets/js/screens/beluginha.js`.
 
 ---
 
 ## Como Modificar no Futuro
 
-### Alterar a saudação do usuário
+### Alterar o usuário
 
-Em `dashboard.js`, linha 90 — atualmente hardcodado:
-```javascript
-<h1 class="dashboard-title">Bem- vindo de volta, Jimmy!</h1>
-```
-Quando houver autenticação real, o nome viria do estado do usuário:
-```javascript
-<h1 class="dashboard-title">Bem-vindo de volta, ${user.nome}!</h1>
-```
+Editar `DB_USER` no topo de `dashboard.js`. Quando houver backend, esse objeto virá de uma chamada à API.
 
-### Adicionar ou remover matérias
-
-Editar o array `SUBJECTS` em `dashboard.js` (linhas 1–14) e atualizar manualmente os `data` e `backgroundColor` no Chart.js em `dashboardInit()` (linhas 112–130). Ambos precisam estar sincronizados.
-
-### Alterar o progresso de uma matéria
+### Alterar progresso de uma matéria
 
 ```javascript
 // Em SUBJECTS, mudar o valor de progress:
-{ name: "Algoritmos...", id: "algoritmos", progress: 75, color: "#3b9edd" },
-// E em dashboardInit(), atualizar o data correspondente:
-data: [50, 60, 45, 75, 30, 90],  // ← posição 3 (Algoritmos)
+{ name: "Algoritmos...", progress: 75, ... }
 ```
 
-### Marcar outra matéria como destaque
+A barra animará automaticamente para o novo valor.
+
+### Marcar outra matéria como crítica
 
 ```javascript
-// Adicionar highlight: true ao objeto em SUBJECTS:
-{ name: "Design...", id: "design-interfaces", progress: 45, color: "#f97316", highlight: true },
-```
-E mudar `color` para `#f97316` (laranja) para manter consistência com o anel.
-
-### Adicionar um novo atalho de navegação
-
-```javascript
-// Em ACTIONS, adicionar objeto:
-{
-  label: "Nova<br>Tela",
-  route: "#/nova-tela",
-  icon: `<svg ...>...</svg>`,
-},
-```
-E ajustar o CSS: `grid-template-columns: repeat(9, 1fr)` se quiser 9 colunas.
-
-### Alterar cores do gráfico
-
-Em `dashboardInit()`, array `backgroundColor` — uma cor por barra na mesma ordem dos `labels`.
-
-### Alterar cores da topbar
-
-Em `assets/css/layout/topbar.css`:
-- Fundo: `.topbar` → `background`
-- Link ativo: `.topnav a.active` → `color` e `background`
-- Botão Sair: `.topbar-logout:hover` → `color` e `border-color`
-
----
-
-## Relação Entre Arquivos
-
-```
-index.html
-├── <script src="cdn/chart.js">  ← disponível globalmente como "Chart"
-└── <script> assets/js/app.js
-    ├── import router.js → startRouter()
-    │   ├── injectTopbar()     ← HTML da topbar definido em router.js
-    │   │   └── btn-logout → logout() + hash "#/landing"
-    │   └── injectBeluginha()  ← definido em beluginha.js
-    └── import dashboard.js → registerRoute("dashboard", { render, init })
-        ├── dashboardScreen()
-        │   ├── SUBJECTS.map(ringHTML) → 6 cards SVG
-        │   └── ACTIONS.map(...)       → 8 cards de ação
-        └── dashboardInit()
-            └── new Chart(canvas, config) → gráfico de barras
-
-assets/css/main.css
- └── layout/topbar.css     → .topbar, .topnav, .topbar-logout
- └── layout/page-layout.css → .layout, .content, .container
- └── pages/dashboard.css   → .dashboard, .subjects, .subject-card,
-                              .progress-ring-wrap, .chart-area, .dashboard-actions
+{ name: "Design...", id: "design-interfaces", progress: 20, color: "#f97316", critical: true }
 ```
 
-### Componentes globais presentes nesta tela
+Remova `critical: true` da matéria antiga. Apenas a primeira com `critical: true` é exibida no card de alerta.
 
-| Componente | Presente? | Observação |
-|---|---|---|
-| Topbar (`#topbar`) | **Sim** | Injetada pelo router, sticky no topo |
-| Beluginha IA | **Sim** | Injetada pelo router, flutuante |
-| `body.public-mode` | **Não** | Removida pelo router (tela privada) |
-| Chart.js | **Sim** | Global via CDN no `index.html` |
+### Atualizar missões ativas
 
----
+Editar o array `ACTIVE_MISSIONS`. Os valores de `progress` e `total` alimentam automaticamente a barra e o label.
 
-## Observações Técnicas
+### Atualizar ranking
 
-**Por que o nome está hardcodado como "Jimmy"?**
-Não há sistema de perfil conectado ao estado de autenticação ainda. O `auth.js` salva apenas uma flag booleana no localStorage — não armazena o nome do usuário. Quando um backend for integrado, o nome virá de uma resposta de API ou de um objeto de usuário no estado local.
+Editar o array `RANKING`. Marcar `isMe: true` no item do usuário logado para aplicar destaque azul.
 
-**Por que os dados do SUBJECTS e do gráfico são duplicados?**
-O Chart.js é inicializado em `dashboardInit()`, que roda depois que o HTML já foi inserido. Para manter o código mais simples, os dados foram escritos diretamente na configuração do Chart. A consequência é que qualquer alteração em `SUBJECTS` precisa ser replicada manualmente em `dashboardInit()`. Uma melhoria futura seria: `data: SUBJECTS.map(s => s.progress)`.
+### Trocar a foto do avatar
 
-**Por que `borderSkipped: false` no Chart.js?**
-Por padrão, Chart.js não arredonda a base das barras (a borda que encosta no eixo X), para evitar que o arredondamento crie um espaço visual entre a barra e o eixo. Com `borderSkipped: false`, todas as bordas são arredondadas, dando um visual mais moderno. O resultado é que as barras pequenas (como 30%) ficam com formato de pílula.
+Atualizar `DB_USER.avatar` com o novo caminho de imagem. A foto é circular com borda gradiente — qualquer imagem quadrada funciona bem.
 
-**Por que `injectTopbar()` verifica `document.getElementById("topbar")`?**
-Para evitar duplicação. O router chama `injectTopbar()` em toda troca de rota privada. Sem essa verificação, a topbar seria inserida múltiplas vezes no DOM, empilhando headers.
+### Adicionar ou alterar um quick action card
+
+Editar o array `QUICK_ACTIONS`. Cada objeto requer `title`, `desc`, `link`, `color` (hex), `colorRgb` (RGB em string `"r, g, b"` para usar em `rgba()`) e `icon` (SVG inline string). A borda esquerda e o ícone usam `color`; o fundo do ícone usa `colorRgb` com opacidade 0.12.

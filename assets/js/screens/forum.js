@@ -1,3 +1,5 @@
+import { initUserProfileModal } from "../components/userProfileModal.js";
+
 /* =========================================================
    BELUGA – forum.js
    Fórum de dúvidas acadêmicas
@@ -181,10 +183,10 @@ function renderQuestion(q) {
           .map(
             (a) => `
           <div class="fr-answer">
-            ${frAvatar(a.author.initials, a.author.color, "sm")}
+            <div class="fr-avatar fr-avatar--sm" data-profile-trigger data-user-name="${a.author.name}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}" style="background:${a.author.color}1a;border:2px solid ${a.author.color}55;color:${a.author.color}">${a.author.initials}</div>
             <div class="fr-answer-body">
               <div class="fr-answer-meta">
-                <span class="fr-answer-name">${a.author.name}</span>
+                <span class="fr-answer-name" data-profile-trigger data-user-name="${a.author.name}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}">${a.author.name}</span>
                 ${a.isMonitor ? `<span class="fr-monitor-badge">Monitor</span>` : ""}
               </div>
               <p class="fr-answer-text">${a.text}</p>
@@ -207,9 +209,9 @@ function renderQuestion(q) {
   return `
     <article class="fr-question${q.status === "Respondida" ? " fr-question--answered" : q.status === "Em análise" ? " fr-question--analysis" : ""}" data-id="${q.id}">
       <div class="fr-q-header">
-        ${frAvatar(q.author.initials, q.author.color, "md")}
+        <div class="fr-avatar fr-avatar--md" data-profile-trigger data-user-name="${q.author.name}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}" style="background:${q.author.color}1a;border:2px solid ${q.author.color}55;color:${q.author.color}">${q.author.initials}</div>
         <div class="fr-q-meta">
-          <span class="fr-q-author">${q.author.name}</span>
+          <span class="fr-q-author" data-profile-trigger data-user-name="${q.author.name}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}">${q.author.name}</span>
           <span class="fr-q-time">${q.timeLabel}</span>
         </div>
         <div class="fr-q-tags">
@@ -436,6 +438,7 @@ function _postNewQuestion(text) {
 
 /* ── Init ── */
 export function forumInit() {
+  initUserProfileModal();
   const textarea = document.getElementById("fr-question-input");
   if (textarea) {
     textarea.addEventListener("input", () => {

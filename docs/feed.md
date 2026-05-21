@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-O Feed é a rede social acadêmica do BELUGA. Estudantes publicam relatos de estudo, reagem às publicações alheias (Neurônio de Ouro, Repostar, Comentários) e acompanham o ranking semanal da comunidade. O estado dos posts vive em memória de módulo — não persiste no localStorage.
+O Feed é a rede social acadêmica do BELUGA. Estudantes publicam relatos de estudo, reagem às publicações alheias (Neurônio de Ouro, Repostar, Comentários) e acompanham o ranking semanal da comunidade. Clicar no avatar ou nome de qualquer autor abre o **modal de perfil de usuário** (componente reutilizável `userProfileModal`). O estado dos posts vive em memória de módulo — não persiste no localStorage.
 
 ### Organização visual
 
@@ -69,9 +69,9 @@ section.fd-page
     │   └── div#fd-list.fd-list
     │       └── article.fd-post[data-id] × 11  ← renderPost()
     │           ├── div.fd-post-header
-    │           │   ├── (avatar do autor)
+    │           │   ├── div.fd-avatar[data-profile-trigger][data-user-*]  ← abre modal
     │           │   └── div.fd-post-meta
-    │           │       ├── span.fd-post-author
+    │           │       ├── span.fd-post-author[data-profile-trigger][data-user-*]  ← abre modal
     │           │       └── span.fd-post-time
     │           ├── div.fd-post-body
     │           │   ├── p.fd-post-content
@@ -118,8 +118,8 @@ section.fd-page
 | `.fd-rxn-btn--blue` | `<button>` | "Comentários" com seção aberta — azul |
 | `.fd-tag--subject` | `<span>` | Tag de matéria — azul |
 | `.fd-tag--hours` | `<span>` | Tag de horas — verde |
-| `.fd-avatar--md` | `<div>` | Avatar 40×40px |
-| `.fd-avatar--sm` | `<div>` | Avatar 30×30px (comentários) |
+| `.fd-avatar--md` | `<div>` | Avatar 40×40px — autores de post têm `[data-profile-trigger]` |
+| `.fd-avatar--sm` | `<div>` | Avatar 30×30px (comentários — sem trigger de perfil) |
 | `.fd-sidebar` | `<aside>` | Sidebar sticky — flex coluna |
 | `.fd-sidebar-card` | `<div>` | Card de informação da comunidade |
 | `.fd-card--stats` | `<div>` | Card com barra de progresso de meta |
@@ -237,6 +237,16 @@ function avatar(initials, color, size = "md") {
 
 `${color}1a` = cor com `1a` hex → ~10% de opacidade (fundo). `${color}55` → ~33% (borda). `color` puro → texto.
 
+O avatar do **autor do post** é gerado inline em `renderPost()` (não via `avatar()`) para receber os atributos de trigger do modal de perfil:
+```html
+<div class="fd-avatar fd-avatar--md"
+  data-profile-trigger
+  data-user-name="..."
+  data-user-initials="..."
+  data-user-color="...">JA</div>
+```
+Avatares de comentários e ranking usam `avatar()` normalmente, sem trigger.
+
 ### `hoursTag(h)` — formatação de horas
 
 ```javascript
@@ -349,6 +359,7 @@ Re-renderização total do `#fd-list`. Toda a lista é reconstruída a cada aç�
 | `#fd-post-btn` | `click` | Valida, adiciona post, re-renderiza |
 | `#fd-list` | `click` (delegado) | Redireciona para `_handleReaction` ou `_sendComment` |
 | `#fd-list` | `keydown (Enter)` | Envia comentário se `target` é `.fd-comment-input` |
+| `document` | `click` (delegado global) | `[data-profile-trigger]` → `openUserProfileModal()` — registrado por `initUserProfileModal()` |
 
 ---
 
@@ -438,6 +449,9 @@ E no evento de publicar, ler esses valores antes de `unshift`.
 
 ```
 assets/js/screens/feed.js
+ └── import initUserProfileModal from components/userProfileModal.js
+     └── cria o overlay do modal UMA vez (idempotente)
+     └── registra listener global em document para [data-profile-trigger]
  └── FEED_POSTS_MOCK (local — 11 posts)
  └── FEED_RANKING (local — 5 usuários)
  └── feedState (memória de módulo — não persiste)
@@ -449,5 +463,6 @@ assets/js/screens/feed.js
 |---|---|
 | Topbar | **Sim** |
 | Beluginha IA | **Sim** |
+| Modal de perfil (`userProfileModal`) | **Sim** — iniciado em `feedInit()` |
 | `.button` (buttons.css) | **Não** — `.fd-post-btn` tem estilo próprio |
 | `.input` (forms.css) | **Não** — `.fd-comment-input` tem estilo próprio |

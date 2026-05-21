@@ -1,3 +1,5 @@
+import { initUserProfileModal } from "../components/userProfileModal.js";
+
 /* =========================================================
    BELUGA – feed.js  |  Comunidade Acadêmica
    ========================================================= */
@@ -277,9 +279,9 @@ function renderPost(post) {
   return `
     <article class="fd-post${post.liked ? " fd-post--gold" : ""}" data-id="${post.id}">
       <div class="fd-post-header">
-        ${avatar(post.author.initials, post.author.color)}
+        <div class="fd-avatar fd-avatar--md" data-profile-trigger data-user-name="${post.author.name}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}" style="background:${post.author.color}1a;border:2px solid ${post.author.color}55;color:${post.author.color}">${post.author.initials}</div>
         <div class="fd-post-meta">
-          <span class="fd-post-author">${post.author.name}</span>
+          <span class="fd-post-author" data-profile-trigger data-user-name="${post.author.name}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}">${post.author.name}</span>
           <span class="fd-post-time">${post.timeLabel}</span>
         </div>
       </div>
@@ -431,6 +433,7 @@ export function feedScreen() {
 
 // ─── Init ─────────────────────────────────────────────────
 export function feedInit() {
+  initUserProfileModal();
   const textarea = document.getElementById("fd-text");
   const postBtn = document.getElementById("fd-post-btn");
   const list = document.getElementById("fd-list");

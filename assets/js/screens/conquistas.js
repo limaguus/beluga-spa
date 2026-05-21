@@ -302,7 +302,7 @@ function _bindModal() {
   document.getElementById("cq-feed-btn")?.addEventListener("click", () => {
     cqState.shareOpen = false;
     _rerenderModal();
-    window.location.hash = "/feed";
+    window.location.hash = "#/feed";
   });
 
   document.getElementById("cq-x-btn")?.addEventListener("click", () => {

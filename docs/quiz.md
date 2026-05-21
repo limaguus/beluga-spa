@@ -35,8 +35,9 @@ O Quiz recebe as disciplinas cadastradas na Matriz e gera perguntas aleatórias 
 │  │  [C] opção 3                       │                  │
 │  │  [D] opção 4                       │                  │
 │  │                                    │                  │
-│  │  [← Pergunta Anterior]             │                  │
+│  │  [← Anterior]    [Próxima →]        │                  │
 │  │  [Finalizar e Acessar Meu Plano]   │                  │
+│  │   ↑ só na última pergunta          │                  │
 │  └────────────────────────────────────┘                  │
 │                                                          │
 └──────────────────────────────────────────────────────────┘
@@ -64,8 +65,10 @@ main.quiz
     │   │   └── p#quiz-question-text  ← texto da pergunta atual
     │   ├── div#quiz-options.quiz-options  ← botões de opção (dinâmicos)
     │   └── div.quiz-nav
-    │       ├── button#btn-prev.quiz-prev-btn   ← "← Pergunta Anterior"
-    │       └── button#btn-finish.button.quiz-finish-btn
+    │       ├── div.quiz-nav-row
+    │       │   ├── button#btn-prev.quiz-prev-btn    ← "← Anterior"
+    │       │   └── button#btn-next.quiz-next-btn    ← "Próxima →" (oculto na última)
+    │       └── button#btn-finish.button.quiz-finish-btn  ← só visível na última
     └── aside.quiz-sidebar
         ├── p.quiz-sidebar-label  ← "Progresso"
         └── div#quiz-progress-bar.quiz-progress-bar  ← tiles dinâmicos
@@ -73,24 +76,26 @@ main.quiz
 
 ### Classes importantes
 
-| Classe | Elemento | Função |
-|---|---|---|
-| `.quiz-layout` | `<div>` | Grid 2 colunas: `1fr 120px` |
-| `.quiz-main` | `<div>` | Coluna principal — flex column, gap 18px |
-| `.quiz-intro-box` | `<div>` | Caixa azulada com texto fixo de boas-vindas |
-| `.quiz-question-card` | `<div>` | Card com fundo semi-transparente para o texto da pergunta |
-| `.quiz-options` | `<div>` | Flex column com os botões de alternativa |
-| `.quiz-option` | `<button>` | Alternativa individual (A/B/C/D) |
-| `.quiz-option.selected` | `<button>` | Estado após seleção — borda azul mais intensa |
-| `.option-letter` | `<span>` | Letra da alternativa (A, B, C, D) em azul |
-| `.quiz-nav` | `<div>` | Área de navegação com botão voltar + finalizar |
-| `.quiz-prev-btn` | `<button>` | Botão "Pergunta Anterior" — transparente com borda |
-| `.quiz-finish-btn` | `<button>` | Botão de finalização — gradiente azul, full width |
-| `.quiz-sidebar` | `<aside>` | Coluna lateral sticky com tiles de progresso |
-| `.quiz-progress-bar` | `<div>` | Container dos tiles — flex column, gap 3px |
-| `.progress-tile` | `<button>` | Tile retangular de 11px de altura por pergunta |
-| `.progress-tile.current` | `<button>` | Pergunta atual — azul translúcido com outline |
-| `.progress-tile.answered` | `<button>` | Pergunta respondida — azul sólido (`#3b9edd`) |
+| Classe                    | Elemento   | Função                                                          |
+| ------------------------- | ---------- | --------------------------------------------------------------- |
+| `.quiz-layout`            | `<div>`    | Grid 2 colunas: `1fr 120px`                                     |
+| `.quiz-main`              | `<div>`    | Coluna principal — flex column, gap 18px                        |
+| `.quiz-intro-box`         | `<div>`    | Caixa azulada com texto fixo de boas-vindas                     |
+| `.quiz-question-card`     | `<div>`    | Card com fundo semi-transparente para o texto da pergunta       |
+| `.quiz-options`           | `<div>`    | Flex column com os botões de alternativa                        |
+| `.quiz-option`            | `<button>` | Alternativa individual (A/B/C/D)                                |
+| `.quiz-option.selected`   | `<button>` | Estado após seleção — borda azul mais intensa                   |
+| `.option-letter`          | `<span>`   | Letra da alternativa (A, B, C, D) em azul                       |
+| `.quiz-nav`               | `<div>`    | Flex column: linha prev/next acima + botão finalizar abaixo     |
+| `.quiz-nav-row`           | `<div>`    | Flex row com `space-between`: prev à esquerda, next à direita   |
+| `.quiz-prev-btn`          | `<button>` | Botão "← Anterior" — transparente com borda sutil               |
+| `.quiz-next-btn`          | `<button>` | Botão "Próxima →" — borda azul, oculto na última pergunta       |
+| `.quiz-finish-btn`        | `<button>` | Botão de finalização — gradiente azul, full width, só na última |
+| `.quiz-sidebar`           | `<aside>`  | Coluna lateral sticky com tiles de progresso                    |
+| `.quiz-progress-bar`      | `<div>`    | Container dos tiles — flex column, gap 3px                      |
+| `.progress-tile`          | `<button>` | Tile retangular de 11px de altura por pergunta                  |
+| `.progress-tile.current`  | `<button>` | Pergunta atual — azul translúcido com outline                   |
+| `.progress-tile.answered` | `<button>` | Pergunta respondida — azul sólido (`#3b9edd`)                   |
 
 ---
 
@@ -112,7 +117,7 @@ main.css
   display: grid;
   grid-template-columns: 1fr 120px;
   gap: 36px;
-  align-items: start;  /* sidebar se alinha ao topo, não estica */
+  align-items: start; /* sidebar se alinha ao topo, não estica */
 }
 ```
 
@@ -122,15 +127,18 @@ A segunda coluna tem largura fixa de 120px para a sidebar de progresso. `align-i
 
 ```css
 .quiz-option {
-  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    border-color 0.18s,
+    color 0.18s;
 }
 .quiz-option:hover {
-  background: rgba(43,113,156,0.14);
-  border-color: rgba(43,113,156,0.42);
+  background: rgba(43, 113, 156, 0.14);
+  border-color: rgba(43, 113, 156, 0.42);
 }
 .quiz-option.selected {
-  background: rgba(43,113,156,0.22);
-  border-color: rgba(59,158,221,0.75);
+  background: rgba(43, 113, 156, 0.22);
+  border-color: rgba(59, 158, 221, 0.75);
 }
 ```
 
@@ -139,9 +147,16 @@ Hover e estado `.selected` usam o mesmo esquema azul com intensidades diferentes
 ### Tiles de progresso
 
 ```css
-.progress-tile          { background: rgba(255,255,255,0.07); }  /* neutro */
-.progress-tile.current  { background: rgba(59,158,221,0.38); outline: 1px solid ... }
-.progress-tile.answered { background: #3b9edd; }                 /* sólido */
+.progress-tile {
+  background: rgba(255, 255, 255, 0.07);
+} /* neutro */
+.progress-tile.current {
+  background: rgba(59, 158, 221, 0.38);
+  outline: 1px solid...;
+}
+.progress-tile.answered {
+  background: #3b9edd;
+} /* sólido */
 ```
 
 Os três estados de um tile: neutro (não visitado), atual (em andamento) e respondido (concluído). Apenas `.answered` tem cor sólida — comunica claramente o que foi feito.
@@ -152,7 +167,11 @@ Os três estados de um tile: neutro (não visitado), atual (em andamento) e resp
 .quiz-finish-btn {
   width: 100%;
   height: 50px;
-  background: linear-gradient(90deg, rgba(43,113,156,0.95), rgba(59,158,221,0.72));
+  background: linear-gradient(
+    90deg,
+    rgba(43, 113, 156, 0.95),
+    rgba(59, 158, 221, 0.72)
+  );
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -164,25 +183,37 @@ Os três estados de um tile: neutro (não visitado), atual (em andamento) e resp
 
 Mesmo padrão do botão principal do sistema: gradiente horizontal azul escuro→claro, hover com leve elevação.
 
-### Botão "Pergunta Anterior"
+### Linha de navegação (prev + next)
 
 ```css
+.quiz-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .quiz-prev-btn {
-  align-self: flex-start;  /* não estica para full width */
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.18);
-  visibility: hidden;       /* controlado via JS no primeiro item */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* visibility: hidden via JS na primeira pergunta */
+}
+
+.quiz-next-btn {
+  border: 1px solid rgba(59, 158, 221, 0.38);
+  color: #7bc8f0;
+  font-weight: 600;
+  /* display: none via JS na última pergunta */
 }
 ```
 
-`align-self: flex-start` garante que ele não ocupe a largura total como o botão de finalizar.
+`space-between` garante prev à esquerda e next à direita sem necessidade de `margin-left: auto`. O botão de finalizar fica em linha própria abaixo (full width), controlado via `display: none / ""`.
 
 ### Beluginha no quiz
 
 ```css
 .quiz-beluga {
   width: 88px;
-  filter: drop-shadow(0 0 18px rgba(43,113,156,0.45));
+  filter: drop-shadow(0 0 18px rgba(43, 113, 156, 0.45));
 }
 ```
 
@@ -196,16 +227,29 @@ Imagem estática nesta tela — sem animação de flutuação. Só o drop-shadow
 
 ```javascript
 const BANK = {
-  algoritmos: [ /* 4 questões */ ],
-  sistemas:   [ /* 4 questões */ ],
-  design:     [ /* 4 questões */ ],
-  inovacao:   [ /* 4 questões */ ],
-  limite:     [ /* 4 questões */ ],
-  trabalho:   [ /* 4 questões */ ],
+  algoritmos: [
+    /* 4 questões */
+  ],
+  sistemas: [
+    /* 4 questões */
+  ],
+  design: [
+    /* 4 questões */
+  ],
+  inovacao: [
+    /* 4 questões */
+  ],
+  limite: [
+    /* 4 questões */
+  ],
+  trabalho: [
+    /* 4 questões */
+  ],
 };
 ```
 
 Cada questão tem a estrutura:
+
 ```javascript
 { q: "texto da pergunta", opts: ["A", "B", "C", "D"], a: 2 }
 //                                                       ↑ índice da resposta correta
@@ -219,12 +263,14 @@ O índice `a` existe no banco mas **não é usado no runtime** — o quiz não c
 function matchKey(discipline) {
   const d = discipline.toLowerCase();
   if (d.includes("algoritmo") || d.includes("programa")) return "algoritmos";
-  if (d.includes("sistema") && (d.includes("operac") || d.includes("so"))) return "sistemas";
-  if (d.includes("design") || d.includes("interface"))  return "design";
-  if (d.includes("inova"))                              return "inovacao";
-  if (d.includes("limite") || d.includes("derivada"))   return "limite";
-  if (d.includes("trabalho") || d.includes("cient") || d.includes("mtc")) return "trabalho";
-  return null;  // disciplina não reconhecida → usa genericQuestions()
+  if (d.includes("sistema") && (d.includes("operac") || d.includes("so")))
+    return "sistemas";
+  if (d.includes("design") || d.includes("interface")) return "design";
+  if (d.includes("inova")) return "inovacao";
+  if (d.includes("limite") || d.includes("derivada")) return "limite";
+  if (d.includes("trabalho") || d.includes("cient") || d.includes("mtc"))
+    return "trabalho";
+  return null; // disciplina não reconhecida → usa genericQuestions()
 }
 ```
 
@@ -248,7 +294,7 @@ Retorna **3 perguntas genéricas** (vs 4 do banco específico) usando o nome da 
 
 ```javascript
 function shuffle(arr) {
-  const a = [...arr];  // cópia para não mutar o original
+  const a = [...arr]; // cópia para não mutar o original
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
@@ -267,7 +313,7 @@ function buildQuestions(disciplines) {
   for (const disc of disciplines) {
     const key = matchKey(disc);
     const pool = key ? BANK[key] : genericQuestions(disc);
-    pool.forEach(item => all.push({ discipline: disc, ...item }));
+    pool.forEach((item) => all.push({ discipline: disc, ...item }));
   }
   return shuffle(all);
 }
@@ -280,7 +326,7 @@ Para cada disciplina: busca no banco ou gera genéricas. Adiciona a propriedade 
 ```javascript
 const disciplines = getDisciplines();
 const questions = buildQuestions(
-  disciplines.length ? disciplines : ["Conhecimentos Gerais"]
+  disciplines.length ? disciplines : ["Conhecimentos Gerais"],
 );
 
 let current = 0;
@@ -299,40 +345,55 @@ btnPrev.style.visibility = current === 0 ? "hidden" : "visible";
 
 O botão anterior usa `visibility: hidden` (não `display: none`) — ocupa espaço no layout mas fica invisível na primeira pergunta. Isso evita que o botão "Finalizar" se desloque para cima ao aparecer/desaparecer.
 
-Após selecionar uma opção:
+Controle de visibilidade dos botões de navegação (chamado ao fim de cada `renderQuestion()`):
+
+```javascript
+const isLast = current === questions.length - 1;
+btnPrev.style.visibility = current === 0 ? "hidden" : "visible";
+btnNext.style.display = isLast ? "none" : "";
+btnFinish.style.display = isLast ? "" : "none";
+```
+
+Após selecionar uma opção (sem auto-avanço):
+
 ```javascript
 btn.addEventListener("click", () => {
   answers[current] = Number(btn.dataset.idx);
+  optionsEl
+    .querySelectorAll(".quiz-option")
+    .forEach((b) => b.classList.remove("selected"));
+  btn.classList.add("selected");
   renderProgress();
-  if (current < questions.length - 1) {
-    setTimeout(() => { current++; render(); }, 350);  // auto-avança
-  } else {
-    renderQuestion();  // última pergunta: re-renderiza sem avançar
-  }
+  // o aluno avança manualmente pelo botão "Próxima →"
 });
 ```
 
-O delay de **350ms** serve para dar feedback visual da seleção antes de trocar a pergunta.
+A seleção atualiza apenas as classes visuais e o tile de progresso — sem re-render da pergunta e sem navegação automática.
 
 ### `renderProgress()`
 
 ```javascript
-progressEl.innerHTML = questions.map((_, i) => `
+progressEl.innerHTML = questions
+  .map(
+    (_, i) => `
   <button class="progress-tile ${i === current ? "current" : answers[i] !== null ? "answered" : ""}"
           data-q="${i}" title="Pergunta ${i + 1}"></button>
-`).join("");
+`,
+  )
+  .join("");
 ```
 
 Os tiles são clicáveis — o usuário pode voltar a qualquer pergunta diretamente clicando no tile. Ao clicar, `current` é atualizado e `render()` é chamado.
 
 ### Eventos
 
-| Elemento | Evento | Ação |
-|---|---|---|
-| `.quiz-option` (dinâmico) | `click` | Salva resposta em `answers[current]`, re-renderiza progresso, auto-avança 350ms |
-| `#btn-prev` | `click` | `current--`, chama `render()` |
-| `#btn-finish` | `click` | `window.location.hash = "#/plano"` |
-| `.progress-tile` (dinâmico) | `click` | Define `current = tile.dataset.q`, chama `render()` |
+| Elemento                    | Evento  | Ação                                                                                       |
+| --------------------------- | ------- | ------------------------------------------------------------------------------------------ |
+| `.quiz-option` (dinâmico)   | `click` | Salva resposta em `answers[current]`, atualiza classes `.selected`, re-renderiza progresso |
+| `#btn-prev`                 | `click` | `current--`, chama `render()`                                                              |
+| `#btn-next`                 | `click` | `current++`, chama `render()` — visível em todas exceto a última                           |
+| `#btn-finish`               | `click` | `window.location.hash = "#/plano"` — visível apenas na última pergunta                     |
+| `.progress-tile` (dinâmico) | `click` | Define `current = tile.dataset.q`, chama `render()`                                        |
 
 ---
 
@@ -353,12 +414,14 @@ render() → renderQuestion() + renderProgress()
 Usuário clica em uma opção
        ↓
 answers[current] = índice selecionado
-renderProgress() → tile atual vira .answered
-setTimeout 350ms
+opção ganha .selected, renderProgress() → tile vira .answered
+(sem avanço automático)
+       ↓
+Usuário clica "Próxima →" (btn-next)
        ↓
 current++ → render() → próxima pergunta
        ↓
-Última pergunta: renderQuestion() sem avançar
+Última pergunta: btn-next some, btn-finish aparece
        ↓
 Usuário clica "Finalizar e Acessar Meu Plano de Estudos"
        ↓
@@ -399,6 +462,7 @@ A variável `cls` é construída mas não usada no template — a classe é reca
 ### Adicionar nova disciplina ao banco
 
 Em `BANK`, adicionar uma nova chave:
+
 ```javascript
 const BANK = {
   ...
@@ -410,6 +474,7 @@ const BANK = {
 ```
 
 E em `matchKey()`, adicionar a regra de match:
+
 ```javascript
 if (d.includes("calculo") || d.includes("cálculo")) return "calculo";
 ```
@@ -417,14 +482,20 @@ if (d.includes("calculo") || d.includes("cálculo")) return "calculo";
 ### Mostrar feedback de certo/errado
 
 Em `renderQuestion()`, após `answers[current] = Number(btn.dataset.idx)`:
+
 ```javascript
 const correct = questions[current].a;
-if (answers[current] === correct) { /* acerto */ } else { /* erro */ }
+if (answers[current] === correct) {
+  /* acerto */
+} else {
+  /* erro */
+}
 ```
 
 ### Salvar resultado do quiz
 
 Antes de navegar para `#/plano`, em `btnFinish.addEventListener`:
+
 ```javascript
 import { saveQuizResult } from "../state/quiz.js";
 saveQuizResult({ questions, answers });
@@ -436,6 +507,7 @@ O Plano de Estudos poderia então usar esses dados para calibrar as prioridades.
 ### Limitar uma resposta por opção (desabilitar após selecionar)
 
 Em `renderQuestion()`, ao renderizar as opções:
+
 ```javascript
 const isAnswered = answers[current] !== null;
 // adicionar disabled="${isAnswered}" nos botões não selecionados
@@ -456,9 +528,9 @@ assets/js/screens/quiz.js
 
 ### Componentes globais
 
-| Componente | Presente? |
-|---|---|
-| Topbar | **Sim** |
-| Beluginha IA | **Sim** |
+| Componente              | Presente?                    |
+| ----------------------- | ---------------------------- |
+| Topbar                  | **Sim**                      |
+| Beluginha IA            | **Sim**                      |
 | `.button` (buttons.css) | **Sim** — base do btn-finish |
-| `.input` (forms.css) | **Não** |
+| `.input` (forms.css)    | **Não**                      |

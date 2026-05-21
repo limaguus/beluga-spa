@@ -3,6 +3,7 @@
 > **Rota:** `#/landing` (rota padrão — carregada quando nenhum hash está presente)
 > **Tipo:** Pública — acessível sem autenticação
 > **Arquivo principal:** `assets/js/screens/landing.js`
+> **CSS:** `assets/css/pages/landing.css`
 
 ---
 
@@ -10,29 +11,43 @@
 
 ### Objetivo
 
-A Landing Page é a **porta de entrada pública do BELUGA**. Seu objetivo é apresentar o produto para novos visitantes e convencê-los a criar uma conta ou fazer login. Ela é a única tela que um usuário não autenticado vê antes de interagir com o sistema.
+A Landing Page é a **porta de entrada pública do BELUGA**. Seu objetivo é apresentar o produto para novos visitantes — incluindo investidores, parceiros e futuros alunos — e convencê-los a criar uma conta. É a única tela que um usuário não autenticado vê antes de interagir com o sistema.
 
 ### Organização visual
 
-A tela é dividida em duas grandes áreas verticais:
+A tela é composta por **9 seções empilhadas verticalmente**, com scroll normal de página (sem travamento em `100vh`):
 
 ```
-┌──────────────────────────────────────────────────────┐
-│  HEADER  [Logo + Nome]   [Nav links]                 │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  HERO                                                │
-│  ┌──────────────────────┐  ┌──────────────────────┐  │
-│  │  Textos + CTA button │  │  Mascote Beluga (img)│  │
-│  └──────────────────────┘  └──────────────────────┘  │
-│                                                      │
-├──────────────────────────────────────────────────────┤
-│  STRIP (linha de cards horizontal — scroll)          │
-│  [Card Feature] [Card Pessoa] [Card Feature] ...     │
-└──────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  HEADER sticky (logo + nav + botão "Entrar")             │
+├──────────────────────────────────────────────────────────┤
+│  HERO (~92vh)                                            │
+│  ┌────────────────────────┐  ┌────────────────────────┐  │
+│  │  Eyebrow               │  │  [Glow radial]         │  │
+│  │  H1 com "entende" HL   │  │  Beluga flutuando      │  │
+│  │  Subtítulo             │  │  (scaleX invertida)    │  │
+│  │  [Começar grátis]      │  │                        │  │
+│  │  [Ver como funciona]   │  │                        │  │
+│  │  ★ 4,8 · 5k+ · 87 uni │  │                        │  │
+│  └────────────────────────┘  └────────────────────────┘  │
+├──────────────────────────────────────────────────────────┤
+│  STATS BAR  (5.000+ · 87 universidades · 2,1M · 4,8★)   │
+├──────────────────────────────────────────────────────────┤
+│  FUNCIONALIDADES (grid 2×2 — Beluginha IA em destaque)   │
+├──────────────────────────────────────────────────────────┤
+│  PREVIEW (3 mockups de janela — Dashboard, IA, Quiz)     │
+├──────────────────────────────────────────────────────────┤
+│  COMO FUNCIONA  (3 passos numerados com conectores)      │
+├──────────────────────────────────────────────────────────┤
+│  PLANOS  (Gratuito · Pro (destaque) · Anual)             │
+├──────────────────────────────────────────────────────────┤
+│  DEPOIMENTOS  (3 cards com avatares CSS)                 │
+├──────────────────────────────────────────────────────────┤
+│  FINAL CTA  (Beluga flutuando + botão)                   │
+├──────────────────────────────────────────────────────────┤
+│  FOOTER  (logo + 3 colunas de links + copyright)         │
+└──────────────────────────────────────────────────────────┘
 ```
-
-A tela ocupa exatamente `100vh` (altura total da janela), sem scroll vertical — tudo foi projetado para caber na tela sem rolar.
 
 ---
 
@@ -54,75 +69,134 @@ O projeto BELUGA é uma **SPA (Single Page Application)**. Existe apenas um arqu
 </body>
 ```
 
-**O que isso significa na prática:**
-- A div `#app` é o container dinâmico onde todas as telas são renderizadas.
-- Nenhum HTML de tela vive no arquivo `index.html` — tudo é gerado via JavaScript.
-- O `<link>` do CSS e o `<script>` do Chart.js ficam no `<head>` e são carregados uma única vez para todo o projeto.
+O `#app` é o container dinâmico onde todas as telas são injetadas via JavaScript.
 
 ---
 
 ### Estrutura HTML da Landing (`landing.js`)
 
-O HTML da landing é gerado pela função `landingScreen()` que retorna uma string HTML. Essa string é injetada no `#app` pelo router. A hierarquia completa é:
-
 ```
-div.public
-├── header.public-header
+div.public#landing-root
+├── header.public-header#pub-hd                   ← sticky
 │   ├── div.brand
-│   │   ├── img.brand-logo         ← logof.png
-│   │   └── span.brand-name        ← "BELUGA"
-│   └── nav.public-nav
-│       ├── a[data-scroll="funcionalidades"]  ← "Funcionalidades"
-│       ├── a[data-scroll="preco"]            ← "Preço"
-│       └── a[data-scroll="contato"]          ← "Contato"
+│   │   ├── img.brand-logo
+│   │   └── span.brand-name
+│   ├── nav.public-nav
+│   │   ├── a[data-scroll="funcionalidades"]
+│   │   ├── a[data-scroll="preco"]
+│   │   └── a[data-scroll="contato"]
+│   └── button.pub-cta-header#cta-header
 │
 └── main.public-main
-    ├── section.hero#topo
-    │   ├── div.hero-left
-    │   │   ├── p.hero-eyebrow       ← "Assistente acadêmico com IA"
-    │   │   ├── h1                   ← título principal + span.hero-highlight
-    │   │   ├── p.hero-sub           ← subtítulo
-    │   │   └── div.hero-actions
-    │   │       └── button.hero-cta#cta-login  ← "COMECE AGORA"
-    │   └── div.hero-right
-    │       └── div.hero-image-wrap
-    │           └── img.hero-image    ← BELUGA.png (mascote)
+    ├── section.ld-hero#topo
+    │   ├── div.ld-hero-left
+    │   │   ├── p.ld-eyebrow
+    │   │   ├── h1.ld-hero-h1 (com em.ld-hl em gradiente)
+    │   │   ├── p.ld-hero-sub
+    │   │   ├── div.ld-hero-actions
+    │   │   │   ├── button.ld-btn-primary#cta-login
+    │   │   │   └── button.ld-btn-ghost#cta-how
+    │   │   └── div.ld-hero-trust
+    │   └── div.ld-hero-right
+    │       ├── div.ld-hero-glow             ← glow radial azul
+    │       └── div.hero-image-wrap          ← animação float
+    │           └── img.hero-image (BELUGA.png)
     │
-    └── section.landing-strip#funcionalidades
-        ├── p.strip-label             ← frase descritiva
-        └── div.strip-track           ← container scroll horizontal
-            ├── div.strip-card.strip-card--feature  (×5 cards de funcionalidade)
-            └── div.strip-card.strip-card--person   (×2 cards de depoimento)
+    ├── section.ld-stats
+    │   └── div.ld-stats-inner
+    │       └── (4× div.ld-stat + div.ld-sdiv separadores)
+    │
+    ├── section.ld-features#funcionalidades
+    │   ├── div.ld-sec-head (eyebrow + h2 + sub)
+    │   └── div.ld-feat-grid
+    │       ├── div.ld-fcard.ld-fcard--hero  ← Beluginha IA (largura total)
+    │       ├── div.ld-fcard                 ← Plano dinâmico
+    │       ├── div.ld-fcard                 ← Gamificação
+    │       └── div.ld-fcard                 ← Comunidade
+    │
+    ├── section.ld-preview#como-funciona
+    │   ├── div.ld-sec-head
+    │   └── div.ld-preview-row
+    │       ├── div.ld-mwin          ← mockup Dashboard
+    │       ├── div.ld-mwin.ld-mwin--center  ← mockup Beluginha IA (elevado)
+    │       └── div.ld-mwin          ← mockup Quiz
+    │
+    ├── section.ld-how
+    │   ├── div.ld-sec-head
+    │   └── div.ld-how-row
+    │       ├── div.ld-how-step (01)
+    │       ├── div.ld-how-line      ← conector horizontal
+    │       ├── div.ld-how-step (02)
+    │       ├── div.ld-how-line
+    │       └── div.ld-how-step (03)
+    │
+    ├── section.ld-pricing#preco
+    │   ├── div.ld-sec-head
+    │   └── div.ld-plan-row
+    │       ├── div.ld-plan          ← Gratuito
+    │       ├── div.ld-plan.ld-plan--feat ← Pro (badge "Mais popular")
+    │       └── div.ld-plan          ← Anual
+    │
+    ├── section.ld-testi
+    │   ├── div.ld-sec-head
+    │   └── div.ld-tcard-row
+    │       └── (3× div.ld-tcard com avatar CSS de iniciais)
+    │
+    ├── section.ld-final
+    │   └── div.ld-final-inner
+    │       ├── div.hero-image-wrap.ld-final-beluga ← Beluga flutuando
+    │       ├── h2.ld-final-h2
+    │       ├── p.ld-final-sub
+    │       └── button.ld-btn-primary#cta-final
+    │
+    └── footer.ld-footer#contato
+        ├── div.ld-footer-top
+        │   ├── div.ld-footer-brand (logo + tagline)
+        │   └── div.ld-footer-cols
+        │       ├── div.ld-footer-col "Produto"
+        │       ├── div.ld-footer-col "Empresa"
+        │       └── div.ld-footer-col "Suporte"
+        └── div.ld-footer-bot (copyright)
 ```
 
-### Classes importantes e o que representam
+---
+
+### Classes principais e seus propósitos
 
 | Classe | Elemento | Função |
 |---|---|---|
-| `.public` | `<div>` raiz | Wrapper base para as telas públicas (landing, login, cadastro) |
-| `.public-header` | `<header>` | Barra de navegação pública no topo |
-| `.brand` | `<div>` | Agrupa logo + nome BELUGA |
+| `.public` | `<div>` raiz | Wrapper das telas públicas (landing, login, cadastro) |
+| `.public-header` | `<header>` | Header sticky com backdrop-blur |
 | `.public-nav` | `<nav>` | Links de navegação por ancoragem |
-| `.public-main` | `<main>` | Área de conteúdo principal |
-| `.hero` | `<section>` | Seção hero — ocupa a maior área vertical da tela |
-| `.hero-left` | `<div>` | Coluna esquerda do hero (texto + botão) |
-| `.hero-right` | `<div>` | Coluna direita do hero (imagem do mascote) |
-| `.hero-image-wrap` | `<div>` | Wrapper com a animação de flutuação |
-| `.hero-cta` | `<button>` | Botão principal de conversão |
-| `.landing-strip` | `<section>` | Faixa inferior com cards horizontais |
-| `.strip-track` | `<div>` | Trilho de scroll horizontal dos cards |
-| `.strip-card--feature` | `<div>` | Card de funcionalidade (ícone + título + texto) |
-| `.strip-card--person` | `<div>` | Card de depoimento (avatar + nome + texto) |
+| `.pub-cta-header` | `<button>` | Botão "Entrar" no header |
+| `.public-main` | `<main>` | Área de conteúdo principal — sem overflow constraint |
+| `.ld-hero` | `<section>` | Hero — `min-height: calc(92vh - 64px)`, layout 2 colunas |
+| `.ld-hero-glow` | `<div>` | Gradiente radial azul atrás do mascote |
+| `.hero-image-wrap` | `<div>` | Wrapper com animação `float` 5,5s infinita |
+| `.ld-btn-primary` | `<button>` | CTA com gradiente azul e box-shadow |
+| `.ld-btn-ghost` | `<button>` | CTA secundário com borda sutil |
+| `.ld-stats` | `<section>` | Barra de prova social com 4 números |
+| `.ld-features` | `<section>` | Grid 2×2 de funcionalidades |
+| `.ld-fcard--hero` | `<div>` | Card de destaque que ocupa as 2 colunas |
+| `.ld-preview` | `<section>` | 3 mockups de janela da plataforma |
+| `.ld-mwin` | `<div>` | Janela mockup com chrome bar e body |
+| `.ld-mwin--center` | `<div>` | Janela central elevada (Beluginha IA) |
+| `.ld-how` | `<section>` | 3 passos horizontais com conectores |
+| `.ld-pricing` | `<section>` | 3 cards de plano (Free, Pro, Anual) |
+| `.ld-plan--feat` | `<div>` | Card Pro elevado com badge e cor de destaque |
+| `.ld-testi` | `<section>` | 3 depoimentos com avatares CSS |
+| `.ld-final` | `<section>` | CTA final com Beluga flutuando |
+| `.ld-footer` | `<footer>` | Rodapé com links, contato e copyright |
 
-### Atributos de dados importantes
+### Atributos de dados
 
-Os links do `<nav>` usam um atributo customizado `data-scroll`:
+Os links de ancoragem usam `data-scroll` para identificar o `id` da seção destino:
 
 ```html
 <a href="javascript:void(0)" data-scroll="funcionalidades">Funcionalidades</a>
 ```
 
-O `data-scroll` é lido pelo JavaScript para identificar qual seção ancorar na página via `scrollIntoView`. O valor deve corresponder ao `id` de um elemento HTML existente na mesma tela.
+O JavaScript lê `el.dataset.scroll` e chama `getElementById(value)?.scrollIntoView({ behavior: 'smooth' })`.
 
 ---
 
@@ -130,110 +204,116 @@ O `data-scroll` é lido pelo JavaScript para identificar qual seção ancorar na
 
 ### Arquivos que estilizam esta tela
 
-A landing page é estilizada por uma **pilha de arquivos CSS**, todos importados em `assets/css/main.css`:
-
 ```
 main.css
- └── base/variables.css    ← tokens globais (cores, espaçamento, tipografia)
- └── base/reset.css        ← zeragem de margens e box-sizing
- └── base/global.css       ← tipografia e utilitários globais
- └── layout/page-layout.css ← estrutura .layout / .content / .container
- └── pages/landing.css     ← estilos exclusivos da landing
+ └── base/variables.css      ← tokens globais (cores, fontes)
+ └── base/reset.css          ← zeragem de margens
+ └── base/global.css         ← tipografia e utilitários
+ └── layout/page-layout.css  ← .layout / .content / .container
+ └── pages/landing.css       ← estilos exclusivos da landing
 ```
-
-O arquivo `assets/css/pages/landing.css` é o principal para esta tela.
 
 ---
 
-### Classes de layout
+### Modo público — `body.public-mode`
 
-#### `body.public-mode` — modo público
-
-Quando a rota é landing, login ou cadastro, o router adiciona a classe `public-mode` no `<body>`. Isso ativa regras CSS que **anulam o layout padrão do app** (que tem topbar e sidebar):
+O router adiciona `public-mode` no `<body>` para todas as rotas públicas. Isso anula o layout padrão do app:
 
 ```css
-body.public-mode .content {
-  padding: 0;
-}
-
-body.public-mode #app.container {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
+body.public-mode .content       { padding: 0; }
+body.public-mode #app.container { max-width: none; margin: 0; padding: 0; width: 100%; }
 ```
 
-Sem essa classe, o `#app` teria o `max-width: 1500px` e margens centradas que são usadas nas telas internas do app.
+Sem essa classe, o `#app` teria `max-width: 1500px` e margens centradas das telas internas.
 
-#### Travamento em `100vh` — somente landing
+---
 
-A landing usa um seletor específico para travar a altura em 100vh e desabilitar o scroll vertical:
+### Scroll liberado
+
+A versão anterior travava a landing em `100vh` com `overflow: hidden`. Isso foi removido. A regra atual **libera scroll normal**:
 
 ```css
 body.public-mode:has(.public:not(.auth)),
 body.public-mode:has(.public:not(.auth)) .layout,
 body.public-mode:has(.public:not(.auth)) .content {
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
 }
 ```
 
-O seletor `:has(.public:not(.auth))` é inteligente: ele verifica se existe um `.public` que **não** tenha a classe `.auth`. Login e cadastro usam `.public.auth`, então eles ficam fora dessa regra e têm scroll livre.
+O seletor `:has(.public:not(.auth))` exclui login e cadastro (que usam `.public.auth`) — eles continuam sem restrição própria.
 
-#### `.hero` — layout principal
+---
+
+### Header sticky
 
 ```css
-.hero {
+.public-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(6, 11, 28, 0.78);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.public-header.pub-hd--scrolled {
+  background: rgba(6, 11, 28, 0.96);
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+```
+
+A classe `.pub-hd--scrolled` é adicionada via JavaScript quando `window.scrollY > 40`. Ao rolar, o header fica mais opaco e ganha uma linha inferior sutil.
+
+---
+
+### Hero
+
+```css
+.ld-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
-  flex: 1;        /* ocupa todo o espaço vertical disponível */
-  min-height: 0;  /* necessário para flex funcionar dentro de container com altura definida */
+  gap: 40px;
+  min-height: calc(92vh - 64px);   /* quase tela cheia, descontando o header */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 56px;
 }
 ```
 
-O `flex: 1` faz o hero crescer e preencher o espaço entre o header e a strip de cards.
-
-#### `.strip-track` — scroll horizontal
+O highlight `em.ld-hl` usa gradient text:
 
 ```css
-.strip-track {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;          /* habilita scroll horizontal */
-  padding-bottom: 10px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
+.ld-hl {
+  font-style: normal;
+  background: linear-gradient(90deg, #3b9edd, #7bc8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 ```
 
-Os cards ficam em linha com `flex` e o `overflow-x: auto` cria o comportamento de arrasto horizontal.
+O glow atrás do mascote:
+
+```css
+.ld-hero-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(59, 158, 221, 0.14) 0%, transparent 68%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+```
 
 ---
 
-### Classes de cores
-
-| Classe / Propriedade | Cor | Uso |
-|---|---|---|
-| `.hero-eyebrow` | `#3b9edd` | Texto "Assistente acadêmico com IA" |
-| `.hero-highlight` | `#3b9edd` | Palavra "INTELIGENTE" em destaque |
-| `.hero-sub` | `rgba(255,255,255,0.45)` | Subtítulo com opacidade reduzida |
-| `.hero-cta` background | `linear-gradient(135deg, #1e5f8a, #3b9edd)` | Gradiente azul no botão principal |
-| `.strip-label` | `rgba(255,255,255,0.32)` | Texto da frase acima dos cards (bem sutil) |
-| `.strip-card` border | `rgba(59,158,221,0.13)` | Borda azul quase transparente nos cards |
-| `.strip-card-title` | `#fff` | Título dos cards |
-| `.strip-card-text` | `rgba(255,255,255,0.48)` | Texto dos cards (levemente apagado) |
-| `.strip-person-role` | `#3b9edd` | Curso/estado do depoente |
-
-A paleta da landing é quase exclusivamente **azul** (`#3b9edd`) sobre fundo escuro (`#030205`). As cores dos ícones SVG dos cards de funcionalidade são inline no HTML e variam por card: azul, vermelho, roxo, verde e laranja.
-
----
-
-### Classes de animação
-
-#### Float — mascote Beluga
+### Animação float (mascote)
 
 ```css
 @keyframes float {
@@ -247,58 +327,129 @@ A paleta da landing é quase exclusivamente **azul** (`#3b9edd`) sobre fundo esc
 }
 ```
 
-O mascote sobe e desce **18px** em ciclos de **5,5 segundos**, com curva `ease-in-out` para movimento suave. O `will-change: transform` informa ao browser para otimizar essa animação usando a GPU.
+O mascote sobe **18px** em ciclos de **5,5 segundos**. Presente no hero e no CTA final (`.ld-final-beluga`). O `will-change: transform` promove a camada para GPU.
 
-#### Hover nos cards da strip
+---
+
+### Grid de funcionalidades
 
 ```css
-.strip-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(59,158,221,0.35);
-  box-shadow: 0 8px 24px rgba(59,158,221,0.1);
+.ld-feat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Beluginha IA ocupa as 2 colunas */
+.ld-fcard--hero {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 28px;
+  background: rgba(59, 158, 221, 0.04);
+  border-color: rgba(59, 158, 221, 0.18);
 }
 ```
 
-Ao passar o mouse sobre qualquer card, ele sobe 4px e ganha uma borda + sombra azul. Transição de `0.2s ease`.
+---
 
-#### Hover no botão CTA
+### Mockups de janela (preview)
+
+Cada janela tem 2 partes: chrome (barra de topo com dots) e body (mini-UI):
 
 ```css
-.hero-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(59,158,221,0.5);
+.ld-mchrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ld-mdot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 ```
 
-O botão principal sobe 2px e intensifica a sombra azul ao ser hovereado.
+A janela central (Beluginha IA) é elevada:
+
+```css
+.ld-mwin--center {
+  transform: translateY(-16px);
+  border-color: rgba(59, 158, 221, 0.22);
+  box-shadow: 0 24px 72px rgba(59, 158, 221, 0.12);
+}
+```
+
+Os elementos dentro do body são "blocos mudos" (`.ld-mb`) que simulam texto/conteúdo:
+
+```css
+.ld-mb       { display: block; border-radius: 4px; background: rgba(255, 255, 255, 0.1); }
+.ld-mb--sm   { height: 7px; }
+.ld-mb--md   { height: 9px; }
+.ld-mb--lg   { height: 14px; }
+```
+
+---
+
+### Cards de plano
+
+```css
+.ld-plan--feat {
+  border-color: rgba(59, 158, 221, 0.35);
+  background: rgba(59, 158, 221, 0.05);
+  transform: translateY(-12px);     /* elevado em relação aos outros */
+  box-shadow: 0 20px 60px rgba(59, 158, 221, 0.14);
+}
+
+.ld-plan-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #1e5f8a, #3b9edd);
+  border-radius: 99px;
+  padding: 4px 14px;
+}
+```
+
+---
+
+### Avatares de depoimento (CSS-only)
+
+Os avatares são gerados puramente com CSS — sem imagens externas:
+
+```html
+<div class="ld-tcard-av" style="background: linear-gradient(135deg,#3b9edd,#1e5f8a)">MC</div>
+```
+
+```css
+.ld-tcard-av {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+}
+```
+
+Cada depoente tem um gradiente único (azul, roxo, verde).
 
 ---
 
 ### Responsividade
 
-#### `@media (max-width: 900px)` — tablets e telas médias
+| Breakpoint | Principais ajustes |
+|---|---|
+| `≤ 1024px` | Padding lateral reduzido para 32px. Preview mostra apenas 2 janelas (terceira oculta). |
+| `≤ 768px` | Hero vira coluna reversa (Beluga aparece acima). Grid de features passa para 1 coluna. How-it-works vira vertical. Pricing passa para 1 coluna. Footer empilha verticalmente. |
 
-```css
-.hero {
-  flex-direction: column;    /* empilha hero-left e hero-right verticalmente */
-  align-items: flex-start;
-  gap: 16px;
-}
-.hero-image { width: 220px; }
-.hero h1    { font-size: 30px; }
-.hero-highlight { font-size: 26px; letter-spacing: 6px; }
-```
-
-O layout do hero muda de duas colunas para uma coluna empilhada.
-
-#### `@media (max-width: 600px)` — mobile
-
-```css
-.pub-cta-header { display: none; }   /* esconde botão do header */
-.public-nav     { gap: 20px; }       /* reduz espaço entre links do nav */
-```
-
-Em mobile, o botão CTA do header (caso existisse) desaparece e os links de navegação ficam mais próximos.
+Em mobile, `.ld-plan--feat` e `.ld-mwin--center` perdem a elevação (`transform: none`) para evitar espaços desnecessários.
 
 ---
 
@@ -308,83 +459,81 @@ Em mobile, o botão CTA do header (caso existisse) desaparece e os links de nave
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `assets/js/app.js` | Registra a rota `"landing"` e vincula as funções |
-| `assets/js/router.js` | Controla quando a landing é renderizada e as proteções de rota |
-| `assets/js/screens/landing.js` | Contém `landingScreen()` e `landingInit()` |
+| `assets/js/app.js` | Registra a rota e vincula as funções |
+| `assets/js/router.js` | Controla quando renderizar e proteção de rota |
+| `assets/js/screens/landing.js` | `landingScreen()` e `landingInit()` |
 | `assets/js/state/auth.js` | Verifica se o usuário está logado |
 
 ---
 
-### Como a tela é carregada — fluxo do router
+### Funções auxiliares (privadas)
 
-Quando o usuário acessa o projeto pela primeira vez (sem hash na URL), ou acessa `#/landing`:
-
-```
-1. window.location.hash = "" ou "#/landing"
-2. router.js → renderRoute() é chamada
-3. rawHash = "landing"
-4. isLoggedIn() → false (usuário não logado)
-5. PUBLIC_ROUTES.includes("landing") → true
-6. document.body.classList.add("public-mode")   ← adiciona classe no body
-7. removeTopbar()   ← remove a barra de navegação interna
-8. removeBeluginha() ← remove o assistente de IA
-9. route = routes["landing"] → { render: landingScreen, init: landingInit }
-10. outlet.innerHTML = landingScreen()   ← injeta o HTML no #app
-11. landingInit()   ← registra os event listeners
-```
-
-**Proteção de rota:** Se o usuário já estiver logado e tentar acessar `#/landing`, o router redireciona automaticamente para `#/dashboard`:
+O arquivo define 4 funções de apoio antes de `landingScreen()`:
 
 ```javascript
-if (logged && isPublic) {
-  window.location.hash = "#/dashboard";
-  return;
-}
+// Renderiza item de feature na lista de plano (check ou X)
+function _feat(ok, label) { ... }
+
+// Renderiza card de depoimento completo
+function _testi(initials, color, name, role, text) { ... }
+
+// Renderiza uma linha de matéria no mockup do dashboard
+function _mockRow(color, width, pct) { ... }
+
+// Renderiza uma opção de quiz no mockup
+function _mockOpt(bg, bc, w) { ... }
 ```
+
+Essas funções são usadas dentro de template literals com `${}` para evitar repetição de código no HTML gerado.
 
 ---
 
-### `landingScreen()` — função de renderização
+### `landingScreen()` — renderização
 
 ```javascript
 export function landingScreen() {
-  return `<div class="public"> ... </div>`;
+  return `<div class="public" id="landing-root"> ... </div>`;
 }
 ```
 
-Esta função simplesmente **retorna uma string de HTML**. Não recebe parâmetros, não consulta estado, não faz requisições. É uma função pura de apresentação. O HTML é literalmente escrito dentro de um template literal (`\`...\``).
+Função pura que retorna HTML como string. Usa as 4 funções auxiliares para gerar as listas de features dos planos, os cards de depoimento e os mockups.
 
 ---
 
-### `landingInit()` — função de inicialização
+### `landingInit()` — inicialização
 
 ```javascript
 export function landingInit() {
-  const goLogin = () => {
-    window.location.hash = "#/login";
-  };
+  const goLogin = () => { window.location.hash = "#/login"; };
 
-  document.getElementById("cta-login")?.addEventListener("click", goLogin);
-  document.getElementById("cta-header")?.addEventListener("click", goLogin);
+  // Todos os botões de conversão apontam para login
+  ["cta-login", "cta-header", "cta-free", "cta-pro", "cta-anual", "cta-final"].forEach((id) => {
+    document.getElementById(id)?.addEventListener("click", goLogin);
+  });
 
-  document.querySelectorAll(".public-nav [data-scroll]").forEach((link) => {
-    link.addEventListener("click", () => {
-      document
-        .getElementById(link.dataset.scroll)
-        ?.scrollIntoView({ behavior: "smooth" });
+  // CTA "Ver como funciona" ancora na seção de preview
+  document.getElementById("cta-how")?.addEventListener("click", () => {
+    document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  // Todos os links com data-scroll fazem scroll suave para o id correspondente
+  document.querySelectorAll("[data-scroll]").forEach((el) => {
+    el.addEventListener("click", () => {
+      document.getElementById(el.dataset.scroll)?.scrollIntoView({ behavior: "smooth" });
     });
   });
+
+  // Scroll do window adiciona classe de estado no header
+  const hd = document.getElementById("pub-hd");
+  window.addEventListener("scroll", () => {
+    hd?.classList.toggle("pub-hd--scrolled", window.scrollY > 40);
+  }, { passive: true });
 }
 ```
 
-**O que ela faz:**
-
-1. **Botão "COMECE AGORA" (`#cta-login`)** — redireciona para `#/login` ao ser clicado.
-2. **Botão do header (`#cta-header`)** — também redireciona para `#/login`. Nota: este botão não existe no HTML atual da landing (não foi renderizado em `landingScreen()`), mas o listener é registrado preventivamente com `?.` (optional chaining) para não gerar erro.
-3. **Links da nav (`[data-scroll]`)** — ativam scroll suave (`scrollIntoView`) até o elemento com o `id` correspondente ao valor do atributo `data-scroll`.
-
-**Sobre o optional chaining (`?.`):**
-O operador `?.` garante que se um elemento não existir no DOM, o código não quebre. Exemplo: `document.getElementById("cta-header")?.addEventListener(...)` não lança erro se `#cta-header` for `null`.
+**Detalhes do scroll listener:**
+- `{ passive: true }` — informa ao browser que o listener não chama `preventDefault()`, permitindo otimizações de performance no scroll.
+- O listener persiste após a navegação para outra tela (sem cleanup), mas como `hd` referencia o elemento já removido do DOM, as chamadas são silenciosamente ignoradas.
 
 ---
 
@@ -392,11 +541,30 @@ O operador `?.` garante que se um elemento não existir no DOM, o código não q
 
 | Elemento | Evento | Ação |
 |---|---|---|
-| `#cta-login` (botão hero) | `click` | Muda hash para `#/login` |
-| `#cta-header` (botão nav) | `click` | Muda hash para `#/login` |
-| `.public-nav [data-scroll]` (links nav) | `click` | Scroll suave até o `id` correspondente |
-| `.strip-card` (cards) | `hover` (CSS) | Animação de elevação via CSS — sem JS |
-| `.hero-image-wrap` (mascote) | — | Animação contínua via CSS — sem JS |
+| `#cta-login` | `click` | → `#/login` |
+| `#cta-header` | `click` | → `#/login` |
+| `#cta-free` | `click` | → `#/login` |
+| `#cta-pro` | `click` | → `#/login` |
+| `#cta-anual` | `click` | → `#/login` |
+| `#cta-final` | `click` | → `#/login` |
+| `#cta-how` | `click` | scroll suave → `#como-funciona` |
+| `[data-scroll]` (nav + footer) | `click` | scroll suave → id correspondente |
+| `window` | `scroll` | toggle `.pub-hd--scrolled` se `scrollY > 40` |
+| `.hero-image-wrap` | — | float animation CSS — sem JS |
+| `.ld-fcard`, `.ld-tcard`, `.ld-mwin` | hover | elevação CSS — sem JS |
+
+---
+
+### Seções com ancoragem — status
+
+| Link nav | `data-scroll` | Seção alvo | Status |
+|---|---|---|---|
+| Funcionalidades | `funcionalidades` | `section.ld-features#funcionalidades` | Funciona |
+| Preço | `preco` | `section.ld-pricing#preco` | Funciona |
+| Contato | `contato` | `footer.ld-footer#contato` | Funciona |
+| — | `como-funciona` | `section.ld-preview#como-funciona` | Funciona (via botão CTA e footer) |
+
+Todos os 3 links do nav agora têm seções correspondentes. Os links do footer também usam `data-scroll` e são capturados pelo mesmo `querySelectorAll("[data-scroll]")`.
 
 ---
 
@@ -411,151 +579,113 @@ Router verifica auth
        ↓
 Não logado → renderiza Landing
        ↓
-Usuário vê: Header + Hero + Cards
+Vê: Header + Hero (Beluga flutuando)
        ↓
-Pode clicar em:
-  ├── "COMECE AGORA"    → vai para #/login
-  ├── "Funcionalidades" → scroll suave até section#funcionalidades (strip de cards)
-  ├── "Preço"           → scroll até section#preco (não implementado ainda)
-  └── "Contato"         → scroll até section#contato (não implementado ainda)
+Pode interagir com:
+  ├── "Começar grátis" / "Criar conta grátis" / "Assinar Pro" etc.
+  │        → vai para #/login
+  ├── "Ver como funciona"
+  │        → scroll suave até #como-funciona (Preview)
+  ├── Nav "Funcionalidades" → scroll até #funcionalidades
+  ├── Nav "Preço"           → scroll até #preco
+  └── Nav "Contato"         → scroll até #contato (footer)
 ```
 
-### Seções com ancoragem
+### Proteção de rota
 
-| Link nav | `data-scroll` | Elemento alvo (`id`) | Status |
-|---|---|---|---|
-| Funcionalidades | `funcionalidades` | `section.landing-strip#funcionalidades` | Funciona |
-| Preço | `preco` | Nenhum `id="preco"` na tela | Não scrolleia (silencioso) |
-| Contato | `contato` | Nenhum `id="contato"` na tela | Não scrolleia (silencioso) |
+Se o usuário já estiver logado e tentar acessar `#/landing`, o router redireciona para o dashboard:
 
-Os links de Preço e Contato **não causam erro** porque o `?.` no `scrollIntoView` é aplicado via optional chaining implícito: `document.getElementById(link.dataset.scroll)?.scrollIntoView(...)`.
+```javascript
+if (logged && isPublic) {
+  window.location.hash = "#/dashboard";
+  return;
+}
+```
 
 ---
 
 ## Componentes Importantes
 
-### Header público (`.public-header`)
+### Header sticky (`.public-header`)
 
-- Presente apenas nas telas públicas (landing, login, cadastro).
-- Não é o mesmo que o `topbar` das telas internas.
-- Contém: logo `logof.png` + nome "BELUGA" + links de navegação.
-- Sem funcionalidade de login/logout aqui — isso fica no `topbar`.
+- Usa `position: sticky; top: 0; z-index: 200`
+- Tem backdrop-blur (`blur(16px)`) para efeito de vidro fosco
+- Muda de opacidade ao rolar (`pub-hd--scrolled`)
+- Presente somente em telas públicas — diferente do `topbar` das telas internas
 
-### Mascote Beluga (`img.hero-image`)
+### Mascote Beluga
 
 - Imagem: `assets/images/BELUGA.png`
-- Invertida horizontalmente com `transform: scaleX(-1)` para olhar para o texto.
-- Sombra azul sutil com `filter: drop-shadow(...)`.
-- Animação CSS `float` de 5,5 segundos, infinita.
-- Largura fixa de 300px no desktop, 220px em tablet.
+- Invertida horizontalmente: `transform: scaleX(-1)` (olha para o texto)
+- Sombra: `filter: drop-shadow(0 24px 56px rgba(59,158,221,0.28))`
+- Animação: `float 5.5s ease-in-out infinite` (+18px amplitude)
+- Aparece **duas vezes**: no hero (340px) e no CTA final (120px)
 
-### Cards da Strip
+### Mockups de preview (`.ld-mwin`)
 
-**Card de funcionalidade (`.strip-card--feature`):**
-```
-┌─────────────────┐
-│  [Ícone SVG]    │
-│  Título         │
-│  Texto desc.    │
-└─────────────────┘
-```
-Largura: 180px fixos. Contém ícone SVG com cor temática, título e descrição.
+Janelas com chrome bar colorida que simulam as telas reais do app:
 
-**Card de depoimento (`.strip-card--person`):**
-```
-┌──────────────────────┐
-│  [Avatar circular]   │
-│  Nome do estudante   │
-│  Curso · Estado      │
-│  "Depoimento..."     │
-└──────────────────────┘
-```
-Largura: 210px (um pouco maior). Imagens dos avatares vêm do serviço `i.pravatar.cc`.
+| Janela | Conteúdo simulado |
+|---|---|
+| Dashboard | Avatar, barra XP, 3 stat cards, 3 barras de matéria |
+| Beluginha IA | 4 mensagens alternadas user/AI com bubbles |
+| Quiz | Barra de progresso, enunciado, 4 opções (1 selecionada) |
 
-### Botão CTA Principal (`.hero-cta`)
+Os elementos internos são `div.ld-mb` (blocos de altura fixa e background sutil) sem texto real — apenas representações visuais.
 
-O elemento de conversão mais importante da tela:
+### Planos (`.ld-plan`)
 
-```css
-background: linear-gradient(135deg, #1e5f8a, #3b9edd);
-box-shadow: 0 4px 22px rgba(59,158,221,0.35);
-padding: 12px 32px;
-border-radius: 10px;
-```
+Três cards com feature lists geradas por `_feat(ok, label)`:
+- `ok = true` → ícone check verde + texto normal
+- `ok = false` → ícone X + texto com 25% de opacidade
 
-Tem `id="cta-login"` para ser selecionado pelo JavaScript.
+O plano Pro fica `12px` acima dos outros (`transform: translateY(-12px)`) e tem badge "Mais popular" posicionado no topo.
+
+### Depoimentos (`.ld-tcard`)
+
+Avatares gerados com CSS (iniciais + gradiente de cor) — sem dependência de serviços externos como `pravatar.cc`.
 
 ---
 
-## Como Modificar no Futuro
+## Como Modificar
 
 ### Alterar textos
 
-| O que alterar | Onde no código | Linha aprox. |
+| O que alterar | Onde | Função/linha |
 |---|---|---|
-| Título principal do hero | `landing.js` → dentro do `<h1>` | linha 23 |
-| Palavra em destaque ("INTELIGENTE") | `landing.js` → `<span class="hero-highlight">` | linha 23 |
-| Subtítulo do hero | `landing.js` → `<p class="hero-sub">` | linha 24 |
-| Label do eyebrow | `landing.js` → `<p class="hero-eyebrow">` | linha 22 |
-| Texto dos cards | `landing.js` → `<p class="strip-card-text">` de cada card | linhas 46–93 |
-| Depoimentos (nomes e textos) | `landing.js` → `.strip-card--person` | linhas 49–55, 72–77 |
-| Texto do botão CTA | `landing.js` → `button.hero-cta` | linha 26 |
+| Tagline do hero | `landing.js` → `h1.ld-hero-h1` | `landingScreen()` |
+| Palavra em destaque ("entende") | `landing.js` → `em.ld-hl` | `landingScreen()` |
+| Subtítulo do hero | `landing.js` → `p.ld-hero-sub` | `landingScreen()` |
+| Stats bar (números) | `landing.js` → `section.ld-stats` | `landingScreen()` |
+| Títulos de funcionalidade | `landing.js` → `ld-fcard-h3` de cada card | `landingScreen()` |
+| Preços dos planos | `landing.js` → `.ld-pamt` + `.ld-pcts` | `landingScreen()` |
+| Features de cada plano | `landing.js` → `_feat(ok, label)` calls | `landingScreen()` |
+| Depoimentos | `landing.js` → `_testi(...)` calls | `landingScreen()` |
 
-### Alterar cores
-
-| O que alterar | Onde no CSS | O que modificar |
-|---|---|---|
-| Cor primária da landing | `landing.css` | Todas as ocorrências de `#3b9edd` |
-| Gradiente do botão CTA | `landing.css` → `.hero-cta` | `background: linear-gradient(...)` |
-| Cor do eyebrow e highlight | `landing.css` → `.hero-eyebrow` e `.hero-highlight` | `color:` |
-| Fundo do projeto inteiro | `variables.css` | `--bg: #030205` |
-
-### Alterar layout
+### Alterar cores principais
 
 | O que alterar | Onde | O que modificar |
 |---|---|---|
-| Proporção das colunas do hero | `landing.css` → `.hero-left` | `max-width: 520px` |
-| Tamanho do mascote | `landing.css` → `.hero-image` | `width: 300px` |
-| Altura da strip de cards | `landing.css` → `.landing-strip` | `padding`, `margin-top` |
-| Largura dos cards feature | `landing.css` → `.strip-card` | `width: 180px` |
-| Largura dos cards de depoimento | `landing.css` → `.strip-card--person` | `width: 210px` |
+| Cor primária (azul) | `landing.css` | Todas as ocorrências de `#3b9edd` |
+| Gradiente do botão | `landing.css` → `.ld-btn-primary` | `background: linear-gradient(...)` |
+| Highlight do h1 | `landing.css` → `.ld-hl` | `background: linear-gradient(...)` |
+| Glow do hero | `landing.css` → `.ld-hero-glow` | `background: radial-gradient(...)` |
+| Cor do fundo geral | `variables.css` | `--bg:` |
+
+### Adicionar nova seção
+
+1. Adicionar a `<section id="nome-da-secao">` no HTML de `landingScreen()` entre as seções existentes
+2. Adicionar link no nav com `data-scroll="nome-da-secao"` — o JS captura automaticamente via `querySelectorAll("[data-scroll]")`
+3. Adicionar estilos em `landing.css`
 
 ### Alterar animações
 
 | O que alterar | Onde | O que modificar |
 |---|---|---|
-| Velocidade da flutuação do mascote | `landing.css` → `.hero-image-wrap` | `animation: float 5.5s` |
+| Velocidade da flutuação | `landing.css` → `.hero-image-wrap` | `animation: float Xs` |
 | Amplitude da flutuação | `landing.css` → `@keyframes float` | `translateY(-18px)` |
-| Efeito hover dos cards | `landing.css` → `.strip-card:hover` | `transform`, `box-shadow` |
-
-### Adicionar novos links no nav
-
-Adicionar no HTML (`landing.js`) dentro de `nav.public-nav`:
-```html
-<a href="javascript:void(0)" data-scroll="id-da-secao">Nome do Link</a>
-```
-
-E criar no HTML uma section com o id correspondente:
-```html
-<section id="id-da-secao"> ... </section>
-```
-
-O JavaScript já está preparado para processar qualquer link com `data-scroll` automaticamente.
-
-### Adicionar novos cards na strip
-
-Dentro de `div.strip-track` em `landing.js`, adicionar:
-
-```html
-<!-- Card de funcionalidade -->
-<div class="strip-card strip-card--feature">
-  <div class="strip-feature-img" style="background:rgba(R,G,B,0.1)">
-    <!-- SVG icon aqui -->
-  </div>
-  <h3 class="strip-card-title">Título</h3>
-  <p class="strip-card-text">Descrição curta.</p>
-</div>
-```
+| Transição do header | `landing.css` → `.public-header` | `transition:` |
+| Threshold do scroll | `landing.js` → `landingInit()` | `window.scrollY > 40` |
 
 ---
 
@@ -569,30 +699,29 @@ index.html
 │   └── @import layout/page-layout.css ← .layout, .content, .container
 │
 └── <script> assets/js/app.js
-    ├── import router.js → startRouter() ← controla quando renderizar
-    └── import landing.js → registerRoute("landing", { render, init })
-        ├── landingScreen() → retorna HTML como string
-        └── landingInit()   → registra eventos no DOM
+    ├── import router.js → startRouter()
+    └── import landing.js
+        ├── landingScreen()  → retorna HTML como string
+        └── landingInit()    → registra eventos no DOM
 ```
 
-### Componentes globais presentes nesta tela
+### Componentes globais nesta tela
 
 | Componente | Presente na Landing? | Motivo |
 |---|---|---|
-| Topbar (`#topbar`) | **Não** | Removida pelo router para rotas públicas |
-| Beluginha IA | **Não** | Removida pelo router para rotas públicas |
-| `.layout` / `.content` | **Sim** | Estrutura base do `index.html` |
-| `body.public-mode` | **Sim** | Classe adicionada pelo router |
+| Topbar (`#topbar`) | Não | Removida pelo router para rotas públicas |
+| Beluginha IA (chat) | Não | Removida pelo router para rotas públicas |
+| `.layout` / `.content` | Sim | Estrutura base do `index.html` |
+| `body.public-mode` | Sim | Classe adicionada pelo router |
 
 ---
 
 ## Observações Técnicas
 
-**Por que não existe `<html>` com rotas?**
-O projeto é uma SPA. O browser carrega `index.html` uma única vez. Toda "navegação" é feita alterando o `window.location.hash`, que aciona o `hashchange` event listener no router.
+**Scroll no body, não em container filho:** O layout não tem `overflow: hidden` em nenhum ancestral da landing, então o scroll é no `window`. Por isso o scroll listener está em `window` e o header usa `position: sticky` (que sticks relativo ao viewport).
 
-**Por que o HTML das telas fica em arquivos `.js`?**
-Porque o JavaScript gera e injeta o HTML dinamicamente. Isso permite que cada tela seja um módulo independente, carregado sob demanda. A desvantagem é que o HTML não é diretamente legível no browser sem JavaScript.
+**Sem cleanup do scroll listener:** O `window.addEventListener('scroll', ...)` persiste após navegação. Como `hd` captura o elemento antes da navegação, as chamadas após o desmonte são silenciosas (`hd?.classList` não lança erro para elemento não conectado ao DOM).
 
-**Por que `javascript:void(0)` nos links do nav?**
-Os links da nav não têm um destino real de URL — eles disparam comportamento via JavaScript (scroll ou navegação por hash). O `href="javascript:void(0)"` previne que o browser tente navegar e adiciona cursor pointer.
+**Template literals com funções:** O HTML gerado por `_feat()`, `_testi()`, `_mockRow()` e `_mockOpt()` é interpolado dentro do template literal principal com `${}`. Isso mantém o HTML limpo e evita repetição, mas significa que todo o HTML é regenerado a cada render da tela.
+
+**Avatares sem dependência externa:** A versão anterior usava `pravatar.cc` (serviço externo de avatares aleatórios). A versão atual usa divs com iniciais e gradiente CSS — sem chamada de rede adicional, sem dependência de terceiros.

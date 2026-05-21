@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-O Fórum é o espaço de dúvidas acadêmicas do BELUGA. Estudantes postam perguntas e monitores (alunos de alto desempenho) respondem. Cada pergunta tem status (Aguardando / Em análise / Respondida), ações de lembrete e compartilhamento, e o usuário pode se candidatar a monitor pela sidebar.
+O Fórum é o espaço de dúvidas acadêmicas do BELUGA. Estudantes postam perguntas e monitores (alunos de alto desempenho) respondem. Cada pergunta tem status (Aguardando / Em análise / Respondida), ações de lembrete e compartilhamento, e o usuário pode se candidatar a monitor pela sidebar. Clicar no avatar ou nome de qualquer autor (pergunta ou resposta) abre o **modal de perfil de usuário** (componente reutilizável `userProfileModal`).
 
 ### Organização visual
 
@@ -66,16 +66,20 @@ div.fr-page
     │   └── div#fr-list.fr-list
     │       └── article.fr-question[data-id]  ← renderQuestion() por pergunta
     │           ├── div.fr-q-header
-    │           │   ├── (avatar do autor)
-    │           │   ├── div.fr-q-meta  ← nome + tempo
+    │           │   ├── div.fr-avatar[data-profile-trigger][data-user-*]  ← abre modal
+    │           │   ├── div.fr-q-meta
+    │           │   │   ├── span.fr-q-author[data-profile-trigger][data-user-*]  ← abre modal
+    │           │   │   └── span.fr-q-time
     │           │   └── div.fr-q-tags  ← tag de matéria + badge de status
     │           ├── h3.fr-q-title
     │           ├── p.fr-q-content
     │           ├── div.fr-answers  ← só se q.answers.length > 0
     │           │   └── div.fr-answer
-    │           │       ├── (avatar do respondente)
+    │           │       ├── div.fr-avatar[data-profile-trigger][data-user-*]  ← abre modal
     │           │       └── div.fr-answer-body
-    │           │           ├── div.fr-answer-meta  ← nome + badge Monitor
+    │           │           ├── div.fr-answer-meta
+    │           │           │   ├── span.fr-answer-name[data-profile-trigger][data-user-*]  ← abre modal
+    │           │           │   └── span.fr-monitor-badge (se aplicável)
     │           │           └── p.fr-answer-text
     │           ├── div.fr-reply-compose  ← só se q.showReply = true
     │           │   ├── input.fr-reply-input[data-id]
@@ -125,6 +129,7 @@ div.fr-page
 | `.fr-candidate-btn--done` | `<button>` | Estado após candidatura — verde, desabilitado |
 | `.fr-stats-grid` | `<div>` | Grid 2×2 com as 4 estatísticas do fórum |
 | `.fr-subject-tag` | `<span>` | Tag de matéria com cor dinâmica |
+| `[data-profile-trigger]` | `div/span` | Presente nos avatares e nomes de autores — aciona o modal de perfil |
 
 ---
 
@@ -327,6 +332,7 @@ Um único listener no container. Quatro ações possíveis via `data-action`. O 
 | `#fr-candidate-btn` | `click` | `_handleCandidate()` |
 | `#fr-list` | `click` (delegado) | Direciona para ação pelo `data-action` |
 | `#fr-list` | `keydown (Enter)` em `.fr-reply-input` | `_sendReply(id)` |
+| `document` | `click` (delegado global) | `[data-profile-trigger]` → `openUserProfileModal()` — registrado por `initUserProfileModal()` |
 
 ---
 
@@ -397,6 +403,10 @@ localStorage.setItem("beluga_candidated", "1");
 
 ```
 assets/js/screens/forum.js
+ └── import initUserProfileModal from components/userProfileModal.js
+     └── cria o overlay do modal UMA vez (idempotente)
+     └── registra listener global em document para [data-profile-trigger]
+     └── triggers em: avatar do autor da pergunta, nome do autor, avatar do respondente, nome do respondente
  └── FORUM_QUESTIONS_MOCK (local — 6 perguntas)
  └── FORUM_STATS, FORUM_CATEGORIES, SUBJECT_COLORS (local)
  └── forumState (memória de módulo — persiste entre navegações)
@@ -408,5 +418,6 @@ assets/js/screens/forum.js
 |---|---|
 | Topbar | **Sim** |
 | Beluginha IA | **Sim** |
+| Modal de perfil (`userProfileModal`) | **Sim** — iniciado em `forumInit()` |
 | `.button.button-primary` (buttons.css) | **Sim** — botão Postar |
 | `.input` (forms.css) | **Não** — `.fr-reply-input` tem estilo próprio |

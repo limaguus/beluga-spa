@@ -1,0 +1,406 @@
+/* =========================================================
+   USER PROFILE MODAL  (.up-*)
+   Componente reutilizável — Feed e Fórum
+   ========================================================= */
+
+/* ── Overlay ──────────────────────────────────────────── */
+.up-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.up-overlay--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Modal container ──────────────────────────────────── */
+.up-modal {
+  position: relative;
+  background: #040530;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transform: scale(0.93) translateY(10px);
+  opacity: 0;
+  transition:
+    transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.18s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 158, 221, 0.25) transparent;
+}
+
+.up-overlay--open .up-modal {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.up-modal::-webkit-scrollbar        { width: 4px; }
+.up-modal::-webkit-scrollbar-track  { background: transparent; }
+.up-modal::-webkit-scrollbar-thumb  { background: rgba(59, 158, 221, 0.3); border-radius: 2px; }
+
+/* ── Botão fechar ─────────────────────────────────────── */
+.up-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.up-close:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Header: avatar + nome + bio ──────────────────────── */
+.up-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding-right: 28px;
+}
+
+.up-avatar {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 22px;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.up-header-info {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.up-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.up-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.up-monitor-badge {
+  background: rgba(168, 85, 247, 0.14);
+  border: 1px solid rgba(168, 85, 247, 0.38);
+  color: #c084fc;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.up-bio {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Seções ───────────────────────────────────────────── */
+.up-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 18px;
+  padding-top: 16px;
+}
+
+.up-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  margin: 0 0 12px;
+}
+
+/* ── XP + Nível ───────────────────────────────────────── */
+.up-xp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.up-level-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+}
+
+.up-xp-nums {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.38);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.up-xp-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.up-xp-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2b719c, #3b9edd);
+  transition: width 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Grid de estatísticas ─────────────────────────────── */
+.up-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.up-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.up-stat-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.up-stat-key {
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ── Conquistas (grade de selos) ──────────────────────── */
+.up-badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.up-badge {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  cursor: default;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.up-badge:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.12) translateY(-1px);
+}
+
+.up-badge--rare {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.18);
+}
+
+.up-badge--rare:hover {
+  background: rgba(168, 85, 247, 0.18);
+  border-color: rgba(168, 85, 247, 0.52);
+}
+
+/* Tooltip CSS puro */
+.up-badge::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(4, 5, 48, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.14s;
+  z-index: 10;
+}
+
+.up-badge:hover::after { opacity: 1; }
+
+/* ── Atividade recente ────────────────────────────────── */
+.up-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.up-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.up-activity-tag {
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 99px;
+  margin-top: 2px;
+}
+
+.up-tag--feed {
+  background: rgba(59, 158, 221, 0.14);
+  border: 1px solid rgba(59, 158, 221, 0.28);
+  color: #7bc8f0;
+}
+
+.up-tag--forum {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  color: #c084fc;
+}
+
+.up-activity-text {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Estado vazio ─────────────────────────────────────── */
+.up-empty {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── Hover nos elementos clicáveis (triggers) ─────────── */
+[data-profile-trigger] {
+  cursor: pointer;
+}
+
+.fd-avatar[data-profile-trigger],
+.fr-avatar[data-profile-trigger] {
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.fd-avatar[data-profile-trigger]:hover,
+.fr-avatar[data-profile-trigger]:hover {
+  opacity: 0.78;
+  transform: scale(1.07);
+}
+
+.fd-post-author[data-profile-trigger],
+.fr-q-author[data-profile-trigger],
+.fr-answer-name[data-profile-trigger] {
+  transition: color 0.15s;
+}
+
+.fd-post-author[data-profile-trigger]:hover,
+.fr-q-author[data-profile-trigger]:hover,
+.fr-answer-name[data-profile-trigger]:hover {
+  color: #7bc8f0;
+}
+
+/* ── Responsivo ───────────────────────────────────────── */
+@media (max-width: 560px) {
+  .up-modal {
+    padding: 20px 18px;
+    border-radius: 12px;
+    max-height: 90vh;
+  }
+
+  .up-avatar {
+    width: 54px;
+    height: 54px;
+    font-size: 18px;
+  }
+
+  .up-name    { font-size: 15px; }
+  .up-bio     { font-size: 12px; }
+
+  .up-stats-grid { gap: 8px; }
+
+  .up-stat       { padding: 10px 6px; }
+  .up-stat-val   { font-size: 14px; }
+  .up-stat-key   { font-size: 9.5px; }
+
+  .up-badge { width: 40px; height: 40px; font-size: 19px; }
+}

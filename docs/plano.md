@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-O Plano de Estudos gera uma tabela semanal distribuindo as disciplinas cadastradas na Matriz ao longo dos dias da semana. A distribuição usa um algoritmo de prioridade por dificuldade (high → medium → low), rotacionando as matérias por índice. O plano é puramente visual — não persiste nenhum estado próprio.
+O Plano de Estudos exibe trilhas de conhecimento detalhadas por matéria, organizadas por dia da semana. O aluno navega entre os dias da semana clicando nas tabs no topo do conteúdo principal. Cada dia mostra as trilhas das matérias programadas para aquele dia, com tópicos clicáveis que levam direto às aulas — sem que o aluno precise procurar nada. O plano é gerado (estaticamente por ora) pela Belugin IA com base no desempenho do quiz.
 
 ### Organização visual
 
@@ -21,24 +21,22 @@ O Plano de Estudos gera uma tabela semanal distribuindo as disciplinas cadastrad
 │                                                                  │
 │  PLANO-HEADER-ROW                                                │
 │  "Plano de Estudos"         [↺ Refazer o Plano de Estudos]      │
-│  "Personalizado com base no seu diagnóstico"                     │
+│  "Trilha de conhecimento gerada pela Belugin IA"                 │
 │                                                                  │
 │  PLANO-BODY (grid: 220px + 1fr)                                  │
 │  ┌────────────────────┐  ┌──────────────────────────────────┐    │
-│  │  PLANO-SIDEBAR     │  │  PLANO-TABLE-WRAP                │    │
-│  │  [avatar + nome]   │  │  ▔▔▔▔ (linha decorativa topo)   │    │
-│  │  [legenda cores]   │  │  ┌──────────────────────────┐   │    │
-│  │  [grupos por nível]│  │  │ thead                    │   │    │
-│  └────────────────────┘  │  │ Dia | 1ª mat | 2ª mat | cor│   │    │
-│                           │  ├──────────────────────────┤   │    │
-│                           │  │ Segunda | X | Y | ● ●    │   │    │
-│                           │  │ Terça   | X | Y | ● ●    │   │    │
-│                           │  │ ...     | ...             │   │    │
-│                           │  │ Sábado  | X | Livre| ● opcional│  │
-│                           │  │ Domingo | Revisão| Livre | ● descanso│
-│                           │  └──────────────────────────┘   │    │
-│                           │  [ℹ Este plano é gerado...]      │    │
-│                           └──────────────────────────────────┘    │
+│  │  PLANO-SIDEBAR     │  │  PLANO-MAIN                      │    │
+│  │  [avatar + nome]   │  │                                  │    │
+│  │  [legenda cores]   │  │  [Seg][Ter][Qua][Qui][Sex][Sáb][Dom]│ │
+│  │                    │  │  ────────────────────────────── │    │
+│  │                    │  │  Resumo: 2 matérias · ~X min    │    │
+│  │                    │  │  ────────────────────────────── │    │
+│  │                    │  │  ┌─ 1º ◉ Trilha A ─────────┐   │    │
+│  │                    │  │  │  status · tópico · dur   │   │    │
+│  │                    │  │  └──────────────────────────┘   │    │
+│  │                    │  │  ┌─ 2º ◉ Trilha B ─────────┐   │    │
+│  │                    │  │  │  status · tópico · dur   │   │    │
+│  └────────────────────┘  └──────────────────────────────────┘    │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
@@ -53,54 +51,95 @@ O Plano de Estudos gera uma tabela semanal distribuindo as disciplinas cadastrad
 main.plano
 ├── div.plano-header-row
 │   ├── div.plano-header-text
-│   │   ├── h1.plano-title          ← "Plano de Estudos"
-│   │   └── p.plano-subtitle        ← "Personalizado com base..."
+│   │   ├── h1.plano-title
+│   │   └── p.plano-subtitle
 │   └── button#btn-refazer.plano-refazer-btn
-│       ├── svg.plano-refazer-icon  ← ícone de reload
-│       └── texto "Refazer o Plano de Estudos"
 └── div.plano-body
     ├── aside.plano-sidebar
     │   ├── div.plano-profile-card
-    │   │   ├── div.plano-avatar-ring
-    │   │   │   └── img.plano-avatar-img  ← fotorosto.jpeg
+    │   │   ├── div.plano-avatar-ring > img.plano-avatar-img
     │   │   └── div.plano-profile-info
-    │   │       ├── span#plano-user-name.plano-profile-name  ← "JIMMY" (hardcoded)
-    │   │       └── span.plano-profile-role  ← "ENG. SOFTWARE" (hardcoded)
-    │   ├── div.plano-legend
-    │   │   ├── p.plano-legend-title  ← "LEGENDA"
-    │   │   └── div.plano-legend-item × 3  ← dot + label por nível
-    │   └── div#plano-groups           ← pills por nível (dinâmico)
-    └── div.plano-table-wrap
-        ├── (::before — linha decorativa no topo via CSS)
-        ├── table.plano-table
-        │   ├── thead > tr
-        │   │   └── th × 4  ← Dia, 1ª matéria, 2ª matéria, Nível
-        │   └── tbody#plano-tbody  ← 7 linhas dinâmicas (uma por dia)
-        └── p.plano-note  ← aviso de que o plano será personalizado com IA
+    │   │       ├── span.plano-profile-name
+    │   │       └── span.plano-profile-role
+    │   └── div.plano-legend
+    │       ├── p.plano-legend-title
+    │       └── div.plano-legend-item × 3
+    └── div.plano-main
+        ├── div.pt-setup-notice          ← só quando matriz vazia
+        ├── div.plano-day-tabs           ← tabs Seg…Dom
+        │   └── button.plano-day-tab × 7
+        │       ├── span.plano-day-tab-name
+        │       ├── span.plano-day-tab-dot   ← só no dia de hoje
+        │       └── span.plano-day-tab-count / .plano-day-tab-pill
+        ├── div#pt-trails-container.pt-trails   ← conteúdo dinâmico
+        │   ├── div.plano-day-summary    ← resumo do dia
+        │   └── div.pt-trail × N        ← trilhas do dia
+        │       ├── div.pt-trail-head
+        │       │   ├── span.pt-trail-order  (1º, 2º)
+        │       │   ├── div.pt-ring-wrap > svg.pt-ring
+        │       │   ├── div.pt-trail-meta
+        │       │   │   ├── h2.pt-trail-name
+        │       │   │   └── div.pt-trail-tags
+        │       │   │       ├── span.pt-badge
+        │       │   │       └── span.pt-ia-hint
+        │       │   └── div.pt-trail-count
+        │       │       ├── span.pt-count-num
+        │       │       ├── span.pt-count-label
+        │       │       └── span.pt-count-time
+        │       └── div.pt-topics
+        │           └── a.pt-topic × N
+        │               ├── span.pt-status
+        │               ├── span.pt-topic-name
+        │               ├── span.pt-topic-dur
+        │               └── span.pt-topic-cta
+        └── p.plano-note
 ```
 
-### Classes importantes
+Para dias de descanso/revisão, `#pt-trails-container` recebe um `div.plano-special-day` ao invés das trilhas.
 
-| Classe | Elemento | Função |
+---
+
+## Dados
+
+### `LEVEL_META`
+
+| Chave | Label | Cor | Horas sugeridas |
+|---|---|---|---|
+| `high` | Atenção | `#ef4444` | 3–4h por semana |
+| `medium` | Em progresso | `#f59e0b` | 2h por semana |
+| `low` | Consolidado | `#22c55e` | 1h por semana |
+
+### `PLAN_SUBJECTS`
+
+Array de 6 matérias (hardcoded, futuramente virá da Belugin IA):
+
+| Campo | Tipo | Descrição |
 |---|---|---|
-| `.plano-header-row` | `<div>` | Flex row com título + botão Refazer, `flex-wrap: wrap` |
-| `.plano-title` | `<h1>` | Gradient text branco→azul claro |
-| `.plano-body` | `<div>` | Grid `220px 1fr` — sidebar fixa + tabela |
-| `.plano-profile-card` | `<div>` | Card azul com avatar, nome e cargo |
-| `.plano-avatar-ring` | `<div>` | Ring de gradiente ao redor do avatar |
-| `.plano-legend` | `<div>` | Card com os três dots e seus labels |
-| `.plano-dot` | `<span>` | Bolinha colorida com glow — inline-block 10×10px |
-| `.plano-group` | `<div>` | Card de grupo de disciplinas por nível |
-| `.plano-pill` | `<span>` | Badge de uma disciplina (display: block) |
-| `.plano-table-wrap` | `<div>` | Container da tabela com gradiente e sombra |
-| `.plano-table` | `<table>` | Tabela semanal (border-collapse: collapse) |
-| `.plano-row` | `<tr>` | Linha de um dia — hover azul translúcido |
-| `.plano-subject` | `<span>` | Nome da disciplina em azul `#3b9edd` |
-| `.plano-cell-rest` | classe em `.plano-subject` | Estilo itálico + opaco para "Livre/descanso" |
-| `.plano-cell-optional` | classe em `.plano-subject` | Estilo itálico + opaco para Sábado opcional |
-| `.plano-opt-tag` | `<span>` | Badge amarelo "opcional" (Sábado) |
-| `.plano-rest-tag` | `<span>` | Badge verde "descanso" (Domingo) |
-| `.plano-note` | `<p>` | Rodapé com ícone SVG e aviso de IA futura |
+| `id` | string | Slug que bate com a rota `#/aulas?materia={id}` |
+| `name` | string | Nome completo da matéria |
+| `progress` | number | Percentual de progresso geral (0–100) |
+| `level` | `"high" \| "medium" \| "low"` | Urgência |
+| `topicos` | array | Lista de tópicos da trilha |
+
+Cada tópico:
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `titulo` | string | Nome do tópico |
+| `dur` | string | Duração estimada (ex: `"25 min"`) |
+| `done` | boolean | Se o tópico foi concluído |
+| `rec` | boolean | Se a IA recomenda este tópico com prioridade |
+
+### `WEEK_PLAN`
+
+7 entradas (Seg–Dom) com:
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `day` | string | Abreviação do dia (`"Seg"`, `"Ter"`, …) |
+| `subjects` | string[] | IDs das matérias daquele dia |
+| `optional` | boolean? | Sábado — revisão livre |
+| `rest` | boolean? | Domingo — descanso |
 
 ---
 
@@ -109,253 +148,137 @@ main.plano
 ### Arquivos que estilizam esta tela
 
 ```
-main.css
- └── base/variables.css
- └── pages/plano.css  ← todos os estilos exclusivos
+assets/css/pages/plano.css  ← todos os estilos exclusivos
 ```
 
-### Layout principal
+### Classes principais
 
-```css
-.plano-body {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 20px;
-  align-items: start;
-}
-```
+| Classe | Elemento | Função |
+|---|---|---|
+| `.plano-body` | `<div>` | Grid `220px 1fr` — sidebar + conteúdo principal |
+| `.plano-main` | `<div>` | Coluna direita: flex-column com tabs + trails + nota |
+| `.plano-day-tabs` | `<div>` | Faixa horizontal de botões de dia, scroll horizontal oculto |
+| `.plano-day-tab` | `<button>` | Tab de um dia — flex-column (nome + indicador) |
+| `.plano-day-tab.active` | — | Fundo azul translúcido + borda azul |
+| `.plano-day-tab.today` | — | Marca o dia atual |
+| `.plano-day-tab-dot` | `<span>` | Bolinha azul indicando o dia de hoje |
+| `.plano-day-tab-count` | `<span>` | Badge com número de matérias do dia |
+| `.plano-day-tab-pill--rest` | `<span>` | Pill verde "Descanso" (Dom) |
+| `.plano-day-tab-pill--opt` | `<span>` | Pill amarela "Revisão" (Sáb) |
+| `.plano-day-summary` | `<div>` | Barra de resumo do dia (matérias, tópicos, tempo) |
+| `.plano-today-badge` | `<span>` | Pill "Hoje" em azul no resumo |
+| `.plano-special-day` | `<div>` | Cartão para dias de descanso ou revisão livre |
+| `.plano-opt-subjects` | `<div>` | Links para matérias no dia de revisão livre |
+| `.pt-trail` | `<div>` | Card de trilha de uma matéria — `border-left` com `var(--tc)` |
+| `.pt-trail-order` | `<span>` | "1º", "2º" — indica a ordem de estudo do dia |
+| `.pt-trail-head` | `<div>` | Cabeçalho da trilha: ordem + anel + meta + contador |
+| `.pt-ring-wrap` | `<div>` | Wrapper posicionado para o anel SVG + label central |
+| `.pt-badge--high/medium/low` | `<span>` | Pill de nível colorido |
+| `.pt-trail-count` | `<div>` | "X/Y concluídos" + tempo restante |
+| `.pt-count-time` | `<span>` | Tempo pendente (~X min) — verde se tudo feito |
+| `.pt-topics` | `<div>` | Lista de tópicos da trilha |
+| `.pt-topic` | `<a>` | Linha de tópico — grid 4 colunas, link para aulas |
+| `.pt-topic--done` | — | Tópico concluído: riscado + opaco |
+| `.pt-topic--rec` | — | Tópico recomendado pela IA: fundo roxo leve |
+| `.pt-status--open/done` | `<span>` | Círculo vazio ou preenchido verde |
+| `.pt-ia-tag` | `<span>` | Pill "IA" roxa — destaca tópico recomendado |
+| `.pt-topic-cta` | `<span>` | "Estudar →" / "Revisar →" |
 
-A sidebar tem `220px` fixo. `align-items: start` evita que ela estique até a altura da tabela.
-
-### Título com gradient text
-
-```css
-.plano-title {
-  background: linear-gradient(135deg, #fff 20%, #a8d8f0 55%, rgba(59,158,221,0.75));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-```
-
-Técnica de gradient text: `-webkit-text-fill-color: transparent` torna o texto transparente para o background aparecer. `background-clip: text` (com prefixo webkit) recorta o gradiente no contorno das letras.
-
-### Linha decorativa no topo da tabela
-
-```css
-.plano-table-wrap::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(59,158,221,0.55) 35%,
-    rgba(123,200,240,0.8) 50%,
-    rgba(59,158,221,0.55) 65%,
-    transparent 100%
-  );
-}
-```
-
-Pseudo-elemento que cria uma linha de 2px no topo do card, com gradiente simétrico que some nas bordas (transparent → azul → branco no centro → azul → transparent). O `.plano-table-wrap` precisa de `position: relative` para o `absolute` funcionar.
-
-### Dot colorido com glow
+### Theming por matéria
 
 ```javascript
-// gerado no JS:
-`<span class="plano-dot" style="background:${color};box-shadow:0 0 6px ${color}88"></span>`
+// JS gera via inline style:
+`<div class="pt-trail" style="--tc:${meta.color}">`
 ```
 
 ```css
-.plano-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
+/* CSS consome: */
+.pt-trail         { border-left: 3px solid var(--tc, #3b9edd); }
+.pt-trail-order   { color: var(--tc, #3b9edd); }
 ```
 
-O glow é aplicado via `style` inline no JS. `${color}88` adiciona `88` em hex após a cor — equivale a ~53% de opacidade no canal alpha (0x88 = 136/255 ≈ 0.53).
+Cada trilha herda automaticamente a cor do seu nível sem classe extra.
 
-### Estados das células secundárias
+### Anel SVG de progresso
 
-```css
-.plano-subject.plano-cell-rest     { color: rgba(255,255,255,0.3); font-style: italic; }
-.plano-subject.plano-cell-optional { color: rgba(255,255,255,0.35); font-style: italic; }
-```
-
-Células de "Livre ou descanso" e "Livre ou revisão" ficam em itálico e quase transparentes para indicar que não são matérias obrigatórias.
-
-### Tags de sábado e domingo
-
-```css
-.plano-opt-tag  { background: rgba(245,158,11,0.12);  color: #f59e0b; }  /* amarelo */
-.plano-rest-tag { background: rgba(34,197,94,0.1);    color: #22c55e; }  /* verde */
-```
-
-Sábado = "opcional" em amarelo. Domingo = "descanso" em verde.
+O viewBox `0 0 36 36` com `r="15.9"` resulta em circunferência ≈ 100px. Por isso `stroke-dasharray="${progress} ${gap}"` onde `gap = 100 - progress` mapeia diretamente percentuais sem cálculo trigonométrico.
 
 ### Responsividade
 
-```css
-@media (max-width: 768px) {
-  .plano-body {
-    grid-template-columns: 1fr;  /* sidebar vai para cima da tabela */
-  }
-  .plano-sidebar {
-    display: grid;
-    grid-template-columns: 1fr 1fr;  /* sidebar vira 2 colunas */
-    gap: 12px;
-  }
-  .plano-profile-card {
-    grid-column: 1 / -1;         /* profile ocupa a linha inteira */
-    flex-direction: row;          /* avatar + texto lado a lado */
-    text-align: left;
-  }
-}
-```
-
-Em mobile: a sidebar vai acima da tabela (grid 1 coluna), a sidebar interna vira 2 colunas e o card de perfil ocupa a linha inteira em modo horizontal.
+| Breakpoint | Mudança |
+|---|---|
+| `≤ 900px` | `.pt-trail-name` quebra linha; coluna CTA some das trilhas |
+| `≤ 768px` | Sidebar empilha acima; `.pt-topic-dur` some; `.plano-sidebar` vira 2 colunas |
+| `≤ 640px` | Tabs menores; pills das tabs somem; cartão especial empilha verticalmente |
 
 ---
 
 ## JavaScript
 
-### Constantes
+### Constantes e dados
 
 ```javascript
-const DAYS = ["Segunda","Terça","Quarta","Quinta","Sexta","Sábado","Domingo"];
-
-const LEVEL_COLORS = { high: "#ef4444", medium: "#f59e0b", low: "#22c55e" };
-const LEVEL_LABELS = { high: "Maior dificuldade", medium: "Em progresso", low: "Consolidado" };
+const LEVEL_META   = { high: {...}, medium: {...}, low: {...} };
+const PLAN_SUBJECTS = [ /* 6 matérias com topicos[] */ ];
+const WEEK_PLAN     = [ /* 7 dias com subjects[] */ ];
 ```
 
-Três níveis com cores semânticas: vermelho (dificuldade), amarelo (progresso), verde (consolidado).
-
-### `buildPlan(disciplines)` — algoritmo de distribuição
+### Helpers de dados
 
 ```javascript
-const levelOf = (i) => ["high", "medium", "low"][i % 3];
+const DAY_JS_MAP = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+function getTodayDay()          // retorna abreviação do dia atual
+function parseDur(dur)          // "25 min" → 25
+function subjectPendingMin(s)   // soma dur dos tópicos não-done de uma matéria
+function formatTime(min)        // 95 → "1h 35min"
 ```
 
-O nível de cada disciplina é determinado pelo seu índice na lista: índice 0 = high, 1 = medium, 2 = low, 3 = high novamente, etc. **Isso é uma simulação estática** — quando a IA for integrada, o nível virá das respostas do quiz.
+### Funções de render
 
-```javascript
-const byLevel = { high: [], medium: [], low: [] };
-disciplines.forEach((d, i) => byLevel[levelOf(i)].push(d));
+| Função | Saída |
+|---|---|
+| `progressRing(progress, color)` | SVG anel com `stroke-dasharray` |
+| `topicRow(topic, subjectId)` | `<a class="pt-topic">` com status, nome, duração, CTA |
+| `trailCard(subject, order)` | `<div class="pt-trail">` completo com cabeçalho + tópicos |
+| `daySummaryBar(subjects, isToday)` | Barra com contagem de matérias, tópicos e tempo pendente |
+| `restDayCard()` | Cartão de descanso (Domingo) |
+| `optionalDayCard()` | Cartão de revisão livre (Sábado) com links para todas as matérias |
+| `renderDayContent(dayName)` | Resume + trilhas do dia, ou cartão especial |
+| `dayTabs(activeDay)` | Faixa com 7 botões — marca `active` e `today` |
 
-const sorted = [...byLevel.high, ...byLevel.medium, ...byLevel.low];
-```
+### `planoEstudoScreen()`
 
-As disciplinas são agrupadas por nível e reorganizadas com as de maior dificuldade primeiro (prioridade).
+Renderiza o HTML estático com o dia atual (`getTodayDay()`) como tab ativa. Chama `dayTabs(today)` e `renderDayContent(today)` diretamente — nenhum estado precisa ser gerenciado no render.
 
-```javascript
-const rows = DAYS.map((day, i) => {
-  if (day === "Sábado") {
-    return { day, primary: sorted[i % sorted.length], optional: true, ... };
-  }
-  if (day === "Domingo") {
-    return { day, primary: "Revisão geral", primaryLevel: "low", rest: true, ... };
-  }
-  const pri = sorted[i % sorted.length];
-  const sec = sorted[(i + 1) % sorted.length];
-  return { day, primary: pri, secondary: sec, ... };
-});
-```
+### `planoEstudoInit()`
 
-- Segunda a Sexta: dois estudos por dia — índice `i` e `i+1` no array `sorted` (com módulo para rotacionar)
-- Sábado: uma matéria opcional + "Livre ou revisão"
-- Domingo: "Revisão geral" (low) + "Livre ou descanso" (hardcoded)
+Conecta dois grupos de eventos:
 
-### `dotHTML(level)` e `pillsHTML(list, level)`
+1. **`#btn-refazer`** → `window.location.hash = "#/quiz"`
 
-```javascript
-function dotHTML(level) {
-  if (!level) return "";
-  return `<span class="plano-dot" style="background:${LEVEL_COLORS[level]};box-shadow:0 0 6px ${LEVEL_COLORS[level]}88"></span>`;
-}
-```
+2. **`.plano-day-tab`** (cada botão):
+   - Remove `.active` + `aria-selected="false"` de todos
+   - Adiciona `.active` + `aria-selected="true"` no clicado
+   - Anima saída do `#pt-trails-container` (fade + translateY)
+   - Após 150ms: substitui `innerHTML` com `renderDayContent(day)`
+   - Anima entrada com double `requestAnimationFrame` (mesmo padrão do dashboard)
 
-```javascript
-function pillsHTML(list, level) {
-  const color = LEVEL_COLORS[level];
-  return `
-    <div class="plano-group">
-      <p class="plano-group-label" style="color:${color}">${LEVEL_LABELS[level]}</p>
-      <div class="plano-pills-row">
-        ${list.map(d => `<span class="plano-pill" style="border-color:${color}55;color:${color}">${d}</span>`).join("")}
-      </div>
-    </div>`;
-}
-```
-
-`${color}55` é a cor com `55` hex ao final → ~33% de opacidade para a borda.
-
-### `planoEstudoInit()` — renderização
-
-```javascript
-// Sidebar: grupos por nível
-groupsEl.innerHTML = Object.entries(byLevel)
-  .filter(([, list]) => list.length)          // ignora níveis sem disciplinas
-  .map(([level, list]) => pillsHTML(list, level))
-  .join("");
-
-// Tabela
-tbody.innerHTML = rows.map(row => {
-  const secClass = row.rest ? "plano-cell-rest" : row.optional ? "plano-cell-optional" : "";
-  return `<tr class="plano-row">
-    <td class="plano-td-day">${row.day}</td>
-    <td><span class="plano-subject">${row.primary}</span></td>
-    <td><span class="plano-subject ${secClass}">${row.secondary}</span></td>
-    <td class="plano-td-dots">${dotHTML(row.primaryLevel)}${dotHTML(row.secondaryLevel)}
-      ${row.optional ? '<span class="plano-opt-tag">opcional</span>' : ""}
-      ${row.rest ? '<span class="plano-rest-tag">descanso</span>' : ""}
-    </td>
-  </tr>`;
-}).join("");
-```
-
-### Eventos
-
-| Elemento | Evento | Ação |
-|---|---|---|
-| `#btn-refazer` | `click` | `window.location.hash = "#/quiz"` |
-
----
-
-## Fluxo da Página
+### Fluxo de navegação
 
 ```
-Usuário acessa #/plano (vindo do quiz)
+Usuário acessa #/plano
        ↓
-planoEstudoInit() → getDisciplines() carrega do localStorage
+planoEstudoScreen() → renderiza com dia atual
+planoEstudoInit()   → conecta event listeners
        ↓
-buildPlan(disciplines)
-  ↓ levelOf(i) → ["high","medium","low"][i % 3]
-  ↓ byLevel{} → agrupa por dificuldade
-  ↓ sorted[] → high primeiro, depois medium, depois low
-  ↓ rows[] → 7 linhas (Segunda a Domingo)
+Usuário clica tab "Ter"
+  → fade out container
+  → renderDayContent("Ter") → daySummaryBar() + trailCard() × 2
+  → fade in container
        ↓
-Sidebar: pillsHTML() por nível → #plano-groups.innerHTML
-       ↓
-Tabela: map(rows) → #plano-tbody.innerHTML
-       ↓
-[opcional] Usuário clica "Refazer" → hash = "#/quiz"
+Usuário clica tópico → navega para #/aulas?materia={id}
 ```
-
----
-
-## Dados Hardcoded
-
-Dois campos na sidebar são hardcoded no HTML e nunca atualizados pelo JS:
-
-```html
-<span class="plano-profile-name" id="plano-user-name">JIMMY</span>
-<span class="plano-profile-role">ENG. SOFTWARE</span>
-```
-
-O `id="plano-user-name"` existe (sugere intenção de atualizar via JS), mas `planoEstudoInit()` nunca lê nem escreve nesse elemento.
 
 ---
 
@@ -363,33 +286,34 @@ O `id="plano-user-name"` existe (sugere intenção de atualizar via JS), mas `pl
 
 ### Integrar com resultado do quiz
 
-Em `buildPlan()`, substituir `levelOf(i)` por dado vindo do estado:
+Substituir o `level` hardcoded em `PLAN_SUBJECTS` por dado vindo do estado:
+
 ```javascript
 import { getQuizResult } from "../state/quiz.js";
-const result = getQuizResult();  // { disciplina: "high" | "medium" | "low" }
-const levelOf = (disc) => result[disc] ?? "medium";
+const result = getQuizResult(); // { "calculo": "high", "algoritmos": "medium", ... }
+// Em cada subject: level: result[subject.id] ?? "medium"
+```
+
+### Integrar com progresso real de tópicos
+
+Substituir `done: false` em `topicos[]` por leitura do localStorage:
+
+```javascript
+import { getTopicProgress } from "../state/progress.js";
+// Em cada tópico: done: getTopicProgress(subject.id, topic.titulo)
 ```
 
 ### Atualizar nome/cargo na sidebar
 
-Em `planoEstudoInit()`:
 ```javascript
 import { getUser } from "../state/auth.js";
 const user = getUser();
-document.getElementById("plano-user-name").textContent = user.name.toUpperCase();
+document.querySelector(".plano-profile-name").textContent = user.name.toUpperCase();
 ```
 
-### Adicionar persistência de conclusão de dias
+### Adicionar animação de conclusão de tópico
 
-Cada linha poderia ter um checkbox:
-```html
-<input type="checkbox" data-day="${row.day}" class="plano-day-check">
-```
-```javascript
-document.querySelectorAll(".plano-day-check").forEach(cb => {
-  cb.addEventListener("change", () => savePlanProgress(cb.dataset.day, cb.checked));
-});
-```
+No `topicRow`, o `<a>` pode virar um componente com checkbox + JS em `planoEstudoInit()` para marcar tópicos como concluídos e re-renderizar o card via `trailCard()`.
 
 ---
 
@@ -399,9 +323,10 @@ document.querySelectorAll(".plano-day-check").forEach(cb => {
 assets/js/screens/planoEstudo.js
  └── import getDisciplines from state/matriz.js
      └── localStorage["beluga_disciplines"]
-         └── fornece as disciplinas para buildPlan()
- └── navega para: #/quiz (botão Refazer)
- └── acessado de: #/quiz (botão Finalizar)
+ └── renderDayContent() → renderiza trilhas por dia
+ └── topicRow() → href="#/aulas?materia={id}"
+ └── btn-refazer → href="#/quiz"
+ └── acessado de: topbar (link Plano), dashboard (quick action)
 ```
 
 ### Componentes globais
