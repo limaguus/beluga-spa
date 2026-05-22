@@ -117,9 +117,9 @@ div.public#landing-root
     ├── section.ld-preview#como-funciona
     │   ├── div.ld-sec-head
     │   └── div.ld-preview-row
-    │       ├── div.ld-mwin          ← mockup Dashboard
-    │       ├── div.ld-mwin.ld-mwin--center  ← mockup Beluginha IA (elevado)
-    │       └── div.ld-mwin          ← mockup Quiz
+    │       ├── div.ld-mwin          ← screenshot Dashboard.png
+    │       ├── div.ld-mwin.ld-mwin--center  ← screenshot Beluguin-IA.png (elevado)
+    │       └── div.ld-mwin          ← screenshot Quiz.png
     │
     ├── section.ld-how
     │   ├── div.ld-sec-head
@@ -178,9 +178,10 @@ div.public#landing-root
 | `.ld-stats` | `<section>` | Barra de prova social com 4 números |
 | `.ld-features` | `<section>` | Grid 2×2 de funcionalidades |
 | `.ld-fcard--hero` | `<div>` | Card de destaque que ocupa as 2 colunas |
-| `.ld-preview` | `<section>` | 3 mockups de janela da plataforma |
-| `.ld-mwin` | `<div>` | Janela mockup com chrome bar e body |
+| `.ld-preview` | `<section>` | 3 janelas com screenshots reais da plataforma |
+| `.ld-mwin` | `<div>` | Janela com chrome bar e screenshot |
 | `.ld-mwin--center` | `<div>` | Janela central elevada (Beluginha IA) |
+| `.ld-mwin-img` | `<img>` | Screenshot que preenche o corpo da janela |
 | `.ld-how` | `<section>` | 3 passos horizontais com conectores |
 | `.ld-pricing` | `<section>` | 3 cards de plano (Free, Pro, Anual) |
 | `.ld-plan--feat` | `<div>` | Card Pro elevado com badge e cor de destaque |
@@ -352,9 +353,9 @@ O mascote sobe **18px** em ciclos de **5,5 segundos**. Presente no hero e no CTA
 
 ---
 
-### Mockups de janela (preview)
+### Janelas de preview (`.ld-mwin`)
 
-Cada janela tem 2 partes: chrome (barra de topo com dots) e body (mini-UI):
+Cada janela tem 2 partes: chrome (barra de topo com dots) e screenshot:
 
 ```css
 .ld-mchrome {
@@ -383,13 +384,15 @@ A janela central (Beluginha IA) é elevada:
 }
 ```
 
-Os elementos dentro do body são "blocos mudos" (`.ld-mb`) que simulam texto/conteúdo:
+A screenshot preenche o corpo da janela sem padding:
 
 ```css
-.ld-mb       { display: block; border-radius: 4px; background: rgba(255, 255, 255, 0.1); }
-.ld-mb--sm   { height: 7px; }
-.ld-mb--md   { height: 9px; }
-.ld-mb--lg   { height: 14px; }
+.ld-mwin-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 0 13px 13px;
+}
 ```
 
 ---
@@ -468,7 +471,7 @@ Em mobile, `.ld-plan--feat` e `.ld-mwin--center` perdem a elevação (`transform
 
 ### Funções auxiliares (privadas)
 
-O arquivo define 4 funções de apoio antes de `landingScreen()`:
+O arquivo define 2 funções de apoio antes de `landingScreen()`:
 
 ```javascript
 // Renderiza item de feature na lista de plano (check ou X)
@@ -476,12 +479,6 @@ function _feat(ok, label) { ... }
 
 // Renderiza card de depoimento completo
 function _testi(initials, color, name, role, text) { ... }
-
-// Renderiza uma linha de matéria no mockup do dashboard
-function _mockRow(color, width, pct) { ... }
-
-// Renderiza uma opção de quiz no mockup
-function _mockOpt(bg, bc, w) { ... }
 ```
 
 Essas funções são usadas dentro de template literals com `${}` para evitar repetição de código no HTML gerado.
@@ -621,17 +618,17 @@ if (logged && isPublic) {
 - Animação: `float 5.5s ease-in-out infinite` (+18px amplitude)
 - Aparece **duas vezes**: no hero (340px) e no CTA final (120px)
 
-### Mockups de preview (`.ld-mwin`)
+### Janelas de preview (`.ld-mwin`)
 
-Janelas com chrome bar colorida que simulam as telas reais do app:
+Janelas com chrome bar colorida exibindo screenshots reais do app:
 
-| Janela | Conteúdo simulado |
+| Janela | Imagem |
 |---|---|
-| Dashboard | Avatar, barra XP, 3 stat cards, 3 barras de matéria |
-| Beluginha IA | 4 mensagens alternadas user/AI com bubbles |
-| Quiz | Barra de progresso, enunciado, 4 opções (1 selecionada) |
+| Dashboard | `assets/images/Dashboard.png` |
+| Beluginha IA | `assets/images/Beluguin-IA.png` |
+| Quiz adaptativo | `assets/images/Quiz.png` |
 
-Os elementos internos são `div.ld-mb` (blocos de altura fixa e background sutil) sem texto real — apenas representações visuais.
+Cada janela tem a estrutura `ld-mchrome` (barra com dots macOS + label) seguida de `img.ld-mwin-img` que preenche o corpo com `object-fit: cover`.
 
 ### Planos (`.ld-plan`)
 

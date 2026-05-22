@@ -58,7 +58,9 @@ body.public-mode:has(.auth-page) .content {
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 
 .back-button:hover {
@@ -91,14 +93,14 @@ body.public-mode:has(.auth-page) .content {
 .cadastro-left {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 }
 
 /* ── Beluga flutuando ── */
 /* @keyframes float vem de login.css, carregado antes pelo main.css */
 .cadastro-beluga {
-  max-width: 290px;
-  max-height: 250px;
+  max-width: 400px;
+  max-height: 400px;
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -110,7 +112,7 @@ body.public-mode:has(.auth-page) .content {
 
 /* ── Bloco "Você sabia?" ── */
 .cadastro-text {
-  padding: 14px 18px;
+  padding: 20px 24px;
   background: rgba(59, 158, 221, 0.04);
   border: 1px solid rgba(59, 158, 221, 0.13);
   border-radius: 12px;
@@ -204,7 +206,9 @@ body.public-mode:has(.auth-page) .content {
   letter-spacing: 0.5px;
   font-family: inherit;
   box-shadow: 0 4px 18px rgba(59, 158, 221, 0.28);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   margin-top: 3px;
 }
 

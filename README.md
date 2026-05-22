@@ -19,7 +19,7 @@
 
 O **BELUGA** é uma plataforma educacional desenvolvida como **Single Page Application (SPA)**, projetada para ser o ambiente central da vida acadêmica do estudante universitário.
 
-O sistema integra em uma única experiência: organização de estudos, quizzes interativos, feed acadêmico, fórum de dúvidas, gamificação e um assistente inteligente — o **Belugin-IA** — preparado para receber integração com modelos de linguagem em versões futuras.
+O sistema integra em uma única experiência: organização de estudos, quizzes interativos, feed acadêmico, fórum de dúvidas, gamificação e um assistente inteligente — a **Beluginha IA** — preparada para receber integração com modelos de linguagem em versões futuras.
 
 > O front-end está **completamente funcional**, com arquitetura organizada e preparada para integração com backend, autenticação real e IA.
 
@@ -35,7 +35,7 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 | 🧠 Reforço de conteúdo   | Quizzes, biblioteca e aulas integradas                         |
 | 🤝 Comunidade            | Feed acadêmico e fórum de discussão                            |
 | 🏆 Engajamento           | Sistema de gamificação com XP, níveis e conquistas             |
-| 🤖 IA acadêmica          | Assistente Beluginha preparado para recomendações inteligentes |
+| 🤖 IA acadêmica          | Assistente Beluginha preparada para recomendações inteligentes |
 | 📈 Produtividade         | Notificações, lembretes e acompanhamento de metas              |
 
 ---
@@ -44,7 +44,7 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 
 ### 🔐 Autenticação
 
-- Tela de **Landing** com apresentação da plataforma
+- Tela de **Landing** com apresentação da plataforma e screenshots reais das funcionalidades
 - **Login** com validação e controle de sessão via `localStorage`
 - **Cadastro** com formulário completo e feedback visual
 - Proteção de rotas: páginas privadas bloqueadas sem autenticação
@@ -110,9 +110,9 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 - Dados do estudante, histórico e estatísticas
 - Personalização da conta
 
-### 🤖 Belugin-IA
+### 🤖 Beluginha IA
 
-- Assistente acadêmico flutuante disponível em todas as telas privadas
+- Assistente acadêmica flutuante disponível em todas as telas privadas
 - Interface de chat com respostas contextuais
 - Atualmente com respostas simuladas (mock)
 - **Arquitetura pronta para integração com OpenAI/API externa**
@@ -139,12 +139,43 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 ```
 beluga/
 │
-├── index.html                  # Entry point da SPA
+├── index.html                      # Entry point da SPA
+│
+├── docs/                           # Documentação detalhada por tela
+│   ├── landing.md
+│   ├── login.md
+│   ├── cadastro.md
+│   ├── dashboard.md
+│   ├── plano.md
+│   ├── quiz.md
+│   ├── aulas.md
+│   ├── biblioteca.md
+│   ├── feed.md
+│   ├── forum.md
+│   ├── conquistas.md
+│   ├── notificacoes.md
+│   ├── perfil.md
+│   ├── matriz.md
+│   └── beluginha.md
 │
 └── assets/
     ├── css/
-    │   ├── base/               # Reset, variáveis e tipografia global
-    │   └── pages/              # Estilos isolados por tela
+    │   ├── main.css                # Ponto de entrada — importa todos os módulos CSS
+    │   ├── base/                   # Tokens globais, reset e tipografia
+    │   │   ├── variables.css
+    │   │   ├── reset.css
+    │   │   └── global.css
+    │   ├── layout/                 # Estrutura de página e topbar
+    │   │   ├── page-layout.css
+    │   │   └── topbar.css
+    │   ├── components/             # Componentes reutilizáveis
+    │   │   ├── buttons.css
+    │   │   ├── cards.css
+    │   │   ├── forms.css
+    │   │   ├── modals.css
+    │   │   ├── beluginha-ia.css
+    │   │   └── user-profile-modal.css
+    │   └── pages/                  # Estilos isolados por tela
     │       ├── landing.css
     │       ├── login.css
     │       ├── cadastro.css
@@ -161,13 +192,15 @@ beluga/
     │       └── matriz.css
     │
     ├── js/
-    │   ├── app.js              # Inicialização e registro de rotas
-    │   ├── router.js           # Roteador hash com proteção de rotas
+    │   ├── app.js                  # Inicialização e registro de rotas
+    │   ├── router.js               # Roteador hash com proteção de rotas
     │   ├── state/
-    │   │   └── auth.js         # Controle de sessão e autenticação
+    │   │   ├── auth.js             # Controle de sessão e autenticação
+    │   │   └── matriz.js           # Estado da matriz curricular
     │   ├── components/
-    │   │   └── modal.js        # Componente modal reutilizável
-    │   └── screens/            # Módulos de cada tela (render + init)
+    │   │   ├── modal.js            # Componente modal reutilizável
+    │   │   └── userProfileModal.js # Modal de perfil do usuário
+    │   └── screens/                # Módulos de cada tela (render + init)
     │       ├── landing.js
     │       ├── login.js
     │       ├── cadastro.js
@@ -182,9 +215,14 @@ beluga/
     │       ├── notificacoes.js
     │       ├── perfil.js
     │       ├── matriz.js
-    │       └── beluginha.js    # Assistente IA flutuante
+    │       └── beluginha.js        # Assistente IA flutuante
     │
-    └── images/                 # Assets visuais do projeto
+    └── images/                     # Assets visuais do projeto
+        ├── BELUGA.png              # Mascote principal
+        ├── logof.png               # Logotipo
+        ├── Dashboard.png           # Screenshot do Dashboard (preview na landing)
+        ├── Beluguin-IA.png         # Screenshot da Beluginha IA (preview na landing)
+        └── Quiz.png                # Screenshot do Quiz (preview na landing)
 ```
 
 ---
@@ -196,7 +234,8 @@ O BELUGA implementa uma **SPA com roteamento próprio** sem uso de frameworks ex
 - **`router.js`** — gerencia rotas via hash (`#/dashboard`), injeta/remove topbar e Beluginha conforme o contexto (público ou privado), e bloqueia rotas sem autenticação
 - **Padrão render/init** — cada tela exporta `render()` (retorna HTML) e `init()` (registra eventos), separando estrutura de comportamento
 - **State management simples** — autenticação centralizada em `state/auth.js` via `localStorage`
-- **CSS modular por página** — cada tela tem seu próprio arquivo CSS, evitando conflitos e facilitando manutenção
+- **CSS modular por camada** — base, layout, components e pages em pastas separadas, evitando conflitos e facilitando manutenção
+- **Documentação por tela** — cada tela possui um arquivo `.md` em `docs/` com estrutura HTML, classes CSS, eventos JS e guias de modificação
 
 ---
 
@@ -207,13 +246,14 @@ O BELUGA implementa uma **SPA com roteamento próprio** sem uso de frameworks ex
 - **UX acadêmica** — fluxos pensados para o estudante universitário, com navegação intuitiva
 - **Gamificação visual** — barras de XP, badges, níveis e missões que tornam o estudo mais engajante
 - **Topbar inteligente** — exibida apenas em páginas privadas, com navegação ativa e logout
-- **Elementos animados** — ondas SVG, transições suaves e feedback visual nas interações
+- **Elementos animados** — transições suaves, animação flutuante do mascote e feedback visual nas interações
+- **Preview com screenshots reais** — a landing exibe capturas reais das telas Dashboard, Beluginha IA e Quiz dentro de janelas estilizadas
 
 ---
 
-## 🤖 Belugin-IA
+## 🤖 Beluginha IA
 
-O **Belugin-IA** é o assistente acadêmico inteligente do BELUGA, disponível como um botão flutuante (FAB) em todas as telas privadas da plataforma.
+A **Beluginha IA** é a assistente acadêmica inteligente do BELUGA, disponível como um botão flutuante (FAB) em todas as telas privadas da plataforma.
 
 **Estado atual:** interface funcional com respostas contextuais simuladas (mock), projetada para simular uma experiência real de assistente IA.
 
@@ -237,7 +277,7 @@ O **Belugin-IA** é o assistente acadêmico inteligente do BELUGA, disponível c
 | ------------------------ | ---------------------------------------------------------- |
 | 🔒 Autenticação real     | Login com JWT, OAuth (Google) e recuperação de senha       |
 | 🗄️ Backend               | API REST (Node.js / Express) com banco de dados relacional |
-| 🤖 Integração OpenAI     | Belugin-IA com LLM real e contexto personalizado           |
+| 🤖 Integração OpenAI     | Beluginha IA com LLM real e contexto personalizado         |
 | 📊 Analytics acadêmico   | Relatórios de desempenho, tendências e previsões           |
 | 🎮 Quizzes dinâmicos     | Geração automática de questões com IA                      |
 | 🏅 Ranking em tempo real | Competição saudável entre estudantes                       |
@@ -260,7 +300,7 @@ O BELUGA foi desenvolvido com foco em **desktop**, com elementos visuais adaptad
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/limaguus/beluga.git
+git clone https://github.com/jimmyguus/beluga.git
 
 # 2. Acesse a pasta do projeto
 cd beluga
@@ -279,6 +319,7 @@ Em seguida, clique com o botão direito no `index.html` e selecione **"Open with
 
 ```
 🟢 Front-end funcional — todas as telas implementadas e navegáveis
+🟢 Documentação — cada tela possui doc detalhada em docs/
 🟡 Backend / API — planejado para próximas versões
 🟡 Beluginha IA real — integração OpenAI planejada
 🔵 Em desenvolvimento ativo
@@ -290,7 +331,7 @@ Em seguida, clique com o botão direito no `index.html` e selecione **"Open with
 
 Desenvolvido por **Gustavo Lima**
 
-[![GitHub](https://img.shields.io/badge/GitHub-limaguus-181717?style=flat-square&logo=github)](https://github.com/limaguus)
+[![GitHub](https://img.shields.io/badge/GitHub-jimmyguus-181717?style=flat-square&logo=github)](https://github.com/jimmyguus)
 
 ---
 

@@ -28,23 +28,6 @@ function _testi(initials, color, name, role, text) {
   </div>`;
 }
 
-function _mockRow(color, width, pct) {
-  return `
-  <div class="ld-mock-srow">
-    <div class="ld-mock-sdot" style="background:${color}"></div>
-    <div class="ld-mb ld-mb--sm" style="width:${width}"></div>
-    <div class="ld-mock-sbar"><div class="ld-mock-sbfill" style="width:${pct}%;background:${color}"></div></div>
-  </div>`;
-}
-
-function _mockOpt(bg, bc, w) {
-  return `
-  <div class="ld-mock-opt" style="background:${bg};border-color:${bc}">
-    <div class="ld-mock-optcirc" style="border-color:${bc}"></div>
-    <div class="ld-mb ld-mb--sm" style="width:${w}"></div>
-  </div>`;
-}
-
 export function landingScreen() {
   return `
   <div class="public" id="landing-root">
@@ -143,7 +126,7 @@ export function landingScreen() {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <div class="ld-fcard-tag">Diferencial #1</div>
-            <h3 class="ld-fcard-h3">Beluginha IA</h3>
+            <h3 class="ld-fcard-h3">Belugin-IA</h3>
             <p class="ld-fcard-p">Sua mentora de estudos pessoal. Entende sua grade curricular, identifica seus pontos fracos e monta uma revis&atilde;o sob medida para voc&ecirc; em segundos &mdash; dispon&iacute;vel 24h.</p>
             <ul class="ld-fcard-list">
               <li>Responde d&uacute;vidas em tempo real</li>
@@ -196,36 +179,7 @@ export function landingScreen() {
               <span class="ld-mdot" style="background:#28c840"></span>
               <span class="ld-mwlabel">Dashboard</span>
             </div>
-            <div class="ld-mbody">
-              <div class="ld-mock-hrow">
-                <div class="ld-mock-ava"></div>
-                <div class="ld-mock-info">
-                  <div class="ld-mb ld-mb--md" style="width:55px"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:38px;background:rgba(59,158,221,.5);margin-top:3px"></div>
-                </div>
-                <div class="ld-mock-xpb">
-                  <div class="ld-mb ld-mb--sm" style="width:28px;margin-bottom:3px"></div>
-                  <div class="ld-mock-xpbar"><div class="ld-mock-xpfill" style="width:81%"></div></div>
-                </div>
-              </div>
-              <div class="ld-mock-3col">
-                <div class="ld-mock-sc" style="border-color:rgba(59,158,221,.25)">
-                  <div class="ld-mb ld-mb--lg" style="width:22px;background:#3b9edd"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:36px;margin-top:3px"></div>
-                </div>
-                <div class="ld-mock-sc" style="border-color:rgba(168,85,247,.25)">
-                  <div class="ld-mb ld-mb--lg" style="width:18px;background:#a855f7"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:32px;margin-top:3px"></div>
-                </div>
-                <div class="ld-mock-sc" style="border-color:rgba(34,197,94,.25)">
-                  <div class="ld-mb ld-mb--lg" style="width:20px;background:#22c55e"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:40px;margin-top:3px"></div>
-                </div>
-              </div>
-              ${_mockRow("#3b9edd", "65px", 75)}
-              ${_mockRow("#a855f7", "55px", 55)}
-              ${_mockRow("#22c55e", "70px", 40)}
-            </div>
+            <img src="./assets/images/Dashboard.png" class="ld-mwin-img" alt="Tela do Dashboard" />
           </div>
 
           <!-- AI chat mockup -->
@@ -236,37 +190,7 @@ export function landingScreen() {
               <span class="ld-mdot" style="background:#28c840"></span>
               <span class="ld-mwlabel">Beluginha IA</span>
             </div>
-            <div class="ld-mbody ld-mbody--chat">
-              <div class="ld-cmsg ld-cmsg--user">
-                <div class="ld-cbub ld-cbub--user">
-                  <div class="ld-mb ld-mb--sm" style="width:110px"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:75px;margin-top:3px"></div>
-                </div>
-              </div>
-              <div class="ld-cmsg ld-cmsg--ai">
-                <div class="ld-caiav">B</div>
-                <div class="ld-cbub ld-cbub--ai">
-                  <div class="ld-mb ld-mb--sm" style="width:125px"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:90px;margin-top:3px"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:110px;margin-top:3px"></div>
-                </div>
-              </div>
-              <div class="ld-cmsg ld-cmsg--user">
-                <div class="ld-cbub ld-cbub--user">
-                  <div class="ld-mb ld-mb--sm" style="width:85px"></div>
-                </div>
-              </div>
-              <div class="ld-cmsg ld-cmsg--ai">
-                <div class="ld-caiav">B</div>
-                <div class="ld-cbub ld-cbub--ai">
-                  <div class="ld-mb ld-mb--sm" style="width:120px"></div>
-                  <div class="ld-mb ld-mb--sm" style="width:95px;margin-top:3px"></div>
-                </div>
-              </div>
-              <div class="ld-cinput">
-                <div class="ld-mb ld-mb--sm" style="width:90px;opacity:.3"></div>
-              </div>
-            </div>
+            <img src="./assets/images/Beluguin-IA.png" class="ld-mwin-img" alt="Tela da Beluginha IA" />
           </div>
 
           <!-- Quiz mockup -->
@@ -277,16 +201,7 @@ export function landingScreen() {
               <span class="ld-mdot" style="background:#28c840"></span>
               <span class="ld-mwlabel">Quiz adaptativo</span>
             </div>
-            <div class="ld-mbody">
-              <div class="ld-mock-qprog"><div class="ld-mock-qpfill" style="width:40%"></div></div>
-              <div class="ld-mb ld-mb--sm" style="width:44px;margin:8px 0 4px;background:rgba(59,158,221,.5)"></div>
-              <div class="ld-mb ld-mb--md" style="width:100%;margin-bottom:2px"></div>
-              <div class="ld-mb ld-mb--md" style="width:82%;margin-bottom:10px"></div>
-              ${_mockOpt("rgba(59,158,221,.18)", "rgba(59,158,221,.55)", "90px")}
-              ${_mockOpt("rgba(255,255,255,.04)", "rgba(255,255,255,.07)", "105px")}
-              ${_mockOpt("rgba(255,255,255,.04)", "rgba(255,255,255,.07)", "70px")}
-              ${_mockOpt("rgba(255,255,255,.04)", "rgba(255,255,255,.07)", "88px")}
-            </div>
+            <img src="./assets/images/Quiz.png" class="ld-mwin-img" alt="Tela do Quiz adaptativo" />
           </div>
 
         </div>
@@ -336,10 +251,10 @@ export function landingScreen() {
               <p class="ld-plan-tag">Para come&ccedil;ar sem compromisso</p>
             </div>
             <ul class="ld-plan-feats">
-              ${_feat(true,  "Beluginha IA (5 intera&ccedil;&otilde;es/dia)")}
-              ${_feat(true,  "3 quizzes por semana")}
-              ${_feat(true,  "Plano de estudos b&aacute;sico")}
-              ${_feat(true,  "Feed e f&oacute;rum da comunidade")}
+              ${_feat(true, "Beluginha IA (5 intera&ccedil;&otilde;es/dia)")}
+              ${_feat(true, "3 quizzes por semana")}
+              ${_feat(true, "Plano de estudos b&aacute;sico")}
+              ${_feat(true, "Feed e f&oacute;rum da comunidade")}
               ${_feat(false, "Plano inteligente completo")}
               ${_feat(false, "Quizzes ilimitados")}
               ${_feat(false, "Relat&oacute;rios de desempenho")}
@@ -398,12 +313,27 @@ export function landingScreen() {
           <h2 class="ld-sec-h2">O que os estudantes<br>est&atilde;o dizendo</h2>
         </div>
         <div class="ld-tcard-row">
-          ${_testi("MC", "linear-gradient(135deg,#3b9edd,#1e5f8a)", "Mariana C.", "Medicina &middot; USP",
-            "A Beluginha montou meu plano de revis&atilde;o para o semestre inteiro em 2 minutos. Passei em todas as mat&eacute;rias pela primeira vez!")}
-          ${_testi("LH", "linear-gradient(135deg,#a855f7,#7c3aed)", "Lucas H.", "Eng. Software &middot; UFG",
-            "Nunca fui bom em planejar estudos. O BELUGA criou uma rotina perfeita pra mim e ainda manda lembrete antes da prova. Simplesmente incr&iacute;vel.")}
-          ${_testi("AF", "linear-gradient(135deg,#22c55e,#16a34a)", "Ana F.", "Direito &middot; PUC-SP",
-            "O sistema de XP e conquistas me faz querer estudar todo dia. &Eacute; o &uacute;nico app que conseguiu me manter consistente durante toda a gradua&ccedil;&atilde;o.")}
+          ${_testi(
+            "MC",
+            "linear-gradient(135deg,#3b9edd,#1e5f8a)",
+            "Mariana C.",
+            "Medicina &middot; USP",
+            "A Beluginha montou meu plano de revis&atilde;o para o semestre inteiro em 2 minutos. Passei em todas as mat&eacute;rias pela primeira vez!",
+          )}
+          ${_testi(
+            "LH",
+            "linear-gradient(135deg,#a855f7,#7c3aed)",
+            "Lucas H.",
+            "Eng. Software &middot; UFG",
+            "Nunca fui bom em planejar estudos. O BELUGA criou uma rotina perfeita pra mim e ainda manda lembrete antes da prova. Simplesmente incr&iacute;vel.",
+          )}
+          ${_testi(
+            "AF",
+            "linear-gradient(135deg,#22c55e,#16a34a)",
+            "Ana F.",
+            "Direito &middot; PUC-SP",
+            "O sistema de XP e conquistas me faz querer estudar todo dia. &Eacute; o &uacute;nico app que conseguiu me manter consistente durante toda a gradua&ccedil;&atilde;o.",
+          )}
         </div>
       </section>
 
@@ -460,24 +390,41 @@ export function landingScreen() {
 }
 
 export function landingInit() {
-  const goLogin = () => { window.location.hash = "#/login"; };
+  const goLogin = () => {
+    window.location.hash = "#/login";
+  };
 
-  ["cta-login", "cta-header", "cta-free", "cta-pro", "cta-anual", "cta-final"].forEach((id) => {
+  [
+    "cta-login",
+    "cta-header",
+    "cta-free",
+    "cta-pro",
+    "cta-anual",
+    "cta-final",
+  ].forEach((id) => {
     document.getElementById(id)?.addEventListener("click", goLogin);
   });
 
   document.getElementById("cta-how")?.addEventListener("click", () => {
-    document.getElementById("como-funciona")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("como-funciona")
+      ?.scrollIntoView({ behavior: "smooth" });
   });
 
   document.querySelectorAll("[data-scroll]").forEach((el) => {
     el.addEventListener("click", () => {
-      document.getElementById(el.dataset.scroll)?.scrollIntoView({ behavior: "smooth" });
+      document
+        .getElementById(el.dataset.scroll)
+        ?.scrollIntoView({ behavior: "smooth" });
     });
   });
 
   const hd = document.getElementById("pub-hd");
-  window.addEventListener("scroll", () => {
-    hd?.classList.toggle("pub-hd--scrolled", window.scrollY > 40);
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      hd?.classList.toggle("pub-hd--scrolled", window.scrollY > 40);
+    },
+    { passive: true },
+  );
 }
