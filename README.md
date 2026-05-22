@@ -19,7 +19,7 @@
 
 O **BELUGA** é uma plataforma educacional desenvolvida como **Single Page Application (SPA)**, projetada para ser o ambiente central da vida acadêmica do estudante universitário.
 
-O sistema integra em uma única experiência: organização de estudos, quizzes interativos, feed acadêmico, fórum de dúvidas, gamificação e um assistente inteligente — a **Beluginha IA** — preparada para receber integração com modelos de linguagem em versões futuras.
+O sistema integra em uma única experiência: organização de estudos, quizzes interativos, feed acadêmico, fórum de dúvidas, gamificação e um assistente inteligente — a **Belugin-IA** — preparada para receber integração com modelos de linguagem em versões futuras.
 
 > O front-end está **completamente funcional**, com arquitetura organizada e preparada para integração com backend, autenticação real e IA.
 
@@ -29,14 +29,14 @@ O sistema integra em uma única experiência: organização de estudos, quizzes 
 
 O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organizar sua rotina acadêmica, sem depender de múltiplos aplicativos fragmentados.
 
-| Objetivo                 | Descrição                                                      |
-| ------------------------ | -------------------------------------------------------------- |
-| 📚 Organização acadêmica | Planos de estudo, matriz curricular e progresso por disciplina |
-| 🧠 Reforço de conteúdo   | Quizzes, biblioteca e aulas integradas                         |
-| 🤝 Comunidade            | Feed acadêmico e fórum de discussão                            |
-| 🏆 Engajamento           | Sistema de gamificação com XP, níveis e conquistas             |
-| 🤖 IA acadêmica          | Assistente Beluginha preparada para recomendações inteligentes |
-| 📈 Produtividade         | Notificações, lembretes e acompanhamento de metas              |
+| Objetivo                 | Descrição                                                       |
+| ------------------------ | --------------------------------------------------------------- |
+| 📚 Organização acadêmica | Planos de estudo, matriz curricular e progresso por disciplina  |
+| 🧠 Reforço de conteúdo   | Quizzes, biblioteca e aulas integradas                          |
+| 🤝 Comunidade            | Feed acadêmico e fórum de discussão                             |
+| 🏆 Engajamento           | Sistema de gamificação com XP, níveis e conquistas              |
+| 🤖 IA acadêmica          | Assistente Belugin-IA preparada para recomendações inteligentes |
+| 📈 Produtividade         | Notificações, lembretes e acompanhamento de metas               |
 
 ---
 
@@ -110,7 +110,7 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 - Dados do estudante, histórico e estatísticas
 - Personalização da conta
 
-### 🤖 Beluginha IA
+### 🤖 Belugin-IA
 
 - Assistente acadêmica flutuante disponível em todas as telas privadas
 - Interface de chat com respostas contextuais
@@ -251,9 +251,9 @@ O BELUGA implementa uma **SPA com roteamento próprio** sem uso de frameworks ex
 
 ---
 
-## 🤖 Beluginha IA
+## 🤖 Belugin-IA
 
-A **Beluginha IA** é a assistente acadêmica inteligente do BELUGA, disponível como um botão flutuante (FAB) em todas as telas privadas da plataforma.
+A **Belugin-IA** é a assistente acadêmica inteligente do BELUGA, disponível como um botão flutuante (FAB) em todas as telas privadas da plataforma.
 
 **Estado atual:** interface funcional com respostas contextuais simuladas (mock), projetada para simular uma experiência real de assistente IA.
 
@@ -300,7 +300,7 @@ O BELUGA foi desenvolvido com foco em **desktop**, com elementos visuais adaptad
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/jimmyguus/beluga.git
+git clone https://github.com/limaguus/beluga.git
 
 # 2. Acesse a pasta do projeto
 cd beluga
@@ -321,7 +321,7 @@ Em seguida, clique com o botão direito no `index.html` e selecione **"Open with
 🟢 Front-end funcional — todas as telas implementadas e navegáveis
 🟢 Documentação — cada tela possui doc detalhada em docs/
 🟡 Backend / API — planejado para próximas versões
-🟡 Beluginha IA real — integração OpenAI planejada
+🟡 Belugin-IA real — integração OpenAI planejada
 🔵 Em desenvolvimento ativo
 ```
 
@@ -331,7 +331,7 @@ Em seguida, clique com o botão direito no `index.html` e selecione **"Open with
 
 Desenvolvido por **Gustavo Lima**
 
-[![GitHub](https://img.shields.io/badge/GitHub-jimmyguus-181717?style=flat-square&logo=github)](https://github.com/jimmyguus)
+[![GitHub](https://img.shields.io/badge/GitHub-limaguus-181717?style=flat-square&logo=github)](https://github.com/limaguus)
 
 ---
 
