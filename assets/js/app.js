@@ -43,6 +43,27 @@ import { conquistasScreen, conquistasInit } from "./screens/conquistas.js";
    ========================================================= */
 
 /* ---------- Rotas Públicas ---------- */
+
+// C6: rota /recuperar adicionada — "Esqueceu a senha?" em login.js retornava "Página não encontrada"
+registerRoute("recuperar", {
+  render: () => `
+    <div class="public auth">
+      <header class="public-header">
+        <div class="brand-wrap">
+          <img class="brand-logo" src="./assets/images/logof.png" alt="Logo Beluga" />
+          <div class="brand">BELUGA</div>
+        </div>
+      </header>
+      <main class="public-main" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;text-align:center;padding:40px 20px">
+        <img src="./assets/images/BELUGA.png" alt="Beluga" style="width:90px;opacity:0.7" />
+        <h1 style="color:var(--primary);font-size:1.6rem">Recuperar Senha</h1>
+        <p style="color:var(--muted);max-width:360px">Esta funcionalidade estará disponível em breve. Por enquanto, entre em contato com o suporte.</p>
+        <a href="#/login" class="button" style="margin-top:8px">Voltar ao Login</a>
+      </main>
+    </div>`,
+  init: () => {},
+});
+
 registerRoute("landing", {
   render: landingScreen,
   init: landingInit,

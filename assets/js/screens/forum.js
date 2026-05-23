@@ -137,6 +137,16 @@ const SUBJECT_COLORS = {
   Geral: "#6b7280",
 };
 
+// S1+S5: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /* ── Module state ── */
 let forumState = {
   questions: FORUM_QUESTIONS_MOCK.map((q) => ({
@@ -183,13 +193,13 @@ function renderQuestion(q) {
           .map(
             (a) => `
           <div class="fr-answer">
-            <div class="fr-avatar fr-avatar--sm" data-profile-trigger data-user-name="${a.author.name}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}" style="background:${a.author.color}1a;border:2px solid ${a.author.color}55;color:${a.author.color}">${a.author.initials}</div>
+            <div class="fr-avatar fr-avatar--sm" data-profile-trigger data-user-name="${escapeHtml(a.author.name)}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}" style="background:${a.author.color}1a;border:2px solid ${a.author.color}55;color:${a.author.color}">${a.author.initials}</div>
             <div class="fr-answer-body">
               <div class="fr-answer-meta">
-                <span class="fr-answer-name" data-profile-trigger data-user-name="${a.author.name}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}">${a.author.name}</span>
+                <span class="fr-answer-name" data-profile-trigger data-user-name="${escapeHtml(a.author.name)}" data-user-initials="${a.author.initials}" data-user-color="${a.author.color}">${escapeHtml(a.author.name)}</span>
                 ${a.isMonitor ? `<span class="fr-monitor-badge">Monitor</span>` : ""}
               </div>
-              <p class="fr-answer-text">${a.text}</p>
+              <p class="fr-answer-text">${escapeHtml(a.text)}</p>
             </div>
           </div>`,
           )
@@ -209,9 +219,9 @@ function renderQuestion(q) {
   return `
     <article class="fr-question${q.status === "Respondida" ? " fr-question--answered" : q.status === "Em análise" ? " fr-question--analysis" : ""}" data-id="${q.id}">
       <div class="fr-q-header">
-        <div class="fr-avatar fr-avatar--md" data-profile-trigger data-user-name="${q.author.name}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}" style="background:${q.author.color}1a;border:2px solid ${q.author.color}55;color:${q.author.color}">${q.author.initials}</div>
+        <div class="fr-avatar fr-avatar--md" data-profile-trigger data-user-name="${escapeHtml(q.author.name)}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}" style="background:${q.author.color}1a;border:2px solid ${q.author.color}55;color:${q.author.color}">${q.author.initials}</div>
         <div class="fr-q-meta">
-          <span class="fr-q-author" data-profile-trigger data-user-name="${q.author.name}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}">${q.author.name}</span>
+          <span class="fr-q-author" data-profile-trigger data-user-name="${escapeHtml(q.author.name)}" data-user-initials="${q.author.initials}" data-user-color="${q.author.color}">${escapeHtml(q.author.name)}</span>
           <span class="fr-q-time">${q.timeLabel}</span>
         </div>
         <div class="fr-q-tags">
@@ -220,8 +230,8 @@ function renderQuestion(q) {
         </div>
       </div>
 
-      <h3 class="fr-q-title">${q.title}</h3>
-      <p class="fr-q-content">${q.content}</p>
+      <h3 class="fr-q-title">${escapeHtml(q.title)}</h3>
+      <p class="fr-q-content">${escapeHtml(q.content)}</p>
 
       ${answersHTML}
       ${replyHTML}
@@ -355,11 +365,21 @@ function _rerender() {
   if (list) list.innerHTML = forumState.questions.map(renderQuestion).join("");
 }
 
+// P: re-renderiza apenas o artigo afetado — evita reconstruir todas as perguntas a cada interação
+function _rerenderQuestion(id) {
+  const q = forumState.questions.find((q) => q.id === id);
+  const article = document.querySelector(`#fr-list [data-id="${id}"]`);
+  if (!q || !article) return;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = renderQuestion(q);
+  article.replaceWith(tmp.firstElementChild);
+}
+
 function _handleReply(id) {
   const q = forumState.questions.find((q) => q.id === id);
   if (!q) return;
   q.showReply = !q.showReply;
-  _rerender();
+  _rerenderQuestion(id);
   if (q.showReply) {
     const input = document.querySelector(`.fr-reply-input[data-id="${id}"]`);
     if (input) input.focus();
@@ -370,14 +390,14 @@ function _handleReminder(id) {
   const q = forumState.questions.find((q) => q.id === id);
   if (!q) return;
   q.hasReminder = !q.hasReminder;
-  _rerender();
+  _rerenderQuestion(id);
 }
 
 function _handleShare(id) {
   const q = forumState.questions.find((q) => q.id === id);
   if (!q || q.shared) return;
   q.shared = true;
-  _rerender();
+  _rerenderQuestion(id);
 }
 
 function _sendReply(id) {
@@ -395,7 +415,7 @@ function _sendReply(id) {
   q.answerCount = q.answers.length;
   q.status = "Respondida";
   q.showReply = false;
-  _rerender();
+  _rerenderQuestion(id);
 }
 
 function _handleCandidate() {

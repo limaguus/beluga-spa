@@ -399,6 +399,16 @@ let _activeId = AULAS_DATA.materias[0].id;
 
 // ---- PRIVATE HELPERS ----
 
+// S5: escapa caracteres HTML especiais para atributos — previne quebra de atributo e XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function getMateriaById(id) {
   return AULAS_DATA.materias.find((m) => m.id === id) ?? AULAS_DATA.materias[0];
 }
@@ -445,8 +455,8 @@ function buildTopicCard(t) {
       class="aulas-topic-card ${cardMod}"
       href="https://www.youtube.com/watch?v=${t.youtubeId}"
       data-youtube-id="${t.youtubeId}"
-      data-video-title="${t.titulo}"
-      title="Assistir: ${t.titulo}"
+      data-video-title="${escapeHtml(t.titulo)}"
+      title="Assistir: ${escapeHtml(t.titulo)}"
     >
       <div class="aulas-topic-body">
         <div class="aulas-topic-badges">${recBadge}${doneBadge}</div>

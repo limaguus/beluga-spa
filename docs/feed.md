@@ -445,6 +445,64 @@ E no evento de publicar, ler esses valores antes de `unshift`.
 
 ---
 
+## Correções de Performance (Etapa 5)
+
+### Re-render cirúrgico por post (**P**)
+
+**Problema:** `_rerender()` reconstruía o `innerHTML` de `#fd-list` inteiro a cada interação — 11 posts × HTML complexo re-renderizados mesmo quando apenas um post mudou.
+
+**Fix:** `_rerenderPost(id)` substitui apenas o `<article>` afetado usando `replaceWith()`:
+
+```javascript
+// P: re-renderiza apenas o artigo afetado — evita reconstruir todos os posts a cada interação
+function _rerenderPost(id) {
+  const post = feedState.posts.find((p) => p.id === id);
+  const article = document.querySelector(`#fd-list [data-id="${id}"]`);
+  if (!post || !article) return;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = renderPost(post);
+  article.replaceWith(tmp.firstElementChild);
+}
+```
+
+| Chamada | Antes | Depois |
+|---|---|---|
+| Like / Repost / Comments toggle | `_rerender()` (11 posts) | `_rerenderPost(id)` (1 post) |
+| Send comment | `_rerender()` (11 posts) | `_rerenderPost(postId)` (1 post) |
+| Novo post publicado | `_rerender()` (lista toda) | `_rerender()` (necessário — prepend) |
+
+---
+
+## Correções de Segurança (Etapa 3)
+
+### Sanitização de conteúdo e atributos HTML (**S1**, **S5**)
+
+```javascript
+// S1+S5: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")  // S5: previne quebra de atributo
+    .replace(/'/g, "&#39;");
+}
+```
+
+Campos protegidos em `renderPost()`:
+
+| Campo | Local | Proteção |
+|---|---|---|
+| `post.content` | `<p class="fd-post-content">` | S1 — conteúdo digitado pelo usuário |
+| `c.author` | `<span class="fd-comment-author">` | S1 — nome do comentarista |
+| `c.text` | `<p class="fd-comment-text">` | S1 — texto do comentário |
+| `post.author.name` | texto visível no `<span>` | S1 |
+| `post.author.name` | atributo `data-user-name` | S5 — quebra se contém `"` |
+
+Usuários podem publicar posts (`feedState.posts.unshift(...)`) e comentários (`post.comments.push(...)`) com conteúdo arbitrário — ambos passam pelo `innerHTML` via `_rerender()`, tornando `escapeHtml` obrigatório.
+
+---
+
 ## Relação Entre Arquivos
 
 ```

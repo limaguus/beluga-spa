@@ -329,5 +329,7 @@ export function conquistasInit() {
     _rerenderModal();
   });
 
+  // C5: remove antes de adicionar — garante apenas um handler ativo mesmo ao revisitar a tela
+  document.removeEventListener("keydown", _escHandler);
   document.addEventListener("keydown", _escHandler);
 }

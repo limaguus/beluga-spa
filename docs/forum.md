@@ -399,6 +399,66 @@ localStorage.setItem("beluga_candidated", "1");
 
 ---
 
+## Correções de Performance (Etapa 5)
+
+### Re-render cirúrgico por pergunta (**P**)
+
+**Problema:** `_rerender()` reconstruía o `innerHTML` de `#fr-list` inteiro a cada ação — 6+ perguntas × HTML complexo re-renderizados mesmo quando apenas uma pergunta mudou.
+
+**Fix:** `_rerenderQuestion(id)` substitui apenas o `<article>` afetado usando `replaceWith()`:
+
+```javascript
+// P: re-renderiza apenas o artigo afetado — evita reconstruir todas as perguntas a cada interação
+function _rerenderQuestion(id) {
+  const q = forumState.questions.find((q) => q.id === id);
+  const article = document.querySelector(`#fr-list [data-id="${id}"]`);
+  if (!q || !article) return;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = renderQuestion(q);
+  article.replaceWith(tmp.firstElementChild);
+}
+```
+
+| Chamada | Antes | Depois |
+|---|---|---|
+| Toggle reply form | `_rerender()` (todas) | `_rerenderQuestion(id)` (1 pergunta) |
+| Toggle lembrete | `_rerender()` (todas) | `_rerenderQuestion(id)` (1 pergunta) |
+| Compartilhar | `_rerender()` (todas) | `_rerenderQuestion(id)` (1 pergunta) |
+| Enviar resposta | `_rerender()` (todas) | `_rerenderQuestion(id)` (1 pergunta) |
+| Nova pergunta | `_rerender()` (lista toda) | `_rerender()` (necessário — prepend) |
+
+---
+
+## Correções de Segurança (Etapa 3)
+
+### Sanitização de conteúdo e atributos HTML (**S1**, **S5**)
+
+```javascript
+// S1+S5: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")  // S5: previne quebra de atributo
+    .replace(/'/g, "&#39;");
+}
+```
+
+Campos protegidos em `renderQuestion()`:
+
+| Campo | Local | Proteção |
+|---|---|---|
+| `q.title` | `<h3 class="fr-q-title">` | S1 — título digitado pelo usuário |
+| `q.content` | `<p class="fr-q-content">` | S1 — conteúdo da pergunta |
+| `q.author.name` | texto visível + `data-user-name` | S1 + S5 |
+| `a.text` | `<p class="fr-answer-text">` | S1 — texto da resposta do monitor |
+| `a.author.name` | texto visível + `data-user-name` | S1 + S5 |
+
+Usuários postam perguntas via `_postNewQuestion(text)` e monitores postam respostas via `_sendReply(id)` — ambos os fluxos inserem conteúdo arbitrário via `innerHTML` em `_rerender()`.
+
+---
+
 ## Relação Entre Arquivos
 
 ```

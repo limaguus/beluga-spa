@@ -7,6 +7,16 @@ import { initUserProfileModal } from "../components/userProfileModal.js";
 // ─── Current User ─────────────────────────────────────────
 const FEED_ME = { name: "Jimmy", initials: "JM", color: "#2b719c" };
 
+// S1+S5: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // ─── Mock Posts ──────────────────────────────────────────
 const FEED_POSTS_MOCK = [
   {
@@ -254,8 +264,8 @@ function renderPost(post) {
         <div class="fd-comment">
           ${avatar(c.initials, c.color, "sm")}
           <div class="fd-comment-body">
-            <span class="fd-comment-author">${c.author}</span>
-            <p class="fd-comment-text">${c.text}</p>
+            <span class="fd-comment-author">${escapeHtml(c.author)}</span>
+            <p class="fd-comment-text">${escapeHtml(c.text)}</p>
           </div>
         </div>
       `,
@@ -279,14 +289,14 @@ function renderPost(post) {
   return `
     <article class="fd-post${post.liked ? " fd-post--gold" : ""}" data-id="${post.id}">
       <div class="fd-post-header">
-        <div class="fd-avatar fd-avatar--md" data-profile-trigger data-user-name="${post.author.name}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}" style="background:${post.author.color}1a;border:2px solid ${post.author.color}55;color:${post.author.color}">${post.author.initials}</div>
+        <div class="fd-avatar fd-avatar--md" data-profile-trigger data-user-name="${escapeHtml(post.author.name)}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}" style="background:${post.author.color}1a;border:2px solid ${post.author.color}55;color:${post.author.color}">${post.author.initials}</div>
         <div class="fd-post-meta">
-          <span class="fd-post-author" data-profile-trigger data-user-name="${post.author.name}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}">${post.author.name}</span>
+          <span class="fd-post-author" data-profile-trigger data-user-name="${escapeHtml(post.author.name)}" data-user-initials="${post.author.initials}" data-user-color="${post.author.color}">${escapeHtml(post.author.name)}</span>
           <span class="fd-post-time">${post.timeLabel}</span>
         </div>
       </div>
       <div class="fd-post-body">
-        <p class="fd-post-content">${post.content}</p>
+        <p class="fd-post-content">${escapeHtml(post.content)}</p>
         ${post.subject || post.studyHours ? `<div class="fd-post-tags">${subjectTag(post.subject)}${hoursTag(post.studyHours)}</div>` : ""}
       </div>
       <div class="fd-reactions">
@@ -511,7 +521,7 @@ function _handleReaction(btn) {
       post.showComments = !post.showComments;
       break;
   }
-  _rerender();
+  _rerenderPost(id);
 }
 
 function _sendComment(postId) {
@@ -532,10 +542,20 @@ function _sendComment(postId) {
     text,
   });
   post.reactions.comments += 1;
-  _rerender();
+  _rerenderPost(postId);
 }
 
 function _rerender() {
   const list = document.getElementById("fd-list");
   if (list) list.innerHTML = feedState.posts.map(renderPost).join("");
+}
+
+// P: re-renderiza apenas o artigo afetado — evita reconstruir todos os posts a cada interação
+function _rerenderPost(id) {
+  const post = feedState.posts.find((p) => p.id === id);
+  const article = document.querySelector(`#fd-list [data-id="${id}"]`);
+  if (!post || !article) return;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = renderPost(post);
+  article.replaceWith(tmp.firstElementChild);
 }

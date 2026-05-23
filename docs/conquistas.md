@@ -281,7 +281,7 @@ document.getElementById("cq-feed-btn")?.addEventListener("click", () => {
 
 `window.location.hash = "/feed"` define o hash como `"/feed"` (sem `#`), resultando em `http://...#/feed` — mas o router espera `#/feed`. Na prática, o hash fica `/feed` e o router não reconhece a rota. O correto seria `"#/feed"`.
 
-### `_escHandler` — registrado no `document`
+### `_escHandler` — corrigido (**C5**)
 
 ```javascript
 function _escHandler(e) {
@@ -291,11 +291,13 @@ function _escHandler(e) {
   }
 }
 export function conquistasInit() {
+  // Remove antes de adicionar — garante apenas um handler ativo ao revisitar a tela
+  document.removeEventListener("keydown", _escHandler);
   document.addEventListener("keydown", _escHandler);
 }
 ```
 
-Diferente de notificações (que usa função anônima), conquistas usa função nomeada `_escHandler`. Porém, nunca é removida com `removeEventListener`. Ao navegar e voltar à tela, um novo listener é adicionado — acúmulo de listeners a cada visita.
+Como `_escHandler` é uma referência de função fixa (escopo de módulo), `addEventListener` com a mesma referência não duplica. Mesmo assim, o `removeEventListener` preventivo foi adicionado para garantir comportamento correto em todos os cenários e alinhar com o padrão adotado em `notificacoes.js`.
 
 ### Eventos
 
@@ -307,7 +309,7 @@ Diferente de notificações (que usa função anônima), conquistas usa função
 | `#cq-copy-btn` | `click` | Copia texto, feedback 2.2s |
 | `#cq-feed-btn` | `click` | Fecha modal, `window.location.hash = "/feed"` (bug) |
 | `#cq-x-btn` | `click` | `window.open(twitter.com/intent/tweet...)` |
-| `document` | `keydown (Escape)` | Fecha modal se `cqState.shareOpen` |
+| `document` | `keydown (Escape)` | Fecha modal se `cqState.shareOpen` — handler único via remove+add (**C5**) |
 
 ---
 

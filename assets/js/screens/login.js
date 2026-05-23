@@ -1,3 +1,6 @@
+// Q4: import movido para o topo — imports ES6 devem estar no início do módulo
+import { login } from "../state/auth.js";
+
 export function loginScreen() {
   return `
     <div class="public auth">
@@ -25,8 +28,9 @@ export function loginScreen() {
             </h1>
 
             <form class="auth-card" id="login-form">
-              <input class="input auth-input" type="email" name="email" placeholder="Email" required />
-              <input class="input auth-input" type="password" name="senha" placeholder="Senha" required />
+              <!-- C1: id adicionados — loginInit() usava getElementById mas os campos só tinham name -->
+              <input class="input auth-input" id="email" type="email" name="email" placeholder="Email" required />
+              <input class="input auth-input" id="senha" type="password" name="senha" placeholder="Senha" required />
 
               <div class="auth-row">
                 <a class="auth-link" href="#/recuperar">Esqueceu a senha?</a>
@@ -146,8 +150,6 @@ export function loginScreen() {
   `;
 }
 
-import { login } from "../state/auth.js";
-
 export function loginInit() {
   const form = document.getElementById("login-form");
   if (!form) return;
@@ -157,6 +159,21 @@ export function loginInit() {
 
     const email = document.getElementById("email")?.value?.trim();
     const senha = document.getElementById("senha")?.value?.trim();
+
+    // C2: validação básica — impede login com campos vazios mesmo sem validação nativa
+    if (!email || !senha) {
+      const emptyEl = !email
+        ? document.getElementById("email")
+        : document.getElementById("senha");
+      emptyEl?.focus();
+      return;
+    }
+
+    // S3: senha com menos de 6 caracteres é rejeitada — reduz risco de senhas triviais
+    if (senha.length < 6) {
+      document.getElementById("senha")?.focus();
+      return;
+    }
 
     login({ email });
 

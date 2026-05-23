@@ -502,3 +502,28 @@ A função `openVideoPlayer` é importada de `biblioteca.js` (mesmo módulo que 
 | `.progress-ring` / `.ring-bg` | **Sim** — mesmas classes do Dashboard, mas raio diferente |
 | `.button` (buttons.css) | **Não** — botão biblioteca tem estilo próprio |
 | `openVideoPlayer` (biblioteca.js) | **Sim** — player embutido de vídeo |
+
+---
+
+## Correções de Segurança (Etapa 3)
+
+### Sanitização de atributos HTML (**S5**)
+
+```javascript
+// S5: escapa caracteres HTML especiais para atributos — previne quebra de atributo e XSS
+function escapeHtml(str) { ... }
+```
+
+Em `buildTopicCard(t)`, os atributos `data-video-title` e `title` agora são escapados:
+
+```html
+<!-- antes -->
+data-video-title="${t.titulo}"
+title="Assistir: ${t.titulo}"
+
+<!-- depois -->
+data-video-title="${escapeHtml(t.titulo)}"
+title="Assistir: ${escapeHtml(t.titulo)}"
+```
+
+O `data-video-title` é lido em `aulasInit()` via `card.dataset.videoTitle` e passado para `openVideoPlayer()`. Como `dataset` decodifica automaticamente entidades HTML, o valor original é preservado no JavaScript. A validação do YouTube ID ocorre dentro de `openVideoPlayer()` em `biblioteca.js` (**S4**).

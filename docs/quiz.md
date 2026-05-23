@@ -389,7 +389,7 @@ Os tiles são clicáveis — o usuário pode voltar a qualquer pergunta diretame
 
 | Elemento                    | Evento  | Ação                                                                                       |
 | --------------------------- | ------- | ------------------------------------------------------------------------------------------ |
-| `.quiz-option` (dinâmico)   | `click` | Salva resposta em `answers[current]`, atualiza classes `.selected`, re-renderiza progresso |
+| `#quiz-options` (delegação) | `click` | Captura clique em `.quiz-option` via `closest()`, salva resposta, atualiza `.selected`, re-renderiza progresso |
 | `#btn-prev`                 | `click` | `current--`, chama `render()`                                                              |
 | `#btn-next`                 | `click` | `current++`, chama `render()` — visível em todas exceto a última                           |
 | `#btn-finish`               | `click` | `window.location.hash = "#/plano"` — visível apenas na última pergunta                     |
@@ -440,20 +440,53 @@ O banco tem `a: 2` (índice da resposta certa) em cada questão, mas nenhuma par
 
 Além do botão "← Pergunta Anterior", o usuário pode clicar diretamente em qualquer tile na sidebar para pular para aquela pergunta. Isso permite revisitar respostas antes de finalizar.
 
-### `renderProgress()` com bug de `cls` não utilizado
+### Listeners das opções — delegação de evento (**Q**)
+
+Antes da Etapa 4, `renderQuestion()` registrava um `addEventListener("click", ...)` em cada botão `.quiz-option` após reconstruir o `innerHTML`. Embora o `innerHTML = ...` destrua os elementos anteriores (evitando acúmulo real), o padrão é inconsistente com o tratamento já adotado para os tiles de progresso (C3).
+
+Corrigido na Etapa 4: o `forEach + addEventListener` foi removido de `renderQuestion()`. Um único listener de delegação foi adicionado em `quizInit()`, no container `#quiz-options`:
 
 ```javascript
-function renderProgress() {
-  progressEl.innerHTML = questions.map((_, i) => {
-    let cls = "progress-tile";              // ← variável cls definida...
-    if (i === current) cls += " current";
-    else if (answers[i] !== null) cls += " answered";
-    return `<button class="progress-tile ${...}" ...>`;  // ← mas o template literal recalcula inline
-  }).join("");
-}
+// Q: delegação única no container de opções — consistente com o padrão C3 das tiles de progresso
+optionsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".quiz-option");
+  if (!btn) return;
+  answers[current] = Number(btn.dataset.idx);
+  optionsEl.querySelectorAll(".quiz-option").forEach((b) => b.classList.remove("selected"));
+  btn.classList.add("selected");
+  renderProgress();
+});
 ```
 
-A variável `cls` é construída mas não usada no template — a classe é recalculada inline com um ternário. `cls` é código morto dentro dessa função.
+O `e.target.closest(".quiz-option")` captura cliques em qualquer filho do botão (como `<span class="option-letter">`), garantindo que o hit-area funcione corretamente.
+
+---
+
+### `renderProgress()` — corrigida (**C3** + **C7**)
+
+Dois problemas corrigidos no code review:
+
+- **C7**: variável `cls` era construída mas nunca usada (código morto) — removida.
+- **C3**: listeners de clique nos tiles eram registrados a cada chamada de `renderProgress()`, acumulando dezenas de handlers. Corrigido usando **delegação de evento** no container `progressEl`, configurada uma única vez em `quizInit()`.
+
+```javascript
+// renderProgress() — apenas atualiza o HTML, sem listeners
+function renderProgress() {
+  progressEl.innerHTML = questions
+    .map((_, i) =>
+      `<button class="progress-tile ${i === current ? "current" : answers[i] !== null ? "answered" : ""}" data-q="${i}" ...></button>`
+    )
+    .join("");
+}
+
+// quizInit() — delegação única, registrada uma vez
+progressEl.addEventListener("click", (e) => {
+  const tile = e.target.closest(".progress-tile");
+  if (!tile) return;
+  current = Number(tile.dataset.q);
+  render();
+});
+```
 
 ---
 

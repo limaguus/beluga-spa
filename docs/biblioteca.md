@@ -484,6 +484,41 @@ O CSS do player (`.video-player-overlay`, `.video-player-modal`, `.video-player-
 
 ---
 
+## Correções de Segurança (Etapa 3)
+
+### Validação de YouTube ID (**S4**)
+
+```javascript
+// S4: valida o formato do ID do YouTube antes de usar em URLs e iframes — previne injeção
+function isValidYoutubeId(id) {
+  return typeof id === "string" && /^[a-zA-Z0-9_-]{8,15}$/.test(id);
+}
+```
+
+Aplicado em dois pontos:
+
+1. **`buildVideoCard(v)`** — retorna `""` se `v.youtubeId` for inválido, evitando geração de URLs malformadas no `href` e na thumbnail.
+2. **`openVideoPlayer(youtubeId, title)`** — retorna imediatamente se o ID for inválido, impedindo que um valor malicioso seja inserido no atributo `src` do `<iframe>`.
+
+### Sanitização de atributos HTML (**S5**)
+
+```javascript
+// S5: escapa o título para uso em atributos HTML — previne quebra de atributo
+const safeTitle = escapeHtml(title);
+// aria-label="${safeTitle}"  e  title="${safeTitle}"
+```
+
+Atributos protegidos:
+
+| Atributo | Onde | Proteção |
+|---|---|---|
+| `data-video-title` | `buildVideoCard()` — `<a>` card | quebra se título contém `"` |
+| `title` | `buildVideoCard()` — `<a>` card | idem |
+| `aria-label` | `openVideoPlayer()` — `<div>` overlay | idem |
+| `title` | `openVideoPlayer()` — `<iframe>` | idem |
+
+---
+
 ### Quem chama este componente
 
 | Arquivo | Como usa |

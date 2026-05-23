@@ -12,7 +12,8 @@ import { injectBeluginha, removeBeluginha } from "./screens/beluginha.js";
 
 const routes = {};
 
-const PUBLIC_ROUTES = ["landing", "login", "cadastro"];
+// C6: "recuperar" adicionado — link "Esqueceu a senha?" em login.js apontava para rota inexistente
+const PUBLIC_ROUTES = ["landing", "login", "cadastro", "recuperar"];
 
 const TOPBAR_HTML = `
 <header class="topbar" id="topbar">

@@ -398,22 +398,32 @@ export function quizInit() {
   const btnFinish = document.getElementById("btn-finish");
   const progressEl = document.getElementById("quiz-progress-bar");
 
-  function renderProgress() {
-    progressEl.innerHTML = questions
-      .map((_, i) => {
-        let cls = "progress-tile";
-        if (i === current) cls += " current";
-        else if (answers[i] !== null) cls += " answered";
-        return `<button class="progress-tile ${i === current ? "current" : answers[i] !== null ? "answered" : ""}" data-q="${i}" title="Pergunta ${i + 1}"></button>`;
-      })
-      .join("");
+  // C3: delegação única no container — evita acúmulo de listeners a cada renderProgress()
+  progressEl.addEventListener("click", (e) => {
+    const tile = e.target.closest(".progress-tile");
+    if (!tile) return;
+    current = Number(tile.dataset.q);
+    render();
+  });
 
-    progressEl.querySelectorAll(".progress-tile").forEach((tile) => {
-      tile.addEventListener("click", () => {
-        current = Number(tile.dataset.q);
-        render();
-      });
-    });
+  // Q: delegação única no container de opções — consistente com o padrão C3 das tiles de progresso
+  optionsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".quiz-option");
+    if (!btn) return;
+    answers[current] = Number(btn.dataset.idx);
+    optionsEl.querySelectorAll(".quiz-option").forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    renderProgress();
+  });
+
+  function renderProgress() {
+    // C7: variável cls removida — era código morto (nunca usada no template)
+    // C3: listeners removidos daqui — delegação única configurada em quizInit() abaixo
+    progressEl.innerHTML = questions
+      .map((_, i) =>
+        `<button class="progress-tile ${i === current ? "current" : answers[i] !== null ? "answered" : ""}" data-q="${i}" title="Pergunta ${i + 1}"></button>`
+      )
+      .join("");
   }
 
   function renderQuestion() {
@@ -432,15 +442,6 @@ export function quizInit() {
         </button>`,
       )
       .join("");
-
-    optionsEl.querySelectorAll(".quiz-option").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        answers[current] = Number(btn.dataset.idx);
-        optionsEl.querySelectorAll(".quiz-option").forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-        renderProgress();
-      });
-    });
 
     const isLast = current === questions.length - 1;
     btnPrev.style.visibility = current === 0 ? "hidden" : "visible";

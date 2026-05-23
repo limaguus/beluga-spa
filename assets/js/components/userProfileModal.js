@@ -12,179 +12,262 @@ const PROFILES = {
   "André Sanches": {
     bio: "Engenharia de Computação · Design de Interfaces e Algoritmos",
     isMonitor: true,
-    level: 9, levelTitle: "Veterano",
-    xp: 4200, xpNext: 5000,
-    hoursStudied: 98, streak: 18, rankPosition: 1,
+    level: 9,
+    levelTitle: "Veterano",
+    xp: 4200,
+    xpNext: 5000,
+    hoursStudied: 98,
+    streak: 18,
+    rankPosition: 1,
     achievements: [
-      { icon: "🥇", name: "Top 1 Semanal",       rare: false },
+      { icon: "🥇", name: "Top 1 Semanal", rare: false },
       { icon: "⚡", name: "Sequência de 14 Dias", rare: false },
-      { icon: "🧠", name: "Neurônio de Ouro",     rare: false },
-      { icon: "🎓", name: "Monitor Aprovado",     rare: true  },
-      { icon: "💎", name: "Diamante BELUGA",      rare: true  },
+      { icon: "🧠", name: "Neurônio de Ouro", rare: false },
+      { icon: "🎓", name: "Monitor Aprovado", rare: true },
+      { icon: "💎", name: "Diamante BELUGA", rare: true },
     ],
     recentActivity: [
-      { type: "Feed",   text: "Bati meu recorde pessoal: 3 horas de Design de Interfaces hoje! Semana produtiva." },
-      { type: "Fórum",  text: "Respondeu: Qual a lógica por trás do algoritmo de busca binária?" },
+      {
+        type: "Feed",
+        text: "Bati meu recorde pessoal: 3 horas de Design de Interfaces hoje! Semana produtiva.",
+      },
+      {
+        type: "Fórum",
+        text: "Respondeu: Qual a lógica por trás do algoritmo de busca binária?",
+      },
     ],
   },
 
   "Laura Silva": {
     bio: "Ciência da Computação · Especialista em Algoritmos e Lógica",
     isMonitor: true,
-    level: 8, levelTitle: "Estudante Ninja",
-    xp: 3800, xpNext: 4500,
-    hoursStudied: 76, streak: 12, rankPosition: 2,
+    level: 8,
+    levelTitle: "Estudante Ninja",
+    xp: 3800,
+    xpNext: 4500,
+    hoursStudied: 76,
+    streak: 12,
+    rankPosition: 2,
     achievements: [
-      { icon: "🏆", name: "Top 5 Semanal",       rare: false },
+      { icon: "🏆", name: "Top 5 Semanal", rare: false },
       { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
-      { icon: "🎯", name: "Foco Total",           rare: false },
-      { icon: "🎓", name: "Monitor Aprovado",     rare: true  },
+      { icon: "🎯", name: "Foco Total", rare: false },
+      { icon: "🎓", name: "Monitor Aprovado", rare: true },
     ],
     recentActivity: [
-      { type: "Feed", text: "Fiz o quiz de Algoritmos e acertei 8/10! Errei as questões de complexidade de tempo." },
+      {
+        type: "Feed",
+        text: "Fiz o quiz de Algoritmos e acertei 8/10! Errei as questões de complexidade de tempo.",
+      },
     ],
   },
 
   "Mariana Assis": {
     bio: "Sistemas de Informação · Banco de Dados e Desenvolvimento Web",
     isMonitor: false,
-    level: 7, levelTitle: "Estudante Avançado",
-    xp: 3100, xpNext: 4000,
-    hoursStudied: 64, streak: 9, rankPosition: 4,
+    level: 7,
+    levelTitle: "Estudante Avançado",
+    xp: 3100,
+    xpNext: 4000,
+    hoursStudied: 64,
+    streak: 9,
+    rankPosition: 4,
     achievements: [
-      { icon: "🌟", name: "Estrela Ascendente",  rare: false },
+      { icon: "🌟", name: "Estrela Ascendente", rare: false },
       { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
-      { icon: "🤝", name: "Colaborador",          rare: false },
+      { icon: "🤝", name: "Colaborador", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Banco de Dados me venceu hoje... mas amanhã eu volto com tudo. Não vou desistir." },
+      {
+        type: "Feed",
+        text: "Banco de Dados me venceu hoje... mas amanhã eu volto com tudo. Não vou desistir.",
+      },
     ],
   },
 
   "Carlos Eduardo": {
     bio: "Engenharia de Software · Organização e produtividade no foco",
     isMonitor: false,
-    level: 9, levelTitle: "Veterano",
-    xp: 4600, xpNext: 5000,
-    hoursStudied: 142, streak: 24, rankPosition: 3,
+    level: 9,
+    levelTitle: "Veterano",
+    xp: 4600,
+    xpNext: 5000,
+    hoursStudied: 142,
+    streak: 24,
+    rankPosition: 3,
     achievements: [
-      { icon: "💎", name: "Diamante BELUGA",      rare: true  },
+      { icon: "💎", name: "Diamante BELUGA", rare: true },
       { icon: "⚡", name: "Sequência de 14 Dias", rare: false },
-      { icon: "🥇", name: "Top 1 Semanal",        rare: false },
-      { icon: "📚", name: "Leitor Assíduo",        rare: false },
-      { icon: "🚀", name: "Superação",             rare: false },
+      { icon: "🥇", name: "Top 1 Semanal", rare: false },
+      { icon: "📚", name: "Leitor Assíduo", rare: false },
+      { icon: "🚀", name: "Superação", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Terminei meu plano de estudos da semana! Foram 11 horas no total, distribuídas em 5 disciplinas." },
+      {
+        type: "Feed",
+        text: "Terminei meu plano de estudos da semana! Foram 11 horas no total, distribuídas em 5 disciplinas.",
+      },
     ],
   },
 
   "Maria Cláudia": {
     bio: "Engenharia de Software · Avançando em Cálculo e Derivadas",
     isMonitor: false,
-    level: 6, levelTitle: "Explorador",
-    xp: 2850, xpNext: 3500,
-    hoursStudied: 52, streak: 14, rankPosition: 5,
+    level: 6,
+    levelTitle: "Explorador",
+    xp: 2850,
+    xpNext: 3500,
+    hoursStudied: 52,
+    streak: 14,
+    rankPosition: 5,
     achievements: [
       { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
-      { icon: "🌟", name: "Estrela Ascendente",  rare: false },
-      { icon: "💡", name: "Curiosidade Ativa",   rare: false },
+      { icon: "🌟", name: "Estrela Ascendente", rare: false },
+      { icon: "💡", name: "Curiosidade Ativa", rare: false },
     ],
     recentActivity: [
-      { type: "Feed",  text: "Estudei 2 horas de derivada hoje, tô começando a entender melhor! A regra da cadeia finalmente fez sentido." },
-      { type: "Fórum", text: "Comentou em: Escalonamento de processos em Sistemas Operacionais." },
+      {
+        type: "Feed",
+        text: "Estudei 2 horas de derivada hoje, tô começando a entender melhor! A regra da cadeia finalmente fez sentido.",
+      },
+      {
+        type: "Fórum",
+        text: "Comentou em: Escalonamento de processos em Sistemas Operacionais.",
+      },
     ],
   },
 
   "José Antônio": {
     bio: "Sistemas de Informação · Sistemas Operacionais e Infraestrutura",
     isMonitor: false,
-    level: 7, levelTitle: "Estudante Avançado",
-    xp: 3240, xpNext: 4000,
-    hoursStudied: 71, streak: 11, rankPosition: 6,
+    level: 7,
+    levelTitle: "Estudante Avançado",
+    xp: 3240,
+    xpNext: 4000,
+    hoursStudied: 71,
+    streak: 11,
+    rankPosition: 6,
     achievements: [
-      { icon: "🎯", name: "Foco Total",  rare: false },
+      { icon: "🎯", name: "Foco Total", rare: false },
       { icon: "🤝", name: "Colaborador", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Revisei os conteúdos de Sistemas Operacionais e finalmente entendi escalonamento de processos." },
+      {
+        type: "Feed",
+        text: "Revisei os conteúdos de Sistemas Operacionais e finalmente entendi escalonamento de processos.",
+      },
     ],
   },
 
   "Fernanda Lima": {
     bio: "Análise e Desenvolvimento · Inovação e Empreendedorismo",
     isMonitor: false,
-    level: 5, levelTitle: "Estudante em Progresso",
-    xp: 1950, xpNext: 2500,
-    hoursStudied: 38, streak: 6, rankPosition: 9,
+    level: 5,
+    levelTitle: "Estudante em Progresso",
+    xp: 1950,
+    xpNext: 2500,
+    hoursStudied: 38,
+    streak: 6,
+    rankPosition: 9,
     achievements: [
       { icon: "🚀", name: "Primeiros Passos", rare: false },
-      { icon: "💡", name: "Inovador",         rare: false },
+      { icon: "💡", name: "Inovador", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Assisti duas aulas de Inovação e Tecnologia e fiquei inspirada com o conteúdo sobre startups universitárias." },
+      {
+        type: "Feed",
+        text: "Assisti duas aulas de Inovação e Tecnologia e fiquei inspirada com o conteúdo sobre startups universitárias.",
+      },
     ],
   },
 
   "Rafael Torres": {
     bio: "Ciência da Computação · Lógica de Programação e consistência diária",
     isMonitor: false,
-    level: 7, levelTitle: "Estudante Avançado",
-    xp: 3180, xpNext: 4000,
-    hoursStudied: 58, streak: 21, rankPosition: 7,
+    level: 7,
+    levelTitle: "Estudante Avançado",
+    xp: 3180,
+    xpNext: 4000,
+    hoursStudied: 58,
+    streak: 21,
+    rankPosition: 7,
     achievements: [
       { icon: "⚡", name: "Sequência de 14 Dias", rare: false },
-      { icon: "🔥", name: "Sequência de 7 Dias",  rare: false },
-      { icon: "🎯", name: "Foco Total",            rare: false },
+      { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
+      { icon: "🎯", name: "Foco Total", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Pratiquei exercícios de lógica por 40 minutos hoje. Parece pouco, mas faz 21 dias seguidos estudando!" },
+      {
+        type: "Feed",
+        text: "Pratiquei exercícios de lógica por 40 minutos hoje. Parece pouco, mas faz 21 dias seguidos estudando!",
+      },
     ],
   },
 
   "Ana Beatriz": {
     bio: "Engenharia de Computação · Resiliência e visão de longo prazo",
     isMonitor: false,
-    level: 8, levelTitle: "Estudante Ninja",
-    xp: 3650, xpNext: 4500,
-    hoursStudied: 89, streak: 15, rankPosition: 8,
+    level: 8,
+    levelTitle: "Estudante Ninja",
+    xp: 3650,
+    xpNext: 4500,
+    hoursStudied: 89,
+    streak: 15,
+    rankPosition: 8,
     achievements: [
-      { icon: "🌟", name: "Estrela Ascendente",  rare: false },
+      { icon: "🌟", name: "Estrela Ascendente", rare: false },
       { icon: "⚡", name: "Sequência de 14 Dias", rare: false },
-      { icon: "💪", name: "Persistência",         rare: false },
+      { icon: "💪", name: "Persistência", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Semana pesada de provas, mas consegui manter a sequência de estudos. Às vezes é sobre resistir, não sobre ser perfeito." },
+      {
+        type: "Feed",
+        text: "Semana pesada de provas, mas consegui manter a sequência de estudos. Às vezes é sobre resistir, não sobre ser perfeito.",
+      },
     ],
   },
 
   "Lucas Mendes": {
     bio: "Sistemas de Informação · Novo no BELUGA e empolgado!",
     isMonitor: false,
-    level: 4, levelTitle: "Iniciante Animado",
-    xp: 820, xpNext: 1500,
-    hoursStudied: 12, streak: 3, rankPosition: null,
+    level: 4,
+    levelTitle: "Iniciante Animado",
+    xp: 820,
+    xpNext: 1500,
+    hoursStudied: 12,
+    streak: 3,
+    rankPosition: null,
     achievements: [
       { icon: "✨", name: "Primeiro Acesso", rare: false },
       { icon: "🚀", name: "Primeiros Passos", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Hoje entrei no Beluga pela primeira vez e já organizei toda minha grade no Plano de Estudos. A plataforma é incrível!" },
+      {
+        type: "Feed",
+        text: "Hoje entrei no Beluga pela primeira vez e já organizei toda minha grade no Plano de Estudos. A plataforma é incrível!",
+      },
     ],
   },
 
   "Isabela Rocha": {
     bio: "Redes de Computadores · Infraestrutura e protocolos de rede",
     isMonitor: false,
-    level: 6, levelTitle: "Explorador",
-    xp: 2650, xpNext: 3500,
-    hoursStudied: 48, streak: 8, rankPosition: 11,
+    level: 6,
+    levelTitle: "Explorador",
+    xp: 2650,
+    xpNext: 3500,
+    hoursStudied: 48,
+    streak: 8,
+    rankPosition: 11,
     achievements: [
       { icon: "🌐", name: "Explorador Digital", rare: false },
-      { icon: "📚", name: "Leitor Assíduo",      rare: false },
+      { icon: "📚", name: "Leitor Assíduo", rare: false },
     ],
     recentActivity: [
-      { type: "Feed", text: "Revisão completa de Redes de Computadores concluída! Protocolo TCP/IP nunca mais vai me dar trabalho." },
+      {
+        type: "Feed",
+        text: "Revisão completa de Redes de Computadores concluída! Protocolo TCP/IP nunca mais vai me dar trabalho.",
+      },
     ],
   },
 
@@ -192,121 +275,173 @@ const PROFILES = {
   "Ana Lima": {
     bio: "Ciência da Computação · Algoritmos e Estruturas de Dados",
     isMonitor: false,
-    level: 5, levelTitle: "Estudante em Progresso",
-    xp: 1800, xpNext: 2500,
-    hoursStudied: 31, streak: 5, rankPosition: 14,
+    level: 5,
+    levelTitle: "Estudante em Progresso",
+    xp: 1800,
+    xpNext: 2500,
+    hoursStudied: 31,
+    streak: 5,
+    rankPosition: 14,
     achievements: [
       { icon: "💡", name: "Curiosidade Ativa", rare: false },
-      { icon: "🤝", name: "Colaborador",        rare: false },
+      { icon: "🤝", name: "Colaborador", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Qual a lógica por trás do algoritmo de busca binária?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Qual a lógica por trás do algoritmo de busca binária?",
+      },
     ],
   },
 
   "Marcos Vidal": {
     bio: "Engenharia de Computação · Sistemas Operacionais e Concorrência",
     isMonitor: true,
-    level: 7, levelTitle: "Estudante Avançado",
-    xp: 3400, xpNext: 4000,
-    hoursStudied: 74, streak: 10, rankPosition: 5,
+    level: 7,
+    levelTitle: "Estudante Avançado",
+    xp: 3400,
+    xpNext: 4000,
+    hoursStudied: 74,
+    streak: 10,
+    rankPosition: 5,
     achievements: [
-      { icon: "🎓", name: "Monitor Aprovado",    rare: true  },
+      { icon: "🎓", name: "Monitor Aprovado", rare: true },
       { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
-      { icon: "🤝", name: "Colaborador",          rare: false },
+      { icon: "🤝", name: "Colaborador", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Como os semáforos evitam condições de corrida?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Como os semáforos evitam condições de corrida?",
+      },
     ],
   },
 
   "Rafaela Silva": {
     bio: "Sistemas de Informação · Monitora de Sistemas Operacionais",
     isMonitor: true,
-    level: 7, levelTitle: "Estudante Avançado",
-    xp: 3550, xpNext: 4000,
-    hoursStudied: 82, streak: 13, rankPosition: 4,
+    level: 7,
+    levelTitle: "Estudante Avançado",
+    xp: 3550,
+    xpNext: 4000,
+    hoursStudied: 82,
+    streak: 13,
+    rankPosition: 4,
     achievements: [
-      { icon: "🎓", name: "Monitor Aprovado",     rare: true  },
+      { icon: "🎓", name: "Monitor Aprovado", rare: true },
       { icon: "⚡", name: "Sequência de 14 Dias", rare: false },
-      { icon: "🏆", name: "Top 5 Semanal",        rare: false },
+      { icon: "🏆", name: "Top 5 Semanal", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Respondeu: Como os semáforos evitam condições de corrida? (Pensa no semáforo como uma chave de banheiro: só um entra por vez.)" },
+      {
+        type: "Fórum",
+        text: "Respondeu: Como os semáforos evitam condições de corrida? (Pensa no semáforo como uma chave de banheiro: só um entra por vez.)",
+      },
     ],
   },
 
   "Lucas Melo": {
     bio: "Engenharia de Software · Monitor de Cálculo e Algoritmos",
     isMonitor: true,
-    level: 8, levelTitle: "Estudante Ninja",
-    xp: 3900, xpNext: 4500,
-    hoursStudied: 91, streak: 16, rankPosition: 3,
+    level: 8,
+    levelTitle: "Estudante Ninja",
+    xp: 3900,
+    xpNext: 4500,
+    hoursStudied: 91,
+    streak: 16,
+    rankPosition: 3,
     achievements: [
-      { icon: "🎓", name: "Monitor Aprovado", rare: true  },
-      { icon: "💎", name: "Diamante BELUGA",  rare: true  },
+      { icon: "🎓", name: "Monitor Aprovado", rare: true },
+      { icon: "💎", name: "Diamante BELUGA", rare: true },
       { icon: "🧠", name: "Neurônio de Ouro", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Respondeu: Como interpretar uma derivada em um gráfico?" },
+      {
+        type: "Fórum",
+        text: "Respondeu: Como interpretar uma derivada em um gráfico?",
+      },
     ],
   },
 
   "Beatriz Santos": {
     bio: "Matemática Computacional · Cálculo Diferencial e Integral",
     isMonitor: false,
-    level: 5, levelTitle: "Estudante em Progresso",
-    xp: 2100, xpNext: 2500,
-    hoursStudied: 40, streak: 7, rankPosition: 12,
+    level: 5,
+    levelTitle: "Estudante em Progresso",
+    xp: 2100,
+    xpNext: 2500,
+    hoursStudied: 40,
+    streak: 7,
+    rankPosition: 12,
     achievements: [
       { icon: "🔥", name: "Sequência de 7 Dias", rare: false },
-      { icon: "💡", name: "Curiosidade Ativa",    rare: false },
+      { icon: "💡", name: "Curiosidade Ativa", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Como interpretar uma derivada em um gráfico?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Como interpretar uma derivada em um gráfico?",
+      },
     ],
   },
 
   "Caio Fernandes": {
     bio: "Design Digital · UX/UI e Pesquisa com Usuários",
     isMonitor: false,
-    level: 5, levelTitle: "Estudante em Progresso",
-    xp: 1750, xpNext: 2500,
-    hoursStudied: 27, streak: 4, rankPosition: 16,
-    achievements: [
-      { icon: "✨", name: "Primeiro Acesso", rare: false },
-    ],
+    level: 5,
+    levelTitle: "Estudante em Progresso",
+    xp: 1750,
+    xpNext: 2500,
+    hoursStudied: 27,
+    streak: 4,
+    rankPosition: 16,
+    achievements: [{ icon: "✨", name: "Primeiro Acesso", rare: false }],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Qual a diferença entre UX e UI no Design de Interfaces?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Qual a diferença entre UX e UI no Design de Interfaces?",
+      },
     ],
   },
 
   "Vitória Rocha": {
     bio: "Ciência da Computação · Banco de Dados e Modelagem de Dados",
     isMonitor: false,
-    level: 5, levelTitle: "Estudante em Progresso",
-    xp: 2050, xpNext: 2500,
-    hoursStudied: 35, streak: 6, rankPosition: 13,
+    level: 5,
+    levelTitle: "Estudante em Progresso",
+    xp: 2050,
+    xpNext: 2500,
+    hoursStudied: 35,
+    streak: 6,
+    rankPosition: 13,
     achievements: [
       { icon: "📚", name: "Leitor Assíduo", rare: false },
-      { icon: "🤝", name: "Colaborador",    rare: false },
+      { icon: "🤝", name: "Colaborador", rare: false },
     ],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Como normalizar uma tabela no banco de dados?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Como normalizar uma tabela no banco de dados?",
+      },
     ],
   },
 
   "Jerferson Alves": {
     bio: "Banco de Dados · Modelagem e Engenharia de Dados",
     isMonitor: false,
-    level: 4, levelTitle: "Iniciante Animado",
-    xp: 1200, xpNext: 1500,
-    hoursStudied: 22, streak: 4, rankPosition: 18,
-    achievements: [
-      { icon: "🚀", name: "Primeiros Passos", rare: false },
-    ],
+    level: 4,
+    levelTitle: "Iniciante Animado",
+    xp: 1200,
+    xpNext: 1500,
+    hoursStudied: 22,
+    streak: 4,
+    rankPosition: 18,
+    achievements: [{ icon: "🚀", name: "Primeiros Passos", rare: false }],
     recentActivity: [
-      { type: "Fórum", text: "Perguntou: Quando usar chave composta em vez de chave primária simples?" },
+      {
+        type: "Fórum",
+        text: "Perguntou: Quando usar chave composta em vez de chave primária simples?",
+      },
     ],
   },
 };
@@ -314,16 +449,26 @@ const PROFILES = {
 // ─── Helpers internos ─────────────────────────────────────
 function getProfile(author) {
   const db = PROFILES[author.name];
-  if (db) return { ...db, name: author.name, initials: author.initials, color: author.color };
+  if (db)
+    return {
+      ...db,
+      name: author.name,
+      initials: author.initials,
+      color: author.color,
+    };
   return {
     name: author.name,
     initials: author.initials,
     color: author.color,
     bio: "Estudante BELUGA",
     isMonitor: false,
-    level: 1, levelTitle: "Iniciante",
-    xp: 0, xpNext: 500,
-    hoursStudied: 0, streak: 0, rankPosition: null,
+    level: 1,
+    levelTitle: "Iniciante",
+    xp: 0,
+    xpNext: 500,
+    hoursStudied: 0,
+    streak: 0,
+    rankPosition: null,
     achievements: [],
     recentActivity: [],
   };
@@ -426,7 +571,9 @@ export function openUserProfileModal(author) {
   if (fill) {
     const target = fill.dataset.width + "%";
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => { fill.style.width = target; });
+      requestAnimationFrame(() => {
+        fill.style.width = target;
+      });
     });
   }
 }
@@ -470,9 +617,9 @@ export function initUserProfileModal() {
     const trigger = e.target.closest("[data-profile-trigger]");
     if (!trigger) return;
     openUserProfileModal({
-      name:     trigger.dataset.userName,
+      name: trigger.dataset.userName,
       initials: trigger.dataset.userInitials,
-      color:    trigger.dataset.userColor,
+      color: trigger.dataset.userColor,
     });
   });
 }

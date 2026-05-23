@@ -118,23 +118,22 @@ div.public.auth
 | `.quote-svg` | `<svg>` | SVG completo com ondas e texto curvado |
 | `.quote-text` | `<text>` SVG | Texto SVG da citação de Paulo Freire |
 
-### Atenção: `id` nos inputs e como o JS os lê
+### `id` nos inputs
 
-Os campos do formulário têm atributo `name`, mas **não têm `id`**:
+Os campos do formulário agora têm tanto `name` quanto `id` (corrigido no code review — **C1**):
 
 ```html
-<input class="input auth-input" type="email" name="email" placeholder="Email" required />
-<input class="input auth-input" type="password" name="senha" placeholder="Senha" required />
+<!-- id adicionados para que getElementById funcione corretamente -->
+<input class="input auth-input" id="email" type="email" name="email" placeholder="Email" required />
+<input class="input auth-input" id="senha" type="password" name="senha" placeholder="Senha" required />
 ```
 
-Já o JavaScript tenta lê-los por `id`:
+O JavaScript os lê via:
 
 ```javascript
 const email = document.getElementById("email")?.value?.trim();
 const senha  = document.getElementById("senha")?.value?.trim();
 ```
-
-Como não há `id` nesses inputs, `getElementById` retorna `null` e o `?.` evita erro. Isso significa que as variáveis `email` e `senha` ficam como `undefined` na prática — mas como a autenticação é mock, isso não impede o login de funcionar.
 
 ---
 
@@ -396,7 +395,7 @@ A partir desse momento, `isLoggedIn()` retorna `true` e o router protege as rota
 |---|---|---|
 | `form#login-form` | `submit` | Chama `login()` e redireciona para `#/dashboard` |
 | `a[href="#/cadastro"]` | `click` (nativo do browser) | Navega para a rota de cadastro via hash |
-| `a[href="#/recuperar"]` | `click` (nativo) | Tenta navegar para `#/recuperar` (rota não registrada) |
+| `a[href="#/recuperar"]` | `click` (nativo) | Navega para `#/recuperar` — tela "Recuperar Senha" (rota registrada, **C6**) |
 | `.auth-beluga` | — | Animação CSS contínua — sem JS |
 | Ondas SVG | — | Animação SVG nativa (`<animateTransform>`) — sem JS |
 
@@ -435,9 +434,9 @@ isLoggedIn() → true, rota privada → renderiza dashboard
 | Ação do usuário | O que acontece |
 |---|---|
 | Clica "Cadastre-se aqui" | Browser navega para `#/cadastro` via `href` nativo |
-| Clica "Esqueceu a senha?" | Browser tenta navegar para `#/recuperar` — rota não existe, exibe "Página não encontrada" |
+| Clica "Esqueceu a senha?" | Navega para `#/recuperar` — rota registrada como pública (**C6**), exibe tela de recuperação de senha |
 | Já está logado e acessa `#/login` | Router redireciona automaticamente para `#/dashboard` |
-| Submete formulário sem preencher campos | Atributo `required` no HTML impede o submit e exibe validação nativa do browser |
+| Submete formulário sem preencher campos | Atributo `required` no HTML impede o submit; `loginInit()` também valida e foca o campo vazio (**C2**) |
 
 ---
 
@@ -570,6 +569,53 @@ export function isLoggedIn() {
 
 ---
 
+## Correções de Qualidade (Etapa 4)
+
+### Posição do `import` (**Q4**)
+
+O `import { login } from "../state/auth.js"` estava na linha 150, entre `loginScreen()` e `loginInit()`. Imports ES6 devem ficar no topo do módulo — abaixo eles ainda são içados pelo motor JS (hoisting), mas reduzem a legibilidade e violam a convenção padrão.
+
+Corrigido: o import foi movido para a primeira linha do arquivo:
+
+```javascript
+// Q4: import movido para o topo — imports ES6 devem estar no início do módulo
+import { login } from "../state/auth.js";
+
+export function loginScreen() { ... }
+export function loginInit() { ... }
+```
+
+---
+
+## Correções de Segurança (Etapa 3)
+
+### `auth.js` — limitação do localStorage (**S2**)
+
+```javascript
+// S2: autenticação via localStorage é apenas um flag de UI — não oferece segurança real.
+// Qualquer script pode definir beluga_logged="1" pelo console do navegador.
+// Para produção, substitua por JWT validado no servidor ou sessão via HttpOnly cookie.
+export function isLoggedIn() {
+  return localStorage.getItem("beluga_logged") === "1";
+}
+```
+
+Comentário adicionado em `auth.js` para documentar a limitação do mecanismo atual. A função `login()` não valida credenciais — apenas escreve `"1"` no localStorage.
+
+### Validação mínima de senha (**S3**)
+
+```javascript
+// S3: senha com menos de 6 caracteres é rejeitada — reduz risco de senhas triviais
+if (senha.length < 6) {
+  document.getElementById("senha")?.focus();
+  return;
+}
+```
+
+Adicionado em `loginInit()` após a validação C2 (campos vazios). O submit é bloqueado se `senha.length < 6`, e o campo de senha recebe foco. Para produção, o servidor deve validar comprimento e complexidade de forma independente.
+
+---
+
 ## Relação Entre Arquivos
 
 ```
@@ -611,8 +657,8 @@ assets/css/main.css
 **Por que o login funciona sem validar senha?**
 O sistema de autenticação é 100% mock. A função `login()` em `auth.js` não recebe nem verifica a senha — ela apenas escreve uma flag no localStorage. Isso é intencional para o estágio atual de desenvolvimento (MVP de interface). Quando um backend for integrado, `auth.js` é o único arquivo a ser modificado.
 
-**Por que os inputs não têm `id`?**
-Parece um bug de implementação — os campos têm `name="email"` e `name="senha"`, mas o `loginInit()` tenta buscá-los por `getElementById("email")` e `getElementById("senha")`. Como o login é mock e ignora os valores, isso não quebra o sistema, mas precisará ser corrigido quando a autenticação for real.
+**Por que os inputs agora têm `id`?**
+Correção do code review (**C1**): os campos tinham `name="email"` e `name="senha"`, mas o `loginInit()` os buscava por `getElementById`. Sem `id`, `getElementById` retornava `null`. Os atributos `id="email"` e `id="senha"` foram adicionados e uma validação básica de campos vazios foi incluída no submit (**C2**).
 
 **Por que as ondas SVG não usam CSS `animation`?**
 As ondas usam `<animateTransform>` — a API de animação nativa do SVG (SMIL). Diferente de `@keyframes` do CSS, o SMIL é declarado diretamente dentro do SVG e funciona mesmo sem CSS externo. A desvantagem é que a sintaxe é mais verbosa e menos familiar para quem conhece só CSS.

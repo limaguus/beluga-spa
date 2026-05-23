@@ -124,7 +124,20 @@ const NT_MOCK = [
   },
 ];
 
+// S1: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /* ── State ── */
+// C4: referência salva para remoção antes de re-registrar a cada visita
+let _escNtHandler = null;
+
 let ntState = {
   notifications: NT_MOCK.map((n) => ({ ...n })),
   filter: "todas",
@@ -179,9 +192,9 @@ function renderCard(n) {
           ${ntPriorityBadge(n.priority)}
           <span class="nt-card-date">${n.dateLabel}</span>
         </div>
-        <h3 class="nt-card-title">${n.title}</h3>
-        <p class="nt-card-desc">${n.desc}</p>
-        ${n.subject ? `<span class="nt-card-subject">${n.subject}</span>` : ""}
+        <h3 class="nt-card-title">${escapeHtml(n.title)}</h3>
+        <p class="nt-card-desc">${escapeHtml(n.desc)}</p>
+        ${n.subject ? `<span class="nt-card-subject">${escapeHtml(n.subject)}</span>` : ""}
         <div class="nt-card-actions">
           <button class="nt-btn-detail" data-action="detail" data-id="${n.id}">
             Ver detalhes
@@ -282,10 +295,10 @@ function _openDetail(id) {
             ${ntTypeLabel(n.type)}
             ${ntPriorityBadge(n.priority)}
           </div>
-          <h3 class="nt-detail-title">${n.title}</h3>
-          <p class="nt-detail-desc">${n.desc}</p>
+          <h3 class="nt-detail-title">${escapeHtml(n.title)}</h3>
+          <p class="nt-detail-desc">${escapeHtml(n.desc)}</p>
           <div class="nt-detail-meta">
-            ${n.subject ? `<span class="nt-detail-subject">${n.subject}</span>` : ""}
+            ${n.subject ? `<span class="nt-detail-subject">${escapeHtml(n.subject)}</span>` : ""}
             <span class="nt-detail-date">${n.dateLabel}</span>
           </div>
         </div>
@@ -453,7 +466,10 @@ export function notificacoesInit() {
     else if (action === "read") _markRead(id);
   });
 
-  document.addEventListener("keydown", function escNt(e) {
+  // C4: remove handler anterior antes de registrar — impede empilhamento a cada visita à tela
+  if (_escNtHandler) document.removeEventListener("keydown", _escNtHandler);
+  _escNtHandler = (e) => {
     if (e.key === "Escape") document.getElementById("nt-overlay")?.remove();
-  });
+  };
+  document.addEventListener("keydown", _escNtHandler);
 }

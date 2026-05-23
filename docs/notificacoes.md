@@ -228,15 +228,21 @@ document.getElementById("nt-overlay")?.remove();
 
 O elemento é removido completamente do DOM — não é `display:none`.
 
-### Escuta de Escape no `document`
+### Escuta de Escape no `document` — corrigida (**C4**)
 
 ```javascript
-document.addEventListener("keydown", function escNt(e) {
+// Referência salva para poder remover antes de re-registrar
+let _escNtHandler = null;
+
+// Em notificacoesInit():
+if (_escNtHandler) document.removeEventListener("keydown", _escNtHandler);
+_escNtHandler = (e) => {
   if (e.key === "Escape") document.getElementById("nt-overlay")?.remove();
-});
+};
+document.addEventListener("keydown", _escNtHandler);
 ```
 
-O listener é adicionado ao `document` (não ao modal) em `notificacoesInit()`. Ele nunca é removido, mas usa `getElementById("nt-overlay")?.remove()` — se não houver overlay aberto, é um no-op.
+Antes da correção, cada visita à tela de notificações empilhava um novo handler anônimo no `document`. Após a correção, a referência `_escNtHandler` é salva no escopo do módulo e removida antes de um novo registro, garantindo sempre exatamente um handler ativo.
 
 ### Formatação de data no formulário
 
@@ -327,15 +333,9 @@ function saveNotifications() {
 // Chamar saveNotifications() após _markRead() e após criação
 ```
 
-### Remover o listener de Escape ao sair da tela
+### Listener de Escape — já corrigido (**C4**)
 
-O listener atual nunca é removido. Para evitar memory leak em SPAs:
-```javascript
-const escHandler = (e) => { if (e.key === "Escape") document.getElementById("nt-overlay")?.remove(); };
-document.addEventListener("keydown", escHandler);
-// No cleanup da rota:
-document.removeEventListener("keydown", escHandler);
-```
+O handler de Escape agora é salvo em `_escNtHandler` (escopo de módulo) e removido antes de ser re-registrado a cada visita. Não é necessário lógica adicional de cleanup.
 
 ### Adicionar contagem de não lidas no topbar
 
@@ -343,6 +343,30 @@ document.removeEventListener("keydown", escHandler);
 const unread = ntState.notifications.filter(n => !n.read).length;
 document.querySelector(".topbar-notif-badge")?.textContent = unread;
 ```
+
+### Sanitização de conteúdo HTML — (**S1**)
+
+```javascript
+// S1: escapa caracteres HTML especiais antes de inserir via innerHTML — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+```
+
+Campos protegidos em `renderCard()` e `_openDetail()`:
+
+| Campo | Proteção |
+|---|---|
+| `n.title` | título digitado pelo usuário no formulário de lembrete |
+| `n.desc` | descrição digitada no formulário |
+| `n.subject` | matéria digitada no formulário |
+
+Os campos são lidos de inputs (`#nt-f-title`, `#nt-f-desc`, `#nt-f-subject`) em `_bindAddModal()` e inseridos via `innerHTML` em `renderCard()` (lista) e `_openDetail()` (modal de detalhes). Ambos os pontos de renderização foram protegidos.
 
 ---
 

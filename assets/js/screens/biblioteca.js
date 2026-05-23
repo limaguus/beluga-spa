@@ -202,6 +202,21 @@ let _overlayEl = null;
 
 // ---- PRIVATE HELPERS ----
 
+// S4: valida o formato do ID do YouTube antes de usar em URLs e iframes — previne injeção
+function isValidYoutubeId(id) {
+  return typeof id === "string" && /^[a-zA-Z0-9_-]{8,15}$/.test(id);
+}
+
+// S5: escapa caracteres HTML especiais para atributos e conteúdo — previne XSS
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function getFilteredVideos() {
   let vids = BIBLIOTECA_DATA.videos;
   if (_activeCategoria !== "todas") {
@@ -219,6 +234,8 @@ function getFilteredVideos() {
 }
 
 function buildVideoCard(v) {
+  // S4: ignora vídeos com ID inválido — impede geração de URLs malformadas
+  if (!isValidYoutubeId(v.youtubeId)) return "";
   const thumb = `https://i.ytimg.com/vi/${v.youtubeId}/mqdefault.jpg`;
   const recBadge = v.recomendado
     ? `<span class="bib-badge">★ Recomendado</span>`
@@ -228,8 +245,8 @@ function buildVideoCard(v) {
       class="bib-card${v.recomendado ? " bib-card--rec" : ""}"
       href="https://www.youtube.com/watch?v=${v.youtubeId}"
       data-youtube-id="${v.youtubeId}"
-      data-video-title="${v.titulo}"
-      title="${v.titulo}"
+      data-video-title="${escapeHtml(v.titulo)}"
+      title="${escapeHtml(v.titulo)}"
     >
       <div class="bib-card-thumb">
         <img
@@ -456,12 +473,16 @@ function closeBiblioteca() {
 // ---- PUBLIC EXPORTS ----
 
 export function openVideoPlayer(youtubeId, title) {
+  // S4: rejeita IDs inválidos — impede injeção via atributo src do iframe
+  if (!isValidYoutubeId(youtubeId)) return;
   const prev = document.getElementById("beluga-video-player");
   if (prev) prev.remove();
 
+  // S5: escapa o título para uso em atributos HTML — previne quebra de atributo
+  const safeTitle = escapeHtml(title);
   document.body.insertAdjacentHTML(
     "beforeend",
-    `<div id="beluga-video-player" class="video-player-overlay" role="dialog" aria-modal="true" aria-label="${title}">
+    `<div id="beluga-video-player" class="video-player-overlay" role="dialog" aria-modal="true" aria-label="${safeTitle}">
       <div class="video-player-modal">
         <button class="video-player-close" id="video-player-close" type="button" aria-label="Fechar vídeo">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -472,7 +493,7 @@ export function openVideoPlayer(youtubeId, title) {
           <iframe
             id="video-player-iframe"
             src="https://www.youtube.com/embed/${youtubeId}?autoplay=1"
-            title="${title}"
+            title="${safeTitle}"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
