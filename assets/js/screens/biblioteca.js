@@ -227,8 +227,8 @@ function buildVideoCard(v) {
     <a
       class="bib-card${v.recomendado ? " bib-card--rec" : ""}"
       href="https://www.youtube.com/watch?v=${v.youtubeId}"
-      target="_blank"
-      rel="noopener noreferrer"
+      data-youtube-id="${v.youtubeId}"
+      data-video-title="${v.titulo}"
       title="${v.titulo}"
     >
       <div class="bib-card-thumb">
@@ -438,6 +438,13 @@ function attachEvents() {
     _searchQuery = document.getElementById("bib-search-input").value;
     updateContent();
   });
+
+  document.getElementById("bib-content").addEventListener("click", (e) => {
+    const card = e.target.closest(".bib-card");
+    if (!card) return;
+    e.preventDefault();
+    openVideoPlayer(card.dataset.youtubeId, card.dataset.videoTitle);
+  });
 }
 
 function closeBiblioteca() {
@@ -447,6 +454,61 @@ function closeBiblioteca() {
 }
 
 // ---- PUBLIC EXPORTS ----
+
+export function openVideoPlayer(youtubeId, title) {
+  const prev = document.getElementById("beluga-video-player");
+  if (prev) prev.remove();
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `<div id="beluga-video-player" class="video-player-overlay" role="dialog" aria-modal="true" aria-label="${title}">
+      <div class="video-player-modal">
+        <button class="video-player-close" id="video-player-close" type="button" aria-label="Fechar vídeo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+        <div class="video-player-iframe-wrap">
+          <iframe
+            id="video-player-iframe"
+            src="https://www.youtube.com/embed/${youtubeId}?autoplay=1"
+            title="${title}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>`,
+  );
+
+  const overlay = document.getElementById("beluga-video-player");
+
+  function closePlayer() {
+    const iframe = document.getElementById("video-player-iframe");
+    if (iframe) iframe.src = "";
+    overlay.remove();
+    document.removeEventListener("keydown", onPlayerKey);
+  }
+
+  function onPlayerKey(e) {
+    if (e.key === "Escape") closePlayer();
+  }
+
+  document
+    .getElementById("video-player-close")
+    .addEventListener("click", closePlayer);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closePlayer();
+  });
+  document.addEventListener("keydown", onPlayerKey);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      overlay.classList.add("open");
+    });
+  });
+}
 
 export function openBiblioteca() {
   _activeCategoria = "todas";

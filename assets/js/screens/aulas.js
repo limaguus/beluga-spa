@@ -6,7 +6,7 @@
    - aulasInit(): conecta os event listeners de interatividade
    ========================================================= */
 
-import { openBiblioteca } from "./biblioteca.js";
+import { openBiblioteca, openVideoPlayer } from "./biblioteca.js";
 
 // ==================================================================
 // MOCK DATA
@@ -444,9 +444,9 @@ function buildTopicCard(t) {
     <a
       class="aulas-topic-card ${cardMod}"
       href="https://www.youtube.com/watch?v=${t.youtubeId}"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="Assistir no YouTube: ${t.titulo}"
+      data-youtube-id="${t.youtubeId}"
+      data-video-title="${t.titulo}"
+      title="Assistir: ${t.titulo}"
     >
       <div class="aulas-topic-body">
         <div class="aulas-topic-badges">${recBadge}${doneBadge}</div>
@@ -638,6 +638,14 @@ export function aulasInit() {
 
       attachLibraryBtn();
     });
+  });
+
+  // Delegação no container estável .aulas — funciona após troca de matéria
+  document.querySelector(".aulas").addEventListener("click", (e) => {
+    const card = e.target.closest(".aulas-topic-card");
+    if (!card) return;
+    e.preventDefault();
+    openVideoPlayer(card.dataset.youtubeId, card.dataset.videoTitle);
   });
 
   attachLibraryBtn();

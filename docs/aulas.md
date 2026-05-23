@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-"Minhas Aulas" exibe os tópicos de estudo de cada disciplina, organizados em cards clicáveis que abrem o vídeo no YouTube. O layout tem três colunas: navegação de matérias (esquerda), lista de tópicos (centro) e painel com estatísticas + notícias (direita). A matéria ativa pode ser passada via query string na hash.
+"Minhas Aulas" exibe os tópicos de estudo de cada disciplina, organizados em cards clicáveis que abrem o vídeo em um player embutido (modal interno). O layout tem três colunas: navegação de matérias (esquerda), lista de tópicos (centro) e painel com estatísticas + notícias (direita). A matéria ativa pode ser passada via query string na hash.
 
 ### Organização visual
 
@@ -62,7 +62,7 @@ div.aulas
     │   │   │   └── p.aulas-topics-label
     │   │   └── span.aulas-progress-chip  ← "X/N concluídos"
     │   ├── div.aulas-topics-list
-    │   │   └── a.aulas-topic-card[href=YouTube] × N  ← gerado por buildTopicCard()
+    │   │   └── a.aulas-topic-card[href=YouTube][data-youtube-id][data-video-title] × N  ← gerado por buildTopicCard()
     │   │       ├── div.aulas-topic-body
     │   │       │   ├── div.aulas-topic-badges  ← badges rec + done
     │   │       │   ├── h3.aulas-topic-title
@@ -103,7 +103,7 @@ div.aulas
 | `.aulas-sidebar` | `<aside>` | Sticky `top: 20px`, flex coluna |
 | `.aulas-subject-btn` | `<button>` | Botão de matéria com `data-id` |
 | `.aulas-subject-btn.active` | `<button>` | Matéria selecionada — borda azul, mais opaco |
-| `.aulas-topic-card` | `<a>` | Link para YouTube, flex row com thumb |
+| `.aulas-topic-card` | `<a>` | Card clicável — abre player embutido via modal (intercepta o `href` do YouTube) |
 | `.aulas-topic-card--recomendado` | `<a>` | Borda esquerda 3px azul `#2b719c` |
 | `.aulas-topic-card--concluido` | `<a>` | Opacity 0.6, borda esquerda 3px verde |
 | `.aulas-badge--rec` | `<span>` | Badge "★ Recomendado" azul |
@@ -377,7 +377,7 @@ Quando o usuário clica em outra matéria, apenas `.aulas-main` e `.aulas-panel`
 |---|---|---|
 | `.aulas-subject-btn` | `click` | Atualiza `_activeId`, reconstrói main + panel, re-registra btn-biblioteca |
 | `#btn-biblioteca` | `click` | Chama `openBiblioteca()` de `biblioteca.js` |
-| `.aulas-topic-card` | `click` | Abre YouTube em nova aba (`target="_blank"`) — é um `<a>`, não evento JS |
+| `.aulas-topic-card` | `click` | Interceptado via delegação em `.aulas` — chama `openVideoPlayer(youtubeId, title)` e cancela a navegação |
 
 ---
 
@@ -405,8 +405,15 @@ Usuário clica em "Design de Interfaces"
   ↓ attachLibraryBtn()
        ↓
 Usuário clica em um topic card
-  ↓ href="https://youtube.com/watch?v=..." target="_blank"
-  ↓ YouTube abre em nova aba
+  ↓ click interceptado via delegação em .aulas (e.preventDefault())
+  ↓ openVideoPlayer(youtubeId, title) — importado de biblioteca.js
+  ↓ Modal injetado no <body> com iframe embed do YouTube (?autoplay=1)
+  ↓ double rAF → .open adicionado → fade-in + slide-up
+  ↓
+Usuário fecha o player (✕ / Escape / clique no backdrop)
+  ↓ iframe.src = "" → vídeo para imediatamente
+  ↓ overlay removido do DOM
+  ↓ listener de Escape removido
 ```
 
 ---
@@ -456,8 +463,35 @@ assets/js/screens/aulas.js
  └── AULAS_DATA (local, mock)
  └── thumbnails: https://i.ytimg.com/vi/${youtubeId}/mqdefault.jpg
  └── notícias: https://picsum.photos/seed/${seed}/80/54
- └── links de tópicos: https://www.youtube.com/watch?v=${youtubeId}
+ └── href de tópicos (fallback): https://www.youtube.com/watch?v=${youtubeId}
+ └── player embutido: https://www.youtube.com/embed/${youtubeId}?autoplay=1
+ └── openVideoPlayer importado de ./biblioteca.js
 ```
+
+### Player de vídeo embutido
+
+Os topic cards usam delegação de eventos no container estável `.aulas` para interceptar cliques e abrir o vídeo dentro da plataforma:
+
+```javascript
+// aulasInit() — delegação no container estável, sobrevive à troca de matéria
+document.querySelector(".aulas").addEventListener("click", (e) => {
+  const card = e.target.closest(".aulas-topic-card");
+  if (!card) return;
+  e.preventDefault();                                    // cancela o href
+  openVideoPlayer(card.dataset.youtubeId, card.dataset.videoTitle);
+});
+```
+
+**Como o modal é acionado:** clique em qualquer parte do `.aulas-topic-card`.
+
+**Como o modal é fechado (três formas):**
+1. Botão ✕ (`.video-player-close`) — posicionado acima do iframe
+2. Tecla `Escape` — listener removido ao fechar
+3. Clique no backdrop (fora do modal)
+
+**Parada do vídeo:** ao fechar, `iframe.src = ""` é executado antes de remover o elemento do DOM, garantindo que o áudio/vídeo para imediatamente.
+
+A função `openVideoPlayer` é importada de `biblioteca.js` (mesmo módulo que fornece `openBiblioteca`). O modal usa as classes `.video-player-overlay` / `.video-player-modal` definidas em `assets/css/components/modals.css`.
 
 ### Componentes globais
 
@@ -467,3 +501,4 @@ assets/js/screens/aulas.js
 | Beluginha IA | **Sim** |
 | `.progress-ring` / `.ring-bg` | **Sim** — mesmas classes do Dashboard, mas raio diferente |
 | `.button` (buttons.css) | **Não** — botão biblioteca tem estilo próprio |
+| `openVideoPlayer` (biblioteca.js) | **Sim** — player embutido de vídeo |

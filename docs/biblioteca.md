@@ -10,7 +10,7 @@
 
 ### Objetivo
 
-Modal de pesquisa de videoaulas acadêmicas. Abre sobre qualquer tela (injetado no `<body>`), oferece filtragem por categoria via sidebar e busca textual por título ou descrição. Cada card é um link direto para o YouTube. Preparado para substituição do mock por API real.
+Modal de pesquisa de videoaulas acadêmicas. Abre sobre qualquer tela (injetado no `<body>`), oferece filtragem por categoria via sidebar e busca textual por título ou descrição. Cada card abre o vídeo em um player embutido (modal interno com iframe do YouTube) — sem redirecionamento para nova aba. Preparado para substituição do mock por API real.
 
 ### Organização visual
 
@@ -68,7 +68,7 @@ body
                 │   │   ├── h3.bib-section-title
                 │   │   └── span.bib-section-tag  ← ★ badge amarelo
                 │   └── div.bib-cards-grid
-                │       └── a.bib-card[href=youtube] × N  ← buildVideoCard()
+                │       └── a.bib-card[href=youtube][data-youtube-id][data-video-title] × N  ← buildVideoCard()
                 │           ├── div.bib-card-thumb
                 │           │   ├── img[loading=lazy][onerror=...]
                 │           │   ├── div.bib-card-play  ← ícone play (hover)
@@ -93,7 +93,7 @@ body
 | `.bib-cat-btn` | `<button>` | Botão de categoria — hover com `translateX(2px)` |
 | `.bib-cat-btn.active` | `<button>` | Categoria selecionada — fundo e borda azuis |
 | `.bib-cards-grid` | `<div>` | `grid auto-fill minmax(195px, 1fr)` — responsivo automático |
-| `.bib-card` | `<a>` | Card-link para YouTube — hover com `translateY(-4px)` |
+| `.bib-card` | `<a>` | Card clicável — abre player embutido via modal (intercepta o `href` do YouTube) |
 | `.bib-card--rec` | `<a>` | Borda azul para recomendados |
 | `.bib-card-thumb` | `<div>` | Aspect ratio 16:9 via `padding-bottom: 56.25%` |
 | `.bib-card-play` | `<div>` | Overlay de play — `opacity: 0`, visível no hover |
@@ -271,7 +271,7 @@ function buildContentHTML() {
 | Filtrando | busca ativa ou categoria ≠ "todas" | Uma seção com contagem de resultados |
 | Default | `filter === "todas"` e sem busca | Duas seções: Recomendados + Mais conteúdos |
 
-### `buildVideoCard(v)` — card como link `<a>`
+### `buildVideoCard(v)` — card como link `<a>` com player embutido
 
 ```javascript
 function buildVideoCard(v) {
@@ -279,14 +279,16 @@ function buildVideoCard(v) {
   return `
     <a class="bib-card${v.recomendado ? " bib-card--rec" : ""}"
        href="https://www.youtube.com/watch?v=${v.youtubeId}"
-       target="_blank" rel="noopener noreferrer" ...>
+       data-youtube-id="${v.youtubeId}"
+       data-video-title="${v.titulo}"
+       title="${v.titulo}">
       ...
       onerror="this.parentElement.classList.add('bib-card-thumb--fallback');this.remove()"
     </a>`;
 }
 ```
 
-O card inteiro é um `<a>` — clicar em qualquer parte abre o YouTube. `mqdefault.jpg` é a thumbnail de média qualidade do YouTube. O `onerror` remove a `<img>` com erro e aplica fallback gradiente ao container.
+O card mantém o `href` do YouTube como fallback (sem JS, o link funciona normalmente). Com JS, o clique é interceptado via delegação em `#bib-content` — `e.preventDefault()` cancela a navegação e `openVideoPlayer()` abre o player embutido. `mqdefault.jpg` é a thumbnail de média qualidade do YouTube. O `onerror` remove a `<img>` com erro e aplica fallback gradiente ao container.
 
 ### `openBiblioteca()` — double rAF para transição CSS
 
@@ -348,6 +350,7 @@ A duplicidade entre `input` e `Enter`/botão é redundante (o `input` já filtra
 | `#bib-search-input` | `input` | Atualiza `_searchQuery`, `updateContent()` |
 | `#bib-search-input` | `keydown Enter` | Atualiza `_searchQuery`, `updateContent()` |
 | `#bib-search-btn` | `click` | Lê input, `updateContent()` |
+| `#bib-content` | `click` (delegado) | Intercepta clique em `.bib-card`, chama `openVideoPlayer(youtubeId, videoTitle)` |
 | `document` | `keydown Escape` | `closeBiblioteca()` (via `onEscape`) |
 
 ---
@@ -375,9 +378,17 @@ Usuário clica categoria "Algoritmos"
   ↓ updateContent() → filtra por categoria (busca ainda ativa = AND)
        ↓
 Usuário clica em um card
-  ↓ Link <a target="_blank"> abre YouTube em nova aba
+  ↓ click interceptado via delegação em #bib-content (e.preventDefault())
+  ↓ openVideoPlayer(youtubeId, videoTitle)
+  ↓ Modal injetado no <body> com iframe embed (?autoplay=1)
+  ↓ double rAF → .open adicionado → fade-in + slide-up
+  ↓
+Usuário fecha o player (✕ / Escape / clique no backdrop)
+  ↓ iframe.src = "" → vídeo para imediatamente
+  ↓ overlay removido do DOM
+  ↓ listener de Escape do player removido
        ↓
-Usuário pressiona Escape
+Usuário pressiona Escape (com Biblioteca aberta, sem player)
   ↓ onEscape → closeBiblioteca()
   ↓ .open removido → fade-out
   ↓ document.removeEventListener("keydown", onEscape)
@@ -433,11 +444,51 @@ assets/js/screens/biblioteca.js
  └── exporta: openBiblioteca()
 ```
 
+### `openVideoPlayer(youtubeId, title)` — player embutido
+
+Função exportada por este módulo, usada tanto pela Biblioteca quanto pela tela Aulas.
+
+```javascript
+export function openVideoPlayer(youtubeId, title) {
+  // Remove player anterior (se existir)
+  const prev = document.getElementById("beluga-video-player");
+  if (prev) prev.remove();
+
+  // Injeta overlay com iframe embed
+  document.body.insertAdjacentHTML("beforeend", `
+    <div id="beluga-video-player" class="video-player-overlay" ...>
+      <div class="video-player-modal">
+        <button class="video-player-close" ...>✕</button>
+        <div class="video-player-iframe-wrap">
+          <iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1" ...></iframe>
+        </div>
+      </div>
+    </div>
+  `);
+
+  // Fecha ao clicar em ✕, no backdrop, ou ao pressionar Escape
+  // Ao fechar: iframe.src = "" para o vídeo, overlay é removido do DOM
+}
+```
+
+**Como o modal é acionado:** clique em qualquer `.bib-card` dentro de `#bib-content` (delegação de eventos).
+
+**Como o modal é fechado (três formas):**
+1. Botão ✕ (`.video-player-close`) — posicionado acima do iframe
+2. Tecla `Escape` — listener nomeado `onPlayerKey`, removido ao fechar
+3. Clique no backdrop (`.video-player-overlay`, fora do `.video-player-modal`)
+
+**Parada do vídeo:** ao fechar, `iframe.src = ""` é executado antes de remover o elemento, garantindo que o áudio/vídeo para imediatamente.
+
+O CSS do player (`.video-player-overlay`, `.video-player-modal`, `.video-player-close`, `.video-player-iframe-wrap`) está em `assets/css/components/modals.css`.
+
+---
+
 ### Quem chama este componente
 
 | Arquivo | Como usa |
 |---|---|
-| `assets/js/screens/aulas.js` | `import { openBiblioteca } from "./biblioteca.js"` → botão "Abrir Biblioteca" na tela Aulas |
+| `assets/js/screens/aulas.js` | `import { openBiblioteca, openVideoPlayer } from "./biblioteca.js"` → botão "Biblioteca" e player de vídeo nos topic cards |
 
 ### Componentes globais
 
