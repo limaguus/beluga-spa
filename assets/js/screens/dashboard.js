@@ -165,7 +165,7 @@ export function dashboardScreen() {
               <span class="db-avatar-badge">${DB_USER.level}</span>
             </div>
             <div class="db-user-info">
-              <p class="db-eyebrow">Nível ${DB_USER.level} &mdash; ${DB_USER.levelTitle}</p>
+              <p class="db-eyebrow">Nível ${DB_USER.level} — ${DB_USER.levelTitle}</p>
               <h1 class="db-welcome">Bem-vindo de volta, ${DB_USER.name}</h1>
             </div>
           </div>

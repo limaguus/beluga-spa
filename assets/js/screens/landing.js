@@ -17,7 +17,7 @@ function _testi(initials, color, name, role, text) {
   return `
   <div class="ld-tcard">
     <div class="ld-tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-    <p class="ld-tcard-text">&ldquo;${text}&rdquo;</p>
+    <p class="ld-tcard-text">“${text}”</p>
     <div class="ld-tcard-author">
       <div class="ld-tcard-av" style="background:${color}">${initials}</div>
       <div>
@@ -43,7 +43,7 @@ export function landingScreen() {
         <a href="javascript:void(0)" data-scroll="preco">Preço</a>
         <a href="javascript:void(0)" data-scroll="contato">Contato</a>
       </nav>
-      <button class="pub-cta-header" id="cta-header">Entrar</button>
+      <button class="pub-cta-header" id="cta-header">JÁ SOU ALUNO</button>
     </header>
 
     <main class="public-main">
@@ -73,9 +73,9 @@ export function landingScreen() {
               <svg width="11" height="11" viewBox="0 0 24 24" fill="#f97316" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               4,8/5
             </span>
-            <span class="ld-trust-sep">&middot;</span>
+            <span class="ld-trust-sep">·</span>
             <span>5.000+ estudantes</span>
-            <span class="ld-trust-sep">&middot;</span>
+            <span class="ld-trust-sep">·</span>
             <span>87 universidades</span>
           </div>
         </div>
@@ -102,12 +102,12 @@ export function landingScreen() {
           <div class="ld-sdiv"></div>
           <div class="ld-stat">
             <span class="ld-snum">2,1M</span>
-            <span class="ld-slabel">Quest&otilde;es respondidas</span>
+            <span class="ld-slabel">Questões respondidas</span>
           </div>
           <div class="ld-sdiv"></div>
           <div class="ld-stat">
             <span class="ld-snum">4,8<span class="ld-sstar">&#9733;</span></span>
-            <span class="ld-slabel">Avalia&ccedil;&atilde;o m&eacute;dia</span>
+            <span class="ld-slabel">Avaliação média</span>
           </div>
         </div>
       </section>
@@ -116,8 +116,8 @@ export function landingScreen() {
       <section class="ld-features" id="funcionalidades">
         <div class="ld-sec-head">
           <p class="ld-eyebrow">Funcionalidades</p>
-          <h2 class="ld-sec-h2">Tudo que voc&ecirc; precisa<br>para dominar a faculdade</h2>
-          <p class="ld-sec-sub">Quatro pilares que transformam a forma como universit&aacute;rios estudam.</p>
+          <h2 class="ld-sec-h2">Tudo que você precisa<br>para dominar a faculdade</h2>
+          <p class="ld-sec-sub">Quatro pilares que transformam a forma como universitários estudam.</p>
         </div>
         <div class="ld-feat-grid">
 
@@ -127,11 +127,11 @@ export function landingScreen() {
             </div>
             <div class="ld-fcard-tag">Diferencial #1</div>
             <h3 class="ld-fcard-h3">Belugin-IA</h3>
-            <p class="ld-fcard-p">Sua mentora de estudos pessoal. Entende sua grade curricular, identifica seus pontos fracos e monta uma revis&atilde;o sob medida para voc&ecirc; em segundos &mdash; dispon&iacute;vel 24h.</p>
+            <p class="ld-fcard-p">Sua mentora de estudos pessoal. Entende sua grade curricular, identifica seus pontos fracos e monta uma revisão sob medida para você em segundos — disponível 24h.</p>
             <ul class="ld-fcard-list">
-              <li>Responde d&uacute;vidas em tempo real</li>
-              <li>Cria planos de revis&atilde;o personalizados</li>
-              <li>Adapta o cronograma &agrave; sua rotina</li>
+              <li>Responde dúvidas em tempo real</li>
+              <li>Cria planos de revisão personalizados</li>
+              <li>Adapta o cronograma à sua rotina</li>
             </ul>
           </div>
 
@@ -139,16 +139,16 @@ export function landingScreen() {
             <div class="ld-fcard-icon" style="background:rgba(168,85,247,.12);color:#a855f7">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
-            <h3 class="ld-fcard-h3">Plano din&acirc;mico</h3>
-            <p class="ld-fcard-p">Cronograma que se adapta &agrave; sua rotina. Prioriza automaticamente o que vai cair na prova e reorganiza seus hor&aacute;rios quando a vida apertar.</p>
+            <h3 class="ld-fcard-h3">Plano dinâmico</h3>
+            <p class="ld-fcard-p">Cronograma que se adapta à sua rotina. Prioriza automaticamente o que vai cair na prova e reorganiza seus horários quando a vida apertar.</p>
           </div>
 
           <div class="ld-fcard">
             <div class="ld-fcard-icon" style="background:rgba(249,115,22,.12);color:#f97316">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
-            <h3 class="ld-fcard-h3">Gamifica&ccedil;&atilde;o</h3>
-            <p class="ld-fcard-p">XP, conquistas, miss&otilde;es di&aacute;rias e ranking com seus colegas. Estudar nunca foi t&atilde;o viciante &mdash; cada sess&atilde;o vira uma recompensa.</p>
+            <h3 class="ld-fcard-h3">Gamificação</h3>
+            <p class="ld-fcard-p">XP, conquistas, missões diárias e ranking com seus colegas. Estudar nunca foi tão viciante — cada sessão vira uma recompensa.</p>
           </div>
 
           <div class="ld-fcard">
@@ -156,7 +156,7 @@ export function landingScreen() {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <h3 class="ld-fcard-h3">Comunidade</h3>
-            <p class="ld-fcard-p">F&oacute;rum, feed de conquistas e grupos por curso. Conecte-se com estudantes em todo o Brasil e nunca estude sozinho.</p>
+            <p class="ld-fcard-p">Fórum, feed de conquistas e grupos por curso. Conecte-se com estudantes em todo o Brasil e nunca estude sozinho.</p>
           </div>
 
         </div>
@@ -167,7 +167,7 @@ export function landingScreen() {
         <div class="ld-sec-head">
           <p class="ld-eyebrow">Plataforma</p>
           <h2 class="ld-sec-h2">Simples por fora,<br>poderoso por dentro</h2>
-          <p class="ld-sec-sub">Veja como o BELUGA &eacute; na pr&aacute;tica antes mesmo de criar sua conta.</p>
+          <p class="ld-sec-sub">Veja como o BELUGA é na prática antes mesmo de criar sua conta.</p>
         </div>
         <div class="ld-preview-row">
 
@@ -211,7 +211,7 @@ export function landingScreen() {
       <section class="ld-how">
         <div class="ld-sec-head">
           <p class="ld-eyebrow">Como funciona</p>
-          <h2 class="ld-sec-h2">Do cadastro &agrave; aprova&ccedil;&atilde;o<br>em 3 passos</h2>
+          <h2 class="ld-sec-h2">Do cadastro à aprovação<br>em 3 passos</h2>
         </div>
         <div class="ld-how-row">
           <div class="ld-how-step">
@@ -223,13 +223,13 @@ export function landingScreen() {
           <div class="ld-how-step">
             <div class="ld-how-num">02</div>
             <h3 class="ld-how-h3">A IA monta seu plano</h3>
-            <p class="ld-how-p">A Beluginha analisa sua grade e cria uma trilha de estudos personalizada para voc&ecirc;.</p>
+            <p class="ld-how-p">A Beluginha analisa sua grade e cria uma trilha de estudos personalizada para você.</p>
           </div>
           <div class="ld-how-line"></div>
           <div class="ld-how-step">
             <div class="ld-how-num">03</div>
             <h3 class="ld-how-h3">Estude e evolua</h3>
-            <p class="ld-how-p">Complete miss&otilde;es, fa&ccedil;a quizzes, suba no ranking e alcance seus objetivos acad&ecirc;micos.</p>
+            <p class="ld-how-p">Complete missões, faça quizzes, suba no ranking e alcance seus objetivos acadêmicos.</p>
           </div>
         </div>
       </section>
@@ -238,7 +238,7 @@ export function landingScreen() {
       <section class="ld-pricing" id="preco">
         <div class="ld-sec-head">
           <p class="ld-eyebrow">Planos</p>
-          <h2 class="ld-sec-h2">Investimento que cabe<br>no bolso universit&aacute;rio</h2>
+          <h2 class="ld-sec-h2">Investimento que cabe<br>no bolso universitário</h2>
         </div>
         <div class="ld-plan-row">
 
@@ -246,20 +246,20 @@ export function landingScreen() {
             <div class="ld-plan-hd">
               <span class="ld-plan-name">Gratuito</span>
               <div class="ld-plan-price">
-                <span class="ld-pcur">R$</span><span class="ld-pamt">0</span><span class="ld-pper">/m&ecirc;s</span>
+                <span class="ld-pcur">R$</span><span class="ld-pamt">0</span><span class="ld-pper">/mês</span>
               </div>
-              <p class="ld-plan-tag">Para come&ccedil;ar sem compromisso</p>
+              <p class="ld-plan-tag">Para começar sem compromisso</p>
             </div>
             <ul class="ld-plan-feats">
-              ${_feat(true, "Beluginha IA (5 intera&ccedil;&otilde;es/dia)")}
+              ${_feat(true, "Beluginha IA (5 interações/dia)")}
               ${_feat(true, "3 quizzes por semana")}
-              ${_feat(true, "Plano de estudos b&aacute;sico")}
-              ${_feat(true, "Feed e f&oacute;rum da comunidade")}
+              ${_feat(true, "Plano de estudos básico")}
+              ${_feat(true, "Feed e fórum da comunidade")}
               ${_feat(false, "Plano inteligente completo")}
               ${_feat(false, "Quizzes ilimitados")}
-              ${_feat(false, "Relat&oacute;rios de desempenho")}
+              ${_feat(false, "Relatórios de desempenho")}
             </ul>
-            <button class="ld-plan-btn ld-plan-btn--outline" id="cta-free">Come&ccedil;ar gr&aacute;tis</button>
+            <button class="ld-plan-btn ld-plan-btn--outline" id="cta-free">Começar grátis</button>
           </div>
 
           <div class="ld-plan ld-plan--feat">
@@ -267,18 +267,18 @@ export function landingScreen() {
             <div class="ld-plan-hd">
               <span class="ld-plan-name">Pro</span>
               <div class="ld-plan-price">
-                <span class="ld-pcur">R$</span><span class="ld-pamt">19</span><span class="ld-pcts">,90</span><span class="ld-pper">/m&ecirc;s</span>
+                <span class="ld-pcur">R$</span><span class="ld-pamt">19</span><span class="ld-pcts">,90</span><span class="ld-pper">/mês</span>
               </div>
-              <p class="ld-plan-tag">O plano completo para quem leva a s&eacute;rio</p>
+              <p class="ld-plan-tag">O plano completo para quem leva a sério</p>
             </div>
             <ul class="ld-plan-feats">
               ${_feat(true, "Beluginha IA <strong>ilimitada</strong>")}
               ${_feat(true, "Quizzes ilimitados")}
               ${_feat(true, "Plano inteligente completo")}
-              ${_feat(true, "Feed e f&oacute;rum da comunidade")}
-              ${_feat(true, "Gamifica&ccedil;&atilde;o completa")}
-              ${_feat(true, "Notifica&ccedil;&otilde;es avan&ccedil;adas")}
-              ${_feat(true, "Relat&oacute;rios de desempenho")}
+              ${_feat(true, "Feed e fórum da comunidade")}
+              ${_feat(true, "Gamificação completa")}
+              ${_feat(true, "Notificações avançadas")}
+              ${_feat(true, "Relatórios de desempenho")}
             </ul>
             <button class="ld-plan-btn ld-plan-btn--primary" id="cta-pro">Assinar Pro</button>
           </div>
@@ -289,15 +289,15 @@ export function landingScreen() {
               <div class="ld-plan-price">
                 <span class="ld-pcur">R$</span><span class="ld-pamt">149</span><span class="ld-pcts">,90</span><span class="ld-pper">/ano</span>
               </div>
-              <p class="ld-plan-tag">Economize 37% em rela&ccedil;&atilde;o ao mensal</p>
+              <p class="ld-plan-tag">Economize 37% em relação ao mensal</p>
             </div>
             <ul class="ld-plan-feats">
               ${_feat(true, "Tudo do plano Pro")}
               ${_feat(true, "Acesso antecipado a novidades")}
-              ${_feat(true, "Suporte priorit&aacute;rio")}
-              ${_feat(true, "Relat&oacute;rios avan&ccedil;ados")}
+              ${_feat(true, "Suporte prioritário")}
+              ${_feat(true, "Relatórios avançados")}
               ${_feat(true, "Badge exclusivo no perfil")}
-              ${_feat(true, "XP b&ocirc;nus em datas especiais")}
+              ${_feat(true, "XP bônus em datas especiais")}
               ${_feat(true, "Exportar plano de estudos")}
             </ul>
             <button class="ld-plan-btn ld-plan-btn--outline" id="cta-anual">Assinar Anual</button>
@@ -310,29 +310,29 @@ export function landingScreen() {
       <section class="ld-testi">
         <div class="ld-sec-head">
           <p class="ld-eyebrow">Depoimentos</p>
-          <h2 class="ld-sec-h2">O que os estudantes<br>est&atilde;o dizendo</h2>
+          <h2 class="ld-sec-h2">O que os estudantes<br>estão dizendo</h2>
         </div>
         <div class="ld-tcard-row">
           ${_testi(
             "MC",
             "linear-gradient(135deg,#3b9edd,#1e5f8a)",
             "Mariana C.",
-            "Medicina &middot; USP",
-            "A Beluginha montou meu plano de revis&atilde;o para o semestre inteiro em 2 minutos. Passei em todas as mat&eacute;rias pela primeira vez!",
+            "Medicina · USP",
+            "A Beluginha montou meu plano de revisão para o semestre inteiro em 2 minutos. Passei em todas as matérias pela primeira vez!",
           )}
           ${_testi(
             "LH",
             "linear-gradient(135deg,#a855f7,#7c3aed)",
             "Lucas H.",
-            "Eng. Software &middot; UFG",
-            "Nunca fui bom em planejar estudos. O BELUGA criou uma rotina perfeita pra mim e ainda manda lembrete antes da prova. Simplesmente incr&iacute;vel.",
+            "Eng. Software · UFG",
+            "Nunca fui bom em planejar estudos. O BELUGA criou uma rotina perfeita pra mim e ainda manda lembrete antes da prova. Simplesmente incrível.",
           )}
           ${_testi(
             "AF",
             "linear-gradient(135deg,#22c55e,#16a34a)",
             "Ana F.",
-            "Direito &middot; PUC-SP",
-            "O sistema de XP e conquistas me faz querer estudar todo dia. &Eacute; o &uacute;nico app que conseguiu me manter consistente durante toda a gradua&ccedil;&atilde;o.",
+            "Direito · PUC-SP",
+            "O sistema de XP e conquistas me faz querer estudar todo dia. É o único app que conseguiu me manter consistente durante toda a graduação.",
           )}
         </div>
       </section>
@@ -344,8 +344,8 @@ export function landingScreen() {
             <img src="./assets/images/BELUGA.png" alt="Beluginha" class="ld-final-img" />
           </div>
           <h2 class="ld-final-h2">Pronto para dominar<br>a faculdade?</h2>
-          <p class="ld-final-sub">Junte-se a 5.000+ estudantes que j&aacute; transformaram sua rotina acad&ecirc;mica com o BELUGA.</p>
-          <button class="ld-btn-primary" id="cta-final">Criar conta gr&aacute;tis</button>
+          <p class="ld-final-sub">Junte-se a 5.000+ estudantes que já transformaram sua rotina acadêmica com o BELUGA.</p>
+          <button class="ld-btn-primary" id="cta-final">Criar conta grátis</button>
         </div>
       </section>
 
@@ -357,7 +357,7 @@ export function landingScreen() {
               <img src="./assets/images/logof.png" class="brand-logo" alt="BELUGA" />
               <span class="brand-name">BELUGA</span>
             </div>
-            <p class="ld-footer-desc">O assistente de estudos<br>do universit&aacute;rio brasileiro.</p>
+            <p class="ld-footer-desc">O assistente de estudos<br>do universitário brasileiro.</p>
           </div>
           <div class="ld-footer-cols">
             <div class="ld-footer-col">
@@ -368,7 +368,7 @@ export function landingScreen() {
             </div>
             <div class="ld-footer-col">
               <span class="ld-fcol-hd">Empresa</span>
-              <a href="javascript:void(0)" class="ld-footer-a">Sobre n&oacute;s</a>
+              <a href="javascript:void(0)" class="ld-footer-a">Sobre nós</a>
               <a href="javascript:void(0)" class="ld-footer-a">Blog</a>
               <a href="javascript:void(0)" class="ld-footer-a">Carreiras</a>
             </div>
@@ -381,7 +381,7 @@ export function landingScreen() {
           </div>
         </div>
         <div class="ld-footer-bot">
-          <span>&copy; 2025 BELUGA. Todos os direitos reservados.</span>
+          <span>© 2025 BELUGA. Todos os direitos reservados.</span>
         </div>
       </footer>
 

@@ -194,7 +194,7 @@ export function conquistasScreen() {
         <div class="cq-profile-body">
           <div class="cq-profile-top">
             <span class="cq-profile-name">${CQ_USER.name}</span>
-            <span class="cq-profile-level">Nível ${CQ_USER.level} &mdash; ${CQ_USER.levelTitle}</span>
+            <span class="cq-profile-level">Nível ${CQ_USER.level} — ${CQ_USER.levelTitle}</span>
           </div>
           <div class="cq-xp-track">
             <div class="cq-xp-fill" style="width:${XP_PCT}%">
@@ -236,7 +236,7 @@ export function conquistasScreen() {
             <div class="cq-badge-card">
               <span class="cq-badge-eyebrow">Conquista em destaque</span>
               <img src="${CQ_BADGE.image}" class="cq-badge-trophy" alt="Troféu ${CQ_BADGE.name}" />
-              <div class="cq-badge-name">Selo &ldquo;${CQ_BADGE.name}&rdquo;</div>
+              <div class="cq-badge-name">Selo “${CQ_BADGE.name}”</div>
               <p class="cq-badge-desc">${CQ_BADGE.desc}</p>
               <div class="cq-badge-footer">
                 <span class="cq-badge-xp">+${CQ_BADGE.xpEarned} XP</span>

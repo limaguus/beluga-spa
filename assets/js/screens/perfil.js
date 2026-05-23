@@ -224,7 +224,7 @@ export function perfilScreen() {
             </div>
             <div class="pf-sidebar-name" id="pf-sidebar-name">${d.pessoal.nome}</div>
             <div class="pf-sidebar-course" id="pf-sidebar-course">${d.academico.curso}</div>
-            <div class="pf-sidebar-meta">${d.academico.periodo} &bull; ${d.academico.turno}</div>
+            <div class="pf-sidebar-meta">${d.academico.periodo} • ${d.academico.turno}</div>
             <div class="pf-sidebar-institution">${d.academico.instituicao}</div>
           </div>
 
