@@ -77,6 +77,7 @@ O BELUGA nasceu da necessidade real que estudantes têm de centralizar e organiz
 
 - Acesso ao acervo de conteúdos por disciplina
 - Organização por módulos e videoaulas
+- **Meus Exercícios**: upload de PDF da lista de exercícios com vídeos recomendados por tópico (mock da futura integração com OpenAI API + YouTube Data API) e checkbox "Já resolvi" por exercício
 
 ### 📚 Biblioteca
 
@@ -277,7 +278,7 @@ A **Belugin-IA** é a assistente acadêmica inteligente do BELUGA, disponível c
 | ------------------------ | ---------------------------------------------------------- |
 | 🔒 Autenticação real     | Login com JWT, OAuth (Google) e recuperação de senha       |
 | 🗄️ Backend               | API REST (Node.js / Express) com banco de dados relacional |
-| 🤖 Integração OpenAI     | Beluginha IA com LLM real e contexto personalizado         |
+| 🤖 Integração OpenAI     | Beluginha IA com LLM real e contexto personalizado; análise de PDF de exercícios em "Meus Exercícios" |
 | 📊 Analytics acadêmico   | Relatórios de desempenho, tendências e previsões           |
 | 🎮 Quizzes dinâmicos     | Geração automática de questões com IA                      |
 | 🏅 Ranking em tempo real | Competição saudável entre estudantes                       |

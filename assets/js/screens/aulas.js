@@ -2,6 +2,7 @@
    BELUGA - Tela: Minhas Aulas
    Estrutura:
    - AULAS_DATA: mock preparado para troca por fetch()
+   - EXERCICIOS_DATA: mock preparado para OpenAI API + YouTube Data API
    - aulasScreen(): retorna o HTML completo da tela
    - aulasInit(): conecta os event listeners de interatividade
    ========================================================= */
@@ -9,7 +10,7 @@
 import { openBiblioteca, openVideoPlayer } from "./biblioteca.js";
 
 // ==================================================================
-// MOCK DATA
+// MOCK DATA — AULAS
 // Para conectar a uma API, substitua AULAS_DATA por um fetch()
 // e ajuste aulasScreen() para receber os dados assincronamente.
 // ==================================================================
@@ -394,8 +395,33 @@ const AULAS_DATA = {
   ],
 };
 
+// ==================================================================
+// MOCK DATA — EXERCÍCIOS
+// Futuramente este array será substituído pelo resultado das chamadas:
+//   1. OpenAI API — analisar o PDF enviado e extrair os tópicos de cada exercício
+//   2. YouTube Data API — buscar vídeos relevantes por tópico extraído
+// Por ora, os dados são estáticos e simulam a resposta esperada da IA.
+// ==================================================================
+const EXERCICIOS_DATA = [
+  {
+    id: "ex-chave-estrangeira",
+    titulo: "Exercício 1 — Chave Estrangeira",
+    videoTitulo: "SQL: Chave Estrangeira e Integridade Referencial",
+    youtubeId: "NLMf3OKFJxg",
+  },
+  {
+    id: "ex-normalizacao",
+    titulo: "Exercício 2 — Normalização",
+    videoTitulo: "Normalização de Banco de Dados: 1FN, 2FN e 3FN",
+    youtubeId: "DGInPa8SV2s",
+  },
+];
+
 // ---- MODULE STATE ----
 let _activeId = AULAS_DATA.materias[0].id;
+let _activeTab = "aulas"; // "aulas" | "exercicios"
+let _uploadedFileName = null;
+let _exercicios = [];
 
 // ---- PRIVATE HELPERS ----
 
@@ -508,6 +534,79 @@ function buildMain(materia) {
     </div>`;
 }
 
+function buildExercicioCard(ex) {
+  const thumb = `https://i.ytimg.com/vi/${ex.youtubeId}/mqdefault.jpg`;
+  const doneMod = ex.concluido ? "exer-card--done" : "";
+  const checkAttr = ex.concluido ? " checked" : "";
+  return `
+    <div class="exer-card ${doneMod}" data-ex-id="${escapeHtml(ex.id)}">
+      <div class="exer-card-body">
+        <h3 class="exer-card-titulo">${ex.titulo}</h3>
+        <p class="exer-card-video">${escapeHtml(ex.videoTitulo)}</p>
+        <label class="exer-check-label">
+          <input
+            type="checkbox"
+            class="exer-check"
+            data-ex-id="${escapeHtml(ex.id)}"${checkAttr}
+          />
+          <span class="exer-check-text">Já resolvi</span>
+        </label>
+      </div>
+      <div class="exer-card-thumb">
+        <img
+          src="${thumb}"
+          alt="${escapeHtml(ex.videoTitulo)}"
+          loading="lazy"
+          onerror="this.parentElement.classList.add('exer-card-thumb--fallback');this.remove()"
+        />
+        <a
+          class="exer-play-btn"
+          href="https://www.youtube.com/watch?v=${ex.youtubeId}"
+          data-youtube-id="${ex.youtubeId}"
+          data-video-title="${escapeHtml(ex.videoTitulo)}"
+          aria-label="Assistir: ${escapeHtml(ex.videoTitulo)}"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </a>
+      </div>
+    </div>`;
+}
+
+function buildExerciciosSection() {
+  if (!_uploadedFileName) {
+    return `
+      <div class="exer-section">
+        <div class="exer-upload-area">
+          <input type="file" id="exer-pdf-input" class="exer-pdf-input" accept=".pdf" />
+          <label class="exer-upload-label" for="exer-pdf-input">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Enviar PDF do exercício
+          </label>
+          <p class="exer-upload-hint">Selecione a lista de exercícios em PDF</p>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="exer-section">
+      <div class="exer-upload-area exer-upload-area--confirmed">
+        <div class="exer-file-confirmed">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>${escapeHtml(_uploadedFileName)}</span>
+        </div>
+      </div>
+      <div class="exer-list">
+        ${_exercicios.map(buildExercicioCard).join("")}
+      </div>
+    </div>`;
+}
+
 function quizBarColor(pct) {
   if (pct >= 70) return "#22c55e";
   if (pct >= 40) return "#f59e0b";
@@ -610,11 +709,19 @@ export function aulasScreen() {
     if (pid) requestedId = pid;
   }
   _activeId = getMateriaById(requestedId).id;
+  _activeTab = "aulas";
+  _uploadedFileName = null;
+  _exercicios = EXERCICIOS_DATA.map((ex) => ({ ...ex, concluido: false }));
+
   const materia = getMateriaById(_activeId);
   return `
     <div class="aulas">
       <div class="aulas-page-header">
         <h1 class="aulas-page-title">Minhas Aulas</h1>
+        <div class="aulas-tabs" role="tablist">
+          <button class="aulas-tab active" data-tab="aulas" role="tab" type="button">Minhas Aulas</button>
+          <button class="aulas-tab" data-tab="exercicios" role="tab" type="button">Meus Exercícios</button>
+        </div>
       </div>
       <div class="aulas-body">
         ${buildSidebar()}
@@ -631,6 +738,17 @@ function attachLibraryBtn() {
   }
 }
 
+function attachExerciciosEvents() {
+  const input = document.getElementById("exer-pdf-input");
+  if (!input) return;
+  input.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    _uploadedFileName = file.name;
+    document.querySelector(".aulas-main").innerHTML = buildExerciciosSection();
+  });
+}
+
 export function aulasInit() {
   document.querySelectorAll(".aulas-subject-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -643,19 +761,64 @@ export function aulasInit() {
         );
 
       const materia = getMateriaById(_activeId);
-      document.querySelector(".aulas-main").innerHTML = buildMain(materia);
+      if (_activeTab === "aulas") {
+        document.querySelector(".aulas-main").innerHTML = buildMain(materia);
+        attachLibraryBtn();
+      }
       document.querySelector(".aulas-panel").innerHTML = buildPanel(materia);
-
-      attachLibraryBtn();
     });
   });
 
-  // Delegação no container estável .aulas — funciona após troca de matéria
+  // Delegação no container estável .aulas — funciona após troca de matéria ou aba
   document.querySelector(".aulas").addEventListener("click", (e) => {
-    const card = e.target.closest(".aulas-topic-card");
-    if (!card) return;
-    e.preventDefault();
-    openVideoPlayer(card.dataset.youtubeId, card.dataset.videoTitle);
+    // Troca de aba (Minhas Aulas ↔ Meus Exercícios)
+    const tab = e.target.closest(".aulas-tab");
+    if (tab && tab.dataset.tab !== _activeTab) {
+      _activeTab = tab.dataset.tab;
+      document
+        .querySelectorAll(".aulas-tab")
+        .forEach((t) =>
+          t.classList.toggle("active", t.dataset.tab === _activeTab),
+        );
+      const materia = getMateriaById(_activeId);
+      document.querySelector(".aulas-main").innerHTML =
+        _activeTab === "exercicios"
+          ? buildExerciciosSection()
+          : buildMain(materia);
+      if (_activeTab === "aulas") attachLibraryBtn();
+      else attachExerciciosEvents();
+      return;
+    }
+
+    // Card de aula (abre player de vídeo)
+    const topicCard = e.target.closest(".aulas-topic-card");
+    if (topicCard) {
+      e.preventDefault();
+      openVideoPlayer(
+        topicCard.dataset.youtubeId,
+        topicCard.dataset.videoTitle,
+      );
+      return;
+    }
+
+    // Card de exercício (abre player de vídeo)
+    const exPlay = e.target.closest(".exer-play-btn");
+    if (exPlay) {
+      e.preventDefault();
+      openVideoPlayer(exPlay.dataset.youtubeId, exPlay.dataset.videoTitle);
+      return;
+    }
+  });
+
+  // Checkbox "Já resolvi" — delegação para reagir após troca de matéria
+  document.querySelector(".aulas").addEventListener("change", (e) => {
+    const cb = e.target.closest(".exer-check");
+    if (!cb) return;
+    const ex = _exercicios.find((x) => x.id === cb.dataset.exId);
+    if (!ex) return;
+    ex.concluido = cb.checked;
+    const card = document.querySelector(`.exer-card[data-ex-id="${ex.id}"]`);
+    if (card) card.classList.toggle("exer-card--done", ex.concluido);
   });
 
   attachLibraryBtn();

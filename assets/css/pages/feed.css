@@ -145,22 +145,11 @@
   transform: translateY(-1px);
 }
 
-/* ── Feed list (scrollable) ── */
+/* ── Feed list ── */
 .fd-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: calc(100vh - 340px);
-  min-height: 300px;
-  overflow-y: auto;
-  padding-right: 6px;
-}
-
-.fd-list::-webkit-scrollbar        { width: 4px; }
-.fd-list::-webkit-scrollbar-track  { background: transparent; }
-.fd-list::-webkit-scrollbar-thumb  {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
 }
 
 /* ── Post card ── */
